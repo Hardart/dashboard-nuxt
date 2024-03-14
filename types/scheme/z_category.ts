@@ -1,9 +1,9 @@
 import { z } from 'zod'
 
-export type CategorySchema = z.output<typeof categoryZodSchema>
+export type CategoryType = z.output<typeof categorySchema>
 
-export const categoryZodSchema = z.object({
-  id: z.string(),
+export const categorySchema = z.object({
+  id: z.string().min(16, 'id'),
   title: z.string(),
   slug: z.string(),
 })

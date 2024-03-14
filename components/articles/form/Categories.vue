@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { CategorySchema } from '@/types/scheme/z_category'
+import type { CategoryType } from '@/types/scheme/z_category'
 const category = defineModel({ required: true })
-defineProps<{ categories: CategorySchema[] }>()
+defineProps<{ categories: CategoryType[] }>()
 </script>
 
 <template>

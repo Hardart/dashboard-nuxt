@@ -22,10 +22,12 @@ provide('tiptap', editor)
     <EditorBlockquote />
     <EditorImage />
   </div>
-  <TiptapEditorContent
-    :editor="editor"
-    class="bg-white dark:bg-slate-900 border dark:border-slate-600 rounded-lg max-h-[400px] overflow-y-auto"
-  />
+  <UFormGroup label="Текст новости" name="content" required>
+    <TiptapEditorContent
+      :editor="editor"
+      class="bg-white dark:bg-slate-900 border dark:border-slate-600 rounded-lg max-h-[400px] overflow-y-auto"
+    />
+  </UFormGroup>
 </template>
 
 <style>

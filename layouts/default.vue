@@ -36,6 +36,16 @@ const linksTemplate = [
     },
   },
   {
+    id: 'users',
+    label: 'Users',
+    icon: 'i-heroicons-user-group',
+    to: '/users',
+    tooltip: {
+      text: 'Users',
+      shortcuts: ['G', 'U'],
+    },
+  },
+  {
     id: 'settings',
     label: 'Settings',
     to: '/settings',
@@ -81,6 +91,16 @@ const links = [
     tooltip: {
       text: 'список новостей',
       shortcuts: ['G', 'N'],
+    },
+  },
+  {
+    id: 'files',
+    label: 'Файлы',
+    icon: 'i-heroicons-folder',
+    to: '/files',
+    tooltip: {
+      text: 'список файлов',
+      shortcuts: ['G', 'F'],
     },
   },
   {

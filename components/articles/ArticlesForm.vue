@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { FormError, FormSubmitEvent } from '#ui/types'
+import { articleSchema } from '@/types/scheme/z_article'
 import { useArticleStore } from '~/store/useArticleStore'
 const { articleFormData, tags, categories } = storeToRefs(useArticleStore())
 
@@ -12,27 +13,29 @@ const validate = (state: any): FormError[] => {
   if (!state.slug) errors.push({ path: 'slug', message: 'Please enter an slug.' })
   if (!state.category.id || state.category.id.trim() === '')
     errors.push({ path: 'category', message: 'Please select at least one category.' })
+
+  if (state.content.length < 10) errors.push({ path: 'content', message: 'Please add content, at least 10 charachters' })
   return errors
 }
 
 async function onSubmit(event: FormSubmitEvent<any>) {
   // Do something with data
+  // articleSchema.parse(articleFormData)
   console.log(event.data)
   emit('close')
 }
 </script>
 
 <template>
-  <UForm :validate="validate" :validate-on="['submit']" :state="articleFormData" class="space-y-4" @submit="onSubmit">
+  <UForm :schema="articleSchema" :state="articleFormData" class="space-y-4" @submit="onSubmit">
     <div class="flex flex-wrap gap-5 mb-10">
       <ArticlesFormTitle v-model="articleFormData.title" />
       <ArticlesFormSlug v-model="articleFormData.slug" :value="articleFormData.title" />
       <ArticlesFormCategories v-model="articleFormData.category" :categories="categories" />
       <ArticlesFormTags v-model="articleFormData.tags" :tags="tags" />
     </div>
-    <UFormGroup label="Текст новости">
-      <ArticlesFormContentEditor v-model="articleFormData.content" />
-    </UFormGroup>
+
+    <ArticlesFormContentEditor v-model="articleFormData.content" />
 
     <div class="flex justify-end gap-3">
       <UButton label="Отменить" color="gray" variant="ghost" @click="emit('close')" />
