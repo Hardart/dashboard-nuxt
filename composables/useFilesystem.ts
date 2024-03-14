@@ -3,13 +3,17 @@ import { createSharedComposable } from '@vueuse/core'
 const _useFilesystem = () => {
   const files = ref<string[]>([])
   const basePath = '/images'
+  const prevPath = ref(basePath)
   const isBasePath = ref(true)
-  const isImage = (path: string) => path.match(/\.(jpg|png|webp)$/)
-  const src = ref<string | null>(null)
+  const isImage = (path: string) => path.match(/\.(jpe?g|png|webp|avif)$/)
+  const src = ref<string>('/images')
+
   const query = computed(() => ({
     src: src.value,
   }))
+
   const setSource = (path: string) => (src.value = path)
+
   const getFiles = async () => {
     try {
       files.value = await $fetch<string[]>('/api/files', { query: query.value })
@@ -17,11 +21,13 @@ const _useFilesystem = () => {
       console.log(error)
     }
   }
-  watch(query, async () => {
+
+  watch(query, async curr => {
     await getFiles()
+    prevPath.value = curr.src.match(/(\/+.+)\//)?.[1] || basePath
     isBasePath.value = query.value.src === basePath
   })
-  return { files, basePath, isBasePath, isImage, getFiles, setSource }
+  return { files, prevPath, isBasePath, isImage, getFiles, setSource }
 }
 
 export const useFilesystem = createSharedComposable(_useFilesystem)

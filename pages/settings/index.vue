@@ -11,36 +11,39 @@ const state = reactive({
   avatar: '',
   bio: '',
   password_current: '',
-  password_new: ''
+  password_new: '',
 })
 
 const toast = useToast()
 
-function validate (state: any): FormError[] {
+function validate(state: any): FormError[] {
   const errors = []
   if (!state.name) errors.push({ path: 'name', message: 'Please enter your name.' })
   if (!state.email) errors.push({ path: 'email', message: 'Please enter your email.' })
-  if ((state.password_current && !state.password_new) || (!state.password_current && state.password_new)) errors.push({ path: 'password', message: 'Please enter a valid password.' })
+  if ((state.password_current && !state.password_new) || (!state.password_current && state.password_new))
+    errors.push({ path: 'password', message: 'Please enter a valid password.' })
   return errors
 }
 
-function onFileChange (e: Event) {
+async function onFileChange(e: Event) {
   const input = e.target as HTMLInputElement
 
-  if (!input.files?.length) {
-    return
-  }
+  if (!input.files?.length) return
 
-  state.avatar = URL.createObjectURL(input.files[0])
+  const file = input.files[0]
+  const body = new FormData()
+  body.append('avatar', file, file.name)
+
+  const avatarURL = await $fetch<string>('/uploads/image', { body, method: 'POST' })
+  state.avatar = 'http://localhost:3068' + avatarURL
 }
 
-function onFileClick () {
+function onFileClick() {
   fileRef.value?.input.click()
 }
 
-async function onSubmit (event: FormSubmitEvent<any>) {
+async function onSubmit(event: FormSubmitEvent<any>) {
   // Do something with data
-  console.log(event.data)
 
   toast.add({ title: 'Profile updated', icon: 'i-heroicons-check-circle' })
 }
@@ -99,8 +102,14 @@ async function onSubmit (event: FormSubmitEvent<any>) {
           </UInput>
         </UFormGroup>
 
-        <UFormGroup name="avatar" label="Avatar" class="grid grid-cols-2 gap-2" help="JPG, GIF or PNG. 1MB Max." :ui="{ container: 'flex flex-wrap items-center gap-3', help: 'mt-0' }">
-          <UAvatar :src="state.avatar" :alt="state.name" size="lg" />
+        <UFormGroup
+          name="avatar"
+          label="Avatar"
+          class="grid grid-cols-2 gap-2"
+          help="JPG, GIF or PNG. 1MB Max."
+          :ui="{ container: 'flex flex-wrap items-center gap-3', help: 'mt-0' }"
+        >
+          <UAvatar :src="state.avatar" imgClass="object-cover" :alt="state.name" size="lg" />
 
           <UButton label="Choose" color="white" size="md" @click="onFileClick" />
 
@@ -125,21 +134,17 @@ async function onSubmit (event: FormSubmitEvent<any>) {
           :ui="{ container: '' }"
         >
           <UInput id="password" v-model="state.password_current" type="password" placeholder="Current password" size="md" />
-          <UInput
-            id="password_new"
-            v-model="state.password_new"
-            type="password"
-            placeholder="New password"
-            size="md"
-            class="mt-2"
-          />
+          <UInput id="password_new" v-model="state.password_new" type="password" placeholder="New password" size="md" class="mt-2" />
         </UFormGroup>
       </UDashboardSection>
     </UForm>
 
     <UDivider class="mb-4" />
 
-    <UDashboardSection title="Account" description="No longer want to use our service? You can delete your account here. This action is not reversible. All information related to this account will be deleted permanently.">
+    <UDashboardSection
+      title="Account"
+      description="No longer want to use our service? You can delete your account here. This action is not reversible. All information related to this account will be deleted permanently."
+    >
       <div>
         <UButton color="red" label="Delete account" size="md" @click="isDeleteAccountModalOpen = true" />
       </div>

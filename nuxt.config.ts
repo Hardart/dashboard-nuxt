@@ -23,5 +23,8 @@ export default defineNuxtConfig({
     '/admin/**': {
       proxy: process.env.ADMIN_URL,
     },
+    '/uploads/**': {
+      proxy: process.env.FILES_URL,
+    },
   },
 })
