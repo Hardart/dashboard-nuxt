@@ -5,7 +5,7 @@ defineProps<{ categories: CategorySchema[] }>()
 </script>
 
 <template>
-  <UFormGroup label="Категория" class="w-1/6 min-w-56" required name="categoryId">
+  <UFormGroup label="Категория" class="w-1/6 min-w-56" required name="category">
     <USelectMenu v-model="category" :options="categories" option-value="id" option-attribute="title" placeholder="Выбрать категорию" />
   </UFormGroup>
 </template>

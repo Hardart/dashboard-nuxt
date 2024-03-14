@@ -10,14 +10,14 @@ const validate = (state: any): FormError[] => {
   const errors = []
   if (!state.title) errors.push({ path: 'title', message: 'Please enter a name.' })
   if (!state.slug) errors.push({ path: 'slug', message: 'Please enter an slug.' })
-  if (!state.categodyId) errors.push({ path: 'categoryId', message: 'Please select at least one category.' })
+  if (!state.category.id || state.category.id.trim() === '')
+    errors.push({ path: 'category', message: 'Please select at least one category.' })
   return errors
 }
 
 async function onSubmit(event: FormSubmitEvent<any>) {
   // Do something with data
   console.log(event.data)
-
   emit('close')
 }
 </script>
@@ -27,7 +27,7 @@ async function onSubmit(event: FormSubmitEvent<any>) {
     <div class="flex flex-wrap gap-5 mb-10">
       <ArticlesFormTitle v-model="articleFormData.title" />
       <ArticlesFormSlug v-model="articleFormData.slug" :value="articleFormData.title" />
-      <ArticlesFormCategories v-model="articleFormData.categoryId" :categories="categories" />
+      <ArticlesFormCategories v-model="articleFormData.category" :categories="categories" />
       <ArticlesFormTags v-model="articleFormData.tags" :tags="tags" />
     </div>
     <UFormGroup label="Текст новости">

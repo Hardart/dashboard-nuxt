@@ -4,16 +4,22 @@ interface NewsPageResponse {
   tags: string[]
   categories: Category[]
 }
-type ArticleFormData = Omit<Article, 'category' | 'publishAt' | 'isPublished' | 'createdAt' | 'id'> & {
-  categoryId: string
+type CategoryFormData = Omit<Category, 'isPublished' | 'createdAt'>
+type ArticleFormData = Omit<Article, 'publishAt' | 'isPublished' | 'createdAt' | 'id' | 'category'> & {
   preview?: string
   publishAt: Date
+  category: CategoryFormData
 }
 export const useArticleStore = defineStore('article', () => {
+  const categoryState = reactive<CategoryFormData>({
+    id: '',
+    slug: '',
+    title: '',
+  })
   const articleState = reactive<ArticleFormData>({
     title: '',
     slug: '',
-    categoryId: '',
+    category: { ...categoryState },
     tags: [],
     preview: undefined,
     publishAt: new Date(),
@@ -23,6 +29,7 @@ export const useArticleStore = defineStore('article', () => {
   const categories = ref<Category[]>([])
   const articles = ref<Article[]>([])
   const article = ref<Article>()
+  const articlesCount = ref<number>(NaN)
 
   const q = ref(undefined)
   const articleFormData = ref({ ...articleState })
@@ -38,7 +45,7 @@ export const useArticleStore = defineStore('article', () => {
   }))
 
   function transformArticleToFormData(item: Article): ArticleFormData {
-    return { ...item, categoryId: item.category.id, publishAt: new Date() }
+    return { ...item, publishAt: new Date() }
   }
 
   function findOne(id: string) {
@@ -51,14 +58,23 @@ export const useArticleStore = defineStore('article', () => {
   }
 
   function storeRefs() {
-    return { articles, articleFormData, article, sort, selectedStatuses, selectedCategories, q, categories, tags }
+    return { articles, articleFormData, article, sort, selectedStatuses, selectedCategories, q, categories, tags, query, articlesCount }
   }
 
   async function fetchArticles() {
-    const { data } = await useFetch<NewsPageResponse>('/admin/news', { query })
-    articles.value = data.value?.news || []
-    categories.value = data.value?.categories || []
-    tags.value = data.value?.tags || []
+    try {
+      const data = await $fetch<NewsPageResponse>('/admin/news', {
+        query: toValue(query),
+        onResponse({ response }) {
+          articlesCount.value = Number(response.headers.get('x-total'))
+        },
+      })
+      articles.value = data.news
+      categories.value = data.categories
+      tags.value = data.tags
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return {
@@ -67,14 +83,6 @@ export const useArticleStore = defineStore('article', () => {
     storeRefs,
     findOne,
     transformArticleToFormData,
-    articles,
-    article,
-    sort,
-    selectedStatuses,
-    selectedCategories,
-    q,
-    categories,
-    tags,
-    articleFormData,
+    ...storeRefs(),
   }
 })
