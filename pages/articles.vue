@@ -27,6 +27,7 @@ const items = (row: any) => [
     },
   ],
 ]
+
 const addArticle = () => {
   resetArticle()
   isNewArticleModalOpen.value = true

@@ -94,6 +94,16 @@ const links = [
     },
   },
   {
+    id: 'tracks',
+    label: 'Треки',
+    icon: 'i-heroicons-musical-note',
+    to: '/tracks',
+    tooltip: {
+      text: 'список песен',
+      shortcuts: ['G', 'M'],
+    },
+  },
+  {
     id: 'files',
     label: 'Файлы',
     icon: 'i-heroicons-folder',
