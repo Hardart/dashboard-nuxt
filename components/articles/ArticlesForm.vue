@@ -1,46 +1,57 @@
 <script setup lang="ts">
 import type { FormError, FormSubmitEvent } from '#ui/types'
-import { articleSchema } from '@/types/scheme/z_article'
-import { useArticleStore } from '~/store/useArticleStore'
-const { articleFormData, tags, categories } = storeToRefs(useArticleStore())
-
-const emit = defineEmits(['close'])
+import { articleFormDataSchema, type ArticleFormData } from '@/scheme/z_article'
+import type { Category } from '~/scheme/z_category'
+const articleFormData = defineModel<ArticleFormData>({ required: true })
+const tags = defineModel<string[]>('tags', { required: true })
+const categories = defineModel<Category[]>('categories', { required: true })
+const { submitHandle } = defineProps<{ submitHandle: (data: ArticleFormData) => Promise<void>; loading?: boolean }>()
 
 // https://ui.nuxt.com/components/form
-const validate = (state: any): FormError[] => {
-  const errors = []
-  if (!state.title) errors.push({ path: 'title', message: 'Please enter a name.' })
-  if (!state.slug) errors.push({ path: 'slug', message: 'Please enter an slug.' })
-  if (!state.category.id || state.category.id.trim() === '')
-    errors.push({ path: 'category', message: 'Please select at least one category.' })
+const validate = (state: ArticleFormData): FormError[] => {
+  const errors = [] as FormError[]
+  try {
+    articleFormDataSchema.parse(state)
+  } catch (error) {
+    const parsedErrors = (JSON.parse(error as string) as any[]).map(item => ({ path: item.path[0], message: item.message }))
+    console.log(parsedErrors)
+    errors.push(...parsedErrors)
+  }
 
-  if (state.content.length < 10) errors.push({ path: 'content', message: 'Please add content, at least 10 charachters' })
   return errors
 }
 
 async function onSubmit(event: FormSubmitEvent<any>) {
-  // Do something with data
-  // articleSchema.parse(articleFormData)
-  console.log(event.data)
-  emit('close')
+  await submitHandle(event.data)
 }
 </script>
 
 <template>
-  <UForm :schema="articleSchema" :state="articleFormData" class="space-y-4" @submit="onSubmit">
-    <div class="flex flex-wrap gap-5 mb-10">
-      <ArticlesFormTitle v-model="articleFormData.title" />
-      <ArticlesFormSlug v-model="articleFormData.slug" :value="articleFormData.title" />
-      <ArticlesFormCategories v-model="articleFormData.category" :categories="categories" />
-      <ArticlesFormTags v-model="articleFormData.tags" :tags="tags" />
-    </div>
+  <div class="flex">
+    <UForm :validate="validate" :state="articleFormData" :validate-on="['submit']" class="space-y-4 w-2/3 p-4" @submit="onSubmit">
+      <div class="flex gap-x-6">
+        <div class="flex flex-col space-y-7 flex-grow">
+          <div class="space-y-3">
+            <ArticlesFormTitle v-model="articleFormData.title" />
+            <ArticlesFormSlug v-model="articleFormData.slug" :value="articleFormData.title" />
+          </div>
+          <div class="flex gap-x-5">
+            <ArticlesFormCategories v-model="articleFormData.categoryId" :categories="categories" />
+            <ArticlesFormTags v-model="articleFormData.tags" :tags="tags" />
+            <ArticlesFormIsPublished v-model="articleFormData.isPublished" />
+            <FormPublishDate v-model="articleFormData.publishAt" />
+          </div>
+        </div>
+        <UiUploadImage v-model="articleFormData.image" />
+      </div>
 
-    <ArticlesFormContentEditor v-model="articleFormData.content" />
+      <ArticlesFormContentEditor v-model="articleFormData.content" />
 
-    <div class="flex justify-end gap-3">
-      <UButton label="Отменить" color="gray" variant="ghost" @click="emit('close')" />
-      <UButton type="submit" label="Сохранить" color="black" />
-    </div>
-  </UForm>
-  <pre class="whitespace-pre-wrap">{{ articleFormData }}</pre>
+      <div class="flex justify-end gap-3">
+        <UButton type="button" label="Назад" color="gray" variant="ghost" @click="navigateTo('/articles')" />
+        <UButton type="submit" label="Сохранить" color="primary" :loading="loading" />
+      </div>
+    </UForm>
+    <pre class="whitespace-pre-wrap w-1/3 p-10 text-xs">{{ articleFormData }}</pre>
+  </div>
 </template>

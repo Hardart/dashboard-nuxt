@@ -1,46 +1,12 @@
 <script setup lang="ts">
 const { getFiles, files, prevPath, isBasePath, isImage, setSource } = useFilesystem()
 getFiles()
-const fileRef = ref<{ input: HTMLInputElement }>()
-async function onFileChange(e: Event) {
-  const input = e.target as HTMLInputElement
-
-  if (!input.files?.length) return
-
-  const file = input.files[0]
-  const body = new FormData()
-  body.append('gallery', file, file.name)
-
-  const avatarURL = await $fetch<string>('/uploads/image/gallery', { body, method: 'POST' })
-  src.value = 'http://localhost:3068' + avatarURL
-}
-
-function onFileClick() {
-  fileRef.value?.input.click()
-}
-const src = ref('')
 </script>
 
 <template>
   <UDashboardPage>
     <UDashboardPanel grow>
-      <UDashboardNavbar title="Файлы">
-        <template #right>
-          <UFormGroup
-            name="gallery"
-            label="Avatar"
-            class="grid grid-cols-2 gap-2"
-            help="JPG, GIF or PNG. 1MB Max."
-            :ui="{ container: 'flex flex-wrap items-center gap-3', help: 'mt-0' }"
-          >
-            <UAvatar :src="src" imgClass="object-cover" alt="gallery" size="md" />
-
-            <UButton label="Choose" color="white" size="md" @click="onFileClick" />
-
-            <UInput ref="fileRef" type="file" class="hidden" accept=".jpg, .jpeg, .png, .gif" @change="onFileChange" />
-          </UFormGroup>
-        </template>
-      </UDashboardNavbar>
+      <UDashboardNavbar title="Файлы"> </UDashboardNavbar>
 
       <UDashboardPanelContent>
         <div class="flex flex-wrap lg:items-center gap-4 mt-8">

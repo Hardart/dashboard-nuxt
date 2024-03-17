@@ -1,30 +1,17 @@
 <script setup lang="ts">
 import type { Track } from '~/types/track'
-defineProps<{
+import { columns, editItems } from './table-config'
+const track = defineModel({ required: true })
+const { toggleModal } = defineProps<{
   tracks: Track[]
   pending: boolean
-  editItems?: (row: any) => any[]
+  toggleModal: () => void
 }>()
 const selected = ref<Track[]>([])
-const columns = [
-  {
-    key: 'artistName',
-    label: 'Артист',
-    sortable: true,
-  },
-  {
-    key: 'trackTitle',
-    label: 'Название песни',
-    sortable: true,
-  },
-  {
-    key: 'createdAt',
-    label: 'Дата содзания',
-  },
-  {
-    key: 'actions',
-  },
-]
+const showInfo = (item: Track) => {
+  track.value = item
+  toggleModal()
+}
 </script>
 
 <template>
@@ -36,6 +23,11 @@ const columns = [
     class="w-full"
     :ui="{ divide: 'divide-gray-200 dark:divide-gray-800' }"
   >
+    <template #cover-data="{ row }">
+      <div class="flex items-center gap-3">
+        <UAvatar :src="row.cover" :alt="row.artistName" />
+      </div>
+    </template>
     <template #artistName-data="{ row }">
       <div class="flex items-center gap-3">
         <span class="text-gray-900 dark:text-white font-medium">{{ row.artistName }}</span>
@@ -54,12 +46,16 @@ const columns = [
       </div>
     </template>
 
-    <template #actions-data="{ row }" v-if="editItems">
-      <UDropdown :items="editItems(row)">
+    <template #actions-data="{ row }">
+      <UDropdown :items="editItems(row, showInfo)">
         <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />
       </UDropdown>
     </template>
   </UTable>
 </template>
 
-<style></style>
+<style>
+table td:first-child {
+  width: 40px;
+}
+</style>

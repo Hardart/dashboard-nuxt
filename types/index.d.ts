@@ -1,7 +1,6 @@
 import type { Avatar } from '#ui/types'
 
 export type UserStatus = 'subscribed' | 'unsubscribed' | 'bounced'
-export type ArticleStatus = 'опубликовано' | 'не опубликовано' | 'в ожидании даты'
 
 export interface User {
   id: number
@@ -10,26 +9,6 @@ export interface User {
   avatar?: Avatar
   status: UserStatus
   location: string
-}
-
-export type Article = {
-  id: string
-  title: string
-  slug: string
-  content: string
-  tags: string[]
-  category: Category
-  createdAt: string
-  isPublished: boolean
-  publishAt: string
-}
-
-export type Category = {
-  id: string
-  title: string
-  slug: string
-  createdAt: string
-  isPublished: boolean
 }
 
 export interface Mail {

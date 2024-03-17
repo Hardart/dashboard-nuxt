@@ -1,7 +1,5 @@
 <script lang="ts" setup>
-const { fetchArticles } = useArticleStore()
 const { fetchCategories } = useCategoriesStore()
-fetchArticles()
 fetchCategories()
 </script>
 

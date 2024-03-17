@@ -2,15 +2,16 @@ import type { Track } from '~/types/track'
 
 export const useTracksStore = defineStore('tracks', () => {
   const tracks = ref<Track[]>([])
-
+  const track = ref<Track>()
+  const [isTrackEditModalOpen, toggleEditTrackModalState] = useToggle()
   const page = ref(1)
   const pageCount = 20
   const artistFilter = ref('')
   const tracksCount = ref(0)
   const filteredCount = ref(0)
   const filteredTracks = computed(() => {
-    page.value = 1
     const filtered = tracks.value.filter(track => track.artistName.toLowerCase().includes(artistFilter.value.toLowerCase()))
+    page.value = 1
     filteredCount.value = filtered.length
     return filtered
   })
@@ -20,6 +21,7 @@ export const useTracksStore = defineStore('tracks', () => {
   })
 
   async function fetchTracks() {
+    if (tracks.value.length) return
     const data = await $fetch<Track[]>('/api/tracks', {
       onResponse({ response }) {
         tracksCount.value = Number(response.headers.get('x-total'))
@@ -29,8 +31,8 @@ export const useTracksStore = defineStore('tracks', () => {
   }
 
   function storeRefs() {
-    return { tracks, tracksCount, tracksByPage, pageCount, page, artistFilter, filteredCount }
+    return { tracks, tracksCount, tracksByPage, pageCount, page, artistFilter, filteredCount, track, isTrackEditModalOpen }
   }
 
-  return { fetchTracks, storeRefs }
+  return { fetchTracks, toggleEditTrackModalState, storeRefs, ...storeRefs() }
 })

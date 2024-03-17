@@ -1,21 +1,23 @@
 <script setup lang="ts">
+const query = defineModel()
 defineProps<{
-  count: string | number
-  filteredCount: string | number
+  title: string
+  badge?: string | number
+  btn?: object
+  queryInput?: boolean
 }>()
-const query = defineModel<string>({ required: true })
 const input = ref<{ input: HTMLInputElement }>()
 defineShortcuts({ '/': () => input.value?.input?.focus() })
 </script>
 
 <template>
-  <UDashboardNavbar title="Треки" :badge="count">
+  <UDashboardNavbar :title="title" :badge="badge">
     <template #right>
-      <UBadge v-if="query.trim() !== ''" :label="`${filteredCount} найдено`" variant="subtle" />
       <UInput
+        v-if="queryInput"
         ref="input"
-        icon="i-heroicons-funnel"
         v-model="query"
+        icon="i-heroicons-funnel"
         autocomplete="off"
         placeholder="Фильтр по названию..."
         class="hidden lg:block"
@@ -25,6 +27,10 @@ defineShortcuts({ '/': () => input.value?.input?.focus() })
           <UKbd value="/" />
         </template>
       </UInput>
+
+      <UButton v-if="btn" v-bind="{ ...btn, ...$attrs }" color="gray" />
     </template>
   </UDashboardNavbar>
 </template>
+
+<style></style>

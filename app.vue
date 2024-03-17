@@ -1,13 +1,13 @@
 <script setup lang="ts">
 const colorMode = useColorMode()
 
-const color = computed(() => (colorMode.value === 'dark' ? '#111827' : 'white'))
+const color = computed(() => (colorMode.value === 'dark' ? '#111827' : '#ffffff'))
 
 useHead({
   meta: [
     { charset: 'utf-8' },
     { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-    { key: 'theme-color', name: 'theme-color', content: color },
+    { name: 'theme-color', content: color },
   ],
   link: [{ rel: 'icon', href: '/favicon.ico' }],
   htmlAttrs: {
@@ -15,7 +15,7 @@ useHead({
   },
 })
 
-const title = 'Nuxt UI Pro - Dashboard template'
+const title = 'Радио "Штаны" - Панель управления'
 const description =
   'Nuxt UI Pro is a collection of premium Vue components built on top of Nuxt UI to create beautiful & responsive Nuxt applications in minutes.'
 

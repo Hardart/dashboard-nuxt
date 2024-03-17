@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import type { CategoryType } from '@/types/scheme/z_category'
-const category = defineModel({ required: true })
-defineProps<{ categories: CategoryType[] }>()
+import type { Category } from '@/scheme/z_category'
+const categoryId = defineModel({ required: true })
+defineProps<{ categories: Category[] }>()
 </script>
 
 <template>
-  <UFormGroup label="Категория" class="w-1/6 min-w-56" required name="category">
-    <USelectMenu v-model="category" :options="categories" option-value="id" option-attribute="title" placeholder="Выбрать категорию" />
+  <UFormGroup label="Категория" class="w-1/5 min-w-48" required name="categoryId">
+    <USelectMenu v-model="categoryId" :options="categories" value-attribute="id" option-attribute="title" placeholder="Выбрать категорию" />
   </UFormGroup>
 </template>
-
-<style></style>

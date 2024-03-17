@@ -8,7 +8,7 @@ const onSetURL = (closeHandle: () => void) => {
 </script>
 <template>
   <UPopover>
-    <UButton square variant="outline" icon="i-material-symbols-add-photo-alternate-outline" class="editor__button" />
+    <UButton square variant="outline" color="gray" icon="i-material-symbols-add-photo-alternate-outline" class="editor__button" />
     <template #panel="{ close }">
       <div class="py-4 px-8 space-y-4 text-right">
         <UFormGroup label="Ссылка на картинку">

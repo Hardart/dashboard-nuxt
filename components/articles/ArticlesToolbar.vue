@@ -16,8 +16,6 @@ defineProps<{
         placeholder="Статус"
         multiple
         :options="statuses"
-        option-attribute="option"
-        value-attribute="value"
         :ui-menu="{ option: { base: 'capitalize' } }"
         class="min-w-[150px]"
       />

@@ -1,6 +1,5 @@
 <script setup lang="ts">
-const [openImage, toggle] = useToggle()
-const content = defineModel<string>()
+const content = defineModel<string | undefined>({ required: true })
 
 const editor = useEditor({
   content: content.value,
@@ -10,7 +9,7 @@ const editor = useEditor({
       class: 'prose max-w-none dark:prose-invert prose-sm sm:prose-base m-5 focus:outline-none',
     },
   },
-  onUpdate: () => (content.value = editor.value?.getHTML() || ''),
+  onUpdate: () => (content.value = editor.value?.getText().trim() ? editor.value?.getHTML() : editor.value?.getText().trim()),
 })
 
 provide('tiptap', editor)
@@ -25,18 +24,19 @@ provide('tiptap', editor)
   <UFormGroup label="Текст новости" name="content" required>
     <TiptapEditorContent
       :editor="editor"
-      class="bg-white dark:bg-slate-900 border dark:border-slate-600 rounded-lg max-h-[400px] overflow-y-auto"
+      class="bg-white dark:bg-zinc-800 border dark:border-zinc-700 rounded-lg min-h-[400px] max-h-[400px] overflow-y-auto cursor-text"
+      @click="editor?.commands.focus()"
     />
   </UFormGroup>
 </template>
 
 <style>
 .editor__button {
-  @apply size-9 rounded-md border bg-neutral-50 dark:bg-slate-900 dark:border-slate-600
-        hover:border-neutral-300 dark:hover:border-slate-600 dark:active:bg-slate-700;
+  @apply size-9 grid place-items-center rounded-md  bg-white dark:bg-zinc-900 ring-zinc-600/30 dark:ring-zinc-600/80
+        hover:border-neutral-300 dark:hover:bg-zinc-800 dark:active:bg-zinc-700;
 }
 
 .editor__button.active {
-  @apply dark:bg-slate-800 dark:active:bg-slate-700;
+  @apply dark:bg-zinc-800 dark:active:bg-zinc-700;
 }
 </style>

@@ -2,10 +2,10 @@
 import transcript from '~/utils/slugTranscript'
 
 const slug = defineModel<string | undefined>({ required: true })
-const props = defineProps<{ value: string | undefined }>()
+const props = defineProps<{ input: string | undefined }>()
 watch(
-  () => props.value,
-  () => (slug.value = transcript(props.value || ''))
+  () => props.input,
+  () => (slug.value = transcript(props.input || ''))
 )
 </script>
 

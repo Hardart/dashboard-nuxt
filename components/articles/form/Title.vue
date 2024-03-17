@@ -4,7 +4,7 @@ const title = defineModel({ required: true })
 
 <template>
   <UFormGroup label="Заголовок" class="w-full" required name="title">
-    <UInput v-model="title" autofocus />
+    <UInput v-model="title" />
   </UFormGroup>
 </template>
 

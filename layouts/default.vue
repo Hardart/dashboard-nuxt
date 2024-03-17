@@ -84,6 +84,16 @@ const links = [
     },
   },
   {
+    id: 'categories',
+    label: 'Категории',
+    icon: 'i-heroicons-newspaper',
+    to: '/categories',
+    tooltip: {
+      text: 'список категорий',
+      shortcuts: ['G', 'K'],
+    },
+  },
+  {
     id: 'articles',
     label: 'Новости',
     icon: 'i-heroicons-newspaper',
@@ -194,7 +204,7 @@ const colors = computed(() =>
 </script>
 
 <template>
-  <UDashboardLayout>
+  <UDashboardLayout class="bg-neutral-100 dark:bg-zinc-900">
     <UDashboardPanel :width="250" :resizable="{ min: 200, max: 300 }" collapsible>
       <UDashboardNavbar class="!border-transparent" :ui="{ left: 'flex-1' }">
         <template #left>
