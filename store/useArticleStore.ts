@@ -9,6 +9,8 @@ interface SortBy {
 }
 
 export const useArticleStore = defineStore('article', () => {
+  const toast = useToast()
+
   const articleState = reactive<ArticleFormData>({
     title: '',
     slug: '',
@@ -31,8 +33,8 @@ export const useArticleStore = defineStore('article', () => {
   const selectedStatuses = ref<string[]>([])
   const selectedCategories = ref<string[]>([])
   const sort = ref<SortBy>({ column: 'createdAt', direction: 'desc' as const })
-  const categoriesFilter = ref<Category[]>([])
-  const statusesFilter = ref<STATUSES[]>([])
+  const categoriesFilter = computed(() => articles.value.reduce(filterCategoriesBunlde, []))
+  const statusesFilter = computed(() => articles.value.reduce(filterStatusesBunlde, []))
 
   const filterByTitle = computed(() =>
     articles.value.filter(article =>
@@ -86,6 +88,7 @@ export const useArticleStore = defineStore('article', () => {
       query,
       articlesCount,
       categoriesFilter,
+      statusesFilter,
       loading,
     }
   }
@@ -93,10 +96,14 @@ export const useArticleStore = defineStore('article', () => {
   function fetchArticles() {
     useLazyAsyncData('articles', async () => {
       loading.value = true
-      const response = await $fetch<Article[]>('/admin/news')
+      const response = await $fetch<Article[]>('/admin/news', {
+        onResponseError({ request, response, options }) {
+          toast.add({ title: response.statusText })
+        },
+        retry: false,
+      })
+
       articles.value = response.map(addStatus)
-      categoriesFilter.value = articles.value.reduce(filterCategoriesBunlde, [])
-      statusesFilter.value = articles.value.reduce(filterStatusesBunlde, [])
       loading.value = false
     })
   }

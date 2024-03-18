@@ -2,7 +2,7 @@
 import type { Article } from '~/scheme/z_article'
 const router = useRouter()
 const { storeRefs } = useArticleStore()
-const { sortedArticles, selectedStatuses, selectedCategories, sort, articlesCount, categoriesFilter, query } = storeRefs()
+const { sortedArticles, selectedStatuses, statusesFilter, selectedCategories, sort, articlesCount, categoriesFilter, query } = storeRefs()
 
 const statuses = ['опубликовано', 'не опубликовано', 'в ожидании']
 
@@ -21,7 +21,7 @@ const editHandle = (item: Article) => {
   />
   <ArticlesToolbar
     :categories="categoriesFilter"
-    :statuses="statuses"
+    :statuses="statusesFilter"
     v-model:status="selectedStatuses"
     v-model:category="selectedCategories"
   />

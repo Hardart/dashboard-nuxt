@@ -23,7 +23,7 @@ const selected = ref<Article[]>([])
   >
     <template #title-data="{ row }">
       <div class="flex items-center gap-3">
-        <span class="text-gray-900 dark:text-white font-medium">{{ row.title }}</span>
+        <span class="text-gray-900 dark:text-white">{{ row.title }}</span>
       </div>
     </template>
 

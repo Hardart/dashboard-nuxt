@@ -40,7 +40,7 @@ const rules = ref({
       is-dark="system"
     >
       <template #default="{ togglePopover }">
-        <UButton @click="togglePopover" :label="formatDate" />
+        <UButton @click="togglePopover" variant="outline" :label="formatDate" />
       </template>
     </VDatePicker>
   </div>
