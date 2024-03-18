@@ -7,6 +7,7 @@ const _useFilesystem = () => {
   const isBasePath = ref(true)
   const isImage = (path: string) => path.match(/\.(jpe?g|png|webp|avif)$/)
   const src = ref<string>('/images')
+  const imageUrl = ref('')
 
   const query = computed(() => ({
     src: src.value,
@@ -22,12 +23,15 @@ const _useFilesystem = () => {
     }
   }
 
+  const onImage = (path: string) => (imageUrl.value = `http://localhost:3068${path.replace('_preview', '')}`)
+
   watch(query, async curr => {
     await getFiles()
     prevPath.value = curr.src.match(/(\/+.+)\//)?.[1] || basePath
     isBasePath.value = query.value.src === basePath
   })
-  return { files, prevPath, isBasePath, isImage, getFiles, setSource }
+
+  return { files, prevPath, isBasePath, imageUrl, isImage, getFiles, setSource, onImage }
 }
 
 export const useFilesystem = createSharedComposable(_useFilesystem)

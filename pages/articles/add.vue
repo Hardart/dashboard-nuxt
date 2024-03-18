@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useCategoriesStore } from '~/store/useCategoriesStore'
 const { resetArticle, storeRefs, addArticle } = useArticleStore()
 const { categories } = useCategoriesStore().storeRefs()
 const { articleFormData, tags } = storeRefs()

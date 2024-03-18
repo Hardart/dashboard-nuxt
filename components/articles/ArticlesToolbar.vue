@@ -11,6 +11,7 @@ defineProps<{
   <UDashboardToolbar>
     <template #left>
       <USelectMenu
+        v-if="statuses.length > 1"
         v-model="selectedStatuses"
         icon="i-heroicons-check-circle"
         placeholder="Статус"
@@ -20,6 +21,7 @@ defineProps<{
         class="min-w-[150px]"
       />
       <USelectMenu
+        v-if="categories.length > 1"
         v-model="selectedCategories"
         icon="i-heroicons-presentation-chart-bar"
         placeholder="Категории"

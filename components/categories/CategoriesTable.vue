@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Category } from '~/scheme/z_category'
 import { columns } from './table-config'
+import { STATUSES } from '~/scheme/z_article'
 const { deleteCategory } = useCategoriesStore()
 defineProps<{ categories: Category[]; loading: boolean }>()
 const selected = defineModel('selected', { required: true })
@@ -35,6 +36,25 @@ const editItems = (row: Category) => [
     class="w-full"
     :ui="{ divide: 'divide-gray-200 dark:divide-gray-800' }"
   >
+    <template #isPublished-data="{ row }">
+      <UBadge
+        :label="row.isPublished ? STATUSES.Publish : STATUSES.Not_Publish"
+        :color="row.isPublished ? 'green' : 'red'"
+        variant="subtle"
+        class="capitalize"
+      />
+    </template>
+
+    <template #createdAt-data="{ row }">
+      <div class="flex items-center gap-3">
+        <span class="text-gray-900 dark:text-white font-medium">{{ new Date(row.createdAt).toLocaleDateString() }}</span>
+      </div>
+    </template>
+    <template #updatedAt-data="{ row }">
+      <div class="flex items-center gap-3">
+        <span class="text-gray-900 dark:text-white font-medium">{{ new Date(row.updatedAt).toLocaleDateString() }}</span>
+      </div>
+    </template>
     <template #actions-data="{ row }">
       <UDropdown :items="editItems(row)">
         <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />

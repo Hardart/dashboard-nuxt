@@ -76,34 +76,12 @@ export const useArticleStore = defineStore('article', () => {
     articleFormData.value = { ...articleState }
   }
 
-  function storeRefs() {
-    return {
-      sortedArticles,
-      articleFormData,
-      article,
-      sort,
-      selectedStatuses,
-      selectedCategories,
-      tags,
-      query,
-      articlesCount,
-      categoriesFilter,
-      statusesFilter,
-      loading,
-    }
-  }
-
   function fetchArticles() {
     useLazyAsyncData('articles', async () => {
       loading.value = true
-      const response = await $fetch<Article[]>('/admin/news', {
-        onResponseError({ request, response, options }) {
-          toast.add({ title: response.statusText })
-        },
-        retry: false,
-      })
-
-      articles.value = response.map(addStatus)
+      const [news, tagsData] = await Promise.all([$fetch<Article[]>('/admin/news'), $fetch<string[]>('/api/tags')])
+      articles.value = news.map(addStatus)
+      tags.value = tagsData
       loading.value = false
     })
   }
@@ -136,6 +114,23 @@ export const useArticleStore = defineStore('article', () => {
       console.log(error)
     }
     loading.value = false
+  }
+
+  function storeRefs() {
+    return {
+      sortedArticles,
+      articleFormData,
+      article,
+      sort,
+      selectedStatuses,
+      selectedCategories,
+      tags,
+      query,
+      articlesCount,
+      categoriesFilter,
+      statusesFilter,
+      loading,
+    }
   }
 
   return {

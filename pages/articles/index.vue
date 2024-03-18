@@ -2,7 +2,8 @@
 import type { Article } from '~/scheme/z_article'
 const router = useRouter()
 const { storeRefs } = useArticleStore()
-const { sortedArticles, selectedStatuses, statusesFilter, selectedCategories, sort, articlesCount, categoriesFilter, query } = storeRefs()
+const { sortedArticles, selectedStatuses, statusesFilter, selectedCategories, sort, articlesCount, categoriesFilter, query, loading } =
+  storeRefs()
 
 const statuses = ['опубликовано', 'не опубликовано', 'в ожидании']
 
@@ -25,7 +26,7 @@ const editHandle = (item: Article) => {
     v-model:status="selectedStatuses"
     v-model:category="selectedCategories"
   />
-  <ArticlesTable :news="sortedArticles" v-model="sort" :edit-handle="editHandle" />
+  <ArticlesTable :loading :news="sortedArticles" v-model="sort" :edit-handle="editHandle" />
 </template>
 
 <style></style>
