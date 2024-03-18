@@ -1,9 +1,10 @@
 <script setup lang="ts">
+import CustomImage from '~/utils/tiptap-extensions/image'
 const content = defineModel<string | undefined>({ required: true })
 
 const editor = useEditor({
   content: content.value,
-  extensions: [TiptapStarterKit],
+  extensions: [TiptapStarterKit, CustomImage],
   editorProps: {
     attributes: {
       class: 'prose max-w-none dark:prose-invert prose-sm sm:prose-base m-5 focus:outline-none',

@@ -1,9 +1,9 @@
-import { Node, mergeAttributes } from "@tiptap/core"
+import { Node, mergeAttributes } from '@tiptap/core'
 
 export interface ImageOptions {
   HTMLAttributes: Record<string, any>
 }
-declare module "@tiptap/core" {
+declare module '@tiptap/core' {
   interface Commands<ReturnType> {
     image: {
       /**
@@ -14,12 +14,14 @@ declare module "@tiptap/core" {
   }
 }
 const CustomImage = Node.create<ImageOptions>({
-  name: "image",
-  group: "block",
+  name: 'image',
+  group: 'block',
 
   addOptions() {
     return {
-      HTMLAttributes: {},
+      HTMLAttributes: {
+        class: 'rounded-xl',
+      },
     }
   },
 
@@ -42,17 +44,13 @@ const CustomImage = Node.create<ImageOptions>({
   },
 
   renderHTML({ HTMLAttributes, node }) {
-    return [
-      "p",
-      ["img", mergeAttributes(this.options.HTMLAttributes, HTMLAttributes)],
-      node.attrs.desc && ["span", node.attrs.desc],
-    ]
+    return ['p', ['img', mergeAttributes(this.options.HTMLAttributes, HTMLAttributes)], node.attrs.desc && ['span', node.attrs.desc]]
   },
 
   addCommands() {
     return {
       setImage:
-        (options) =>
+        options =>
         ({ commands }) => {
           return commands.insertContent({
             type: this.name,
