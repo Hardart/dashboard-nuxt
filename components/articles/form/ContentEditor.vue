@@ -1,14 +1,23 @@
 <script setup lang="ts">
-import CustomImage from '~/utils/tiptap-extensions/image'
+// import CustomImage from '~/utils/tiptap-extensions/image'
+import { Image } from '~/utils/tiptap/Image'
 const content = defineModel<string | undefined>({ required: true })
+
+const image = reactive({
+  src: 'https://www.diera.ru/blog/content/images/2022/11/nuxt3-logo-dark.png',
+  description: '',
+  apply() {
+    editor.value?.chain().focus().setImage({ src: image.src, title: 'IMAGE', desc: image.description }).run()
+    // editor.value?.commands.enter()
+    // editor.value?.commands.focus('end')
+  },
+})
 
 const editor = useEditor({
   content: content.value,
-  extensions: [TiptapStarterKit, CustomImage],
+  extensions: [TiptapStarterKit, Image],
   editorProps: {
-    attributes: {
-      class: 'prose max-w-none dark:prose-invert prose-sm sm:prose-base m-5 focus:outline-none',
-    },
+    attributes: { class: 'prose max-w-none dark:prose-invert prose-sm sm:prose-base m-5 focus:outline-none' },
   },
   onUpdate: () => (content.value = editor.value?.getText().trim() ? editor.value?.getHTML() : editor.value?.getText().trim()),
 })
@@ -20,7 +29,14 @@ provide('tiptap', editor)
   <div v-if="editor" class="flex gap-x-3 mb-5">
     <EditorHeading />
     <EditorBlockquote />
-    <EditorImage />
+    <!-- <EditorImage v-model="image.src" /> -->
+    <UiAddImage v-model="image.src" @append-handler="image.apply" />
+    <UPopover>
+      <UButton square variant="outline" color="gray" icon="i-material-symbols-image-search-rounded" class="editor__button" />
+      <template #panel="{ close }">
+        <UiFileSelect v-model="image.src" @close="close" @append-handler="image.apply" />
+      </template>
+    </UPopover>
   </div>
   <UFormGroup label="Текст новости" name="content" required>
     <TiptapEditorContent
@@ -29,6 +45,7 @@ provide('tiptap', editor)
       @click="editor?.commands.focus()"
     />
   </UFormGroup>
+  {{ image.src }}
 </template>
 
 <style>

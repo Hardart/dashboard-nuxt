@@ -5,7 +5,7 @@ export interface ImageOptions {
 }
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
-    image: {
+    imageCustom: {
       /**
        * Add an image
        */
@@ -15,6 +15,7 @@ declare module '@tiptap/core' {
 }
 const CustomImage = Node.create<ImageOptions>({
   name: 'image',
+
   group: 'block',
 
   addOptions() {
@@ -41,6 +42,14 @@ const CustomImage = Node.create<ImageOptions>({
         rendered: false,
       },
     }
+  },
+
+  parseHTML() {
+    return [
+      {
+        tag: 'img[src]',
+      },
+    ]
   },
 
   renderHTML({ HTMLAttributes, node }) {
