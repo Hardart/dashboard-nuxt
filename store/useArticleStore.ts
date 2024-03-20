@@ -10,7 +10,6 @@ interface SortBy {
 
 export const useArticleStore = defineStore('article', () => {
   const toast = useToast()
-
   const articleState = reactive<ArticleFormData>({
     title: '',
     slug: '',
@@ -108,12 +107,28 @@ export const useArticleStore = defineStore('article', () => {
   async function addArticle(input: ArticleFormData) {
     loading.value = true
     try {
-      const data = await $fetch('/admin/article-add', { method: 'POST', body: input })
+      const data = await $fetch('/admin/article-add', {
+        method: 'POST',
+        body: input,
+        onResponseError({ response }) {
+          toast.add({ title: response._data.message, timeout: 10000, color: 'red', icon: 'i-heroicons-x-circle-20-solid' })
+          return Promise.resolve()
+        },
+      })
+    } catch (error) {
+    } finally {
+      loading.value = false
+    }
+  }
+
+  async function deleteArticle(id: string) {
+    try {
+      const data = await $fetch('/admin/article-delete', { method: 'POST', body: { id } })
       console.log(data)
+      articles.value = articles.value.filter(item => item.id !== id)
     } catch (error) {
       console.log(error)
     }
-    loading.value = false
   }
 
   function storeRefs() {
@@ -141,6 +156,7 @@ export const useArticleStore = defineStore('article', () => {
     storeRefs,
     findOne,
     updateArticle,
+    deleteArticle,
   }
 })
 

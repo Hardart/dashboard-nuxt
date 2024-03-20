@@ -1,13 +1,13 @@
 <script setup lang="ts">
-// import CustomImage from '~/utils/tiptap-extensions/image'
 import { Image } from '~/utils/tiptap/Image'
 const content = defineModel<string | undefined>({ required: true })
 
 const image = reactive({
-  src: 'https://www.diera.ru/blog/content/images/2022/11/nuxt3-logo-dark.png',
+  src: '',
   description: '',
   apply() {
     editor.value?.chain().focus().setImage({ src: image.src, title: 'IMAGE', desc: image.description }).run()
+
     // editor.value?.commands.enter()
     // editor.value?.commands.focus('end')
   },
@@ -29,8 +29,14 @@ provide('tiptap', editor)
   <div v-if="editor" class="flex gap-x-3 mb-5">
     <EditorHeading />
     <EditorBlockquote />
-    <!-- <EditorImage v-model="image.src" /> -->
-    <UiAddImage v-model="image.src" @append-handler="image.apply" />
+    <EditorBold />
+    <EditorFloatLeft />
+    <!-- <EditorImageUpload v-model="image.src" @apply-handler="image.apply" /> -->
+    <UiUploadImage
+      v-model="image.src"
+      @append-handler="image.apply"
+      :btn="{ variant: 'outline', icon: 'i-material-symbols-add-photo-alternate-outline-rounded', color: 'gray', class: 'editor__button' }"
+    />
     <UPopover>
       <UButton square variant="outline" color="gray" icon="i-material-symbols-image-search-rounded" class="editor__button" />
       <template #panel="{ close }">
@@ -45,7 +51,6 @@ provide('tiptap', editor)
       @click="editor?.commands.focus()"
     />
   </UFormGroup>
-  {{ image.src }}
 </template>
 
 <style>

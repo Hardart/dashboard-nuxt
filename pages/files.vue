@@ -1,37 +1,46 @@
 <script setup lang="ts">
-const { getFiles, files, prevPath, isBasePath, imageUrl, isImage, setSource, onImage } = useFilesystem()
+const { getFiles, files, goBack, isBasePath, imageUrl, selected, isImage, setSource, onImage, correctSrc } = useFilesystem()
 getFiles()
+const removeFile = async () => {
+  try {
+    const data = await $fetch('/uploads/image/delete', { method: 'POST', body: { path: imageUrl.value.preview } })
+    console.log(data)
+    files.value = files.value.filter(item => item !== imageUrl.value.preview)
+    selected.value = NaN
+    imageUrl.value.original = ''
+    imageUrl.value.preview = ''
+  } catch (error) {
+    console.log(error)
+  }
+}
 </script>
 
 <template>
   <UDashboardPage>
     <UDashboardPanel grow>
-      <UDashboardNavbar title="Файлы"> </UDashboardNavbar>
+      <UDashboardNavbar title="Файлы" />
 
       <UDashboardPanelContent>
-        <div class="flex flex-wrap lg:items-center gap-4 mt-8">
-          <div
-            class="flex flex-col items-center size-48 justify-center py-4 hover:bg-neutral-200 dark:hover:bg-slate-800 cursor-pointer"
-            v-if="!isBasePath"
-            @click="setSource(prevPath)"
-          >
-            <UIcon name="i-heroicons-arrow-small-left" class="size-20" />
+        <div class="flex h-full divide-x divide-zinc-700">
+          <div class="flex-1">
+            <div class="flex flex-wrap gap-3">
+              <FilesBack v-if="!isBasePath" @click="goBack" />
+              <div v-for="(src, i) in files" class="size-40 overflow-clip ring-1 ring-zinc-700 rounded">
+                <FilesImage v-if="isImage(src)" @click="onImage(src, i)" :src="correctSrc(src)" :selected="selected == i" />
+                <FilesFolder v-else :src @dblclick="setSource(src)" @click="selected = Math.random()" />
+              </div>
+            </div>
           </div>
-          <div v-for="src in files" class="size-48 overflow-clip">
-            <img v-if="isImage(src)" class="size-48 object-cover" :src="`http://localhost:3068${src}`" alt="" @click="onImage(src)" />
-            <div
-              v-else
-              class="flex flex-col items-center py-4 hover:bg-neutral-200 dark:hover:bg-slate-800 cursor-pointer"
-              @click="setSource(src)"
-            >
-              <UIcon name="i-heroicons-folder" class="size-32" />
-              <p>{{ src.replace(/.+\//, '') }}</p>
+          <div class="pl-3 w-[450px]">
+            <div v-if="imageUrl.original">
+              <img :src="imageUrl.original" class="" alt="" />
+              <p class="text-wrap break-words">{{ imageUrl }}</p>
+              <UButton label="удалить" icon="i-heroicons-trash" variant="outline" color="red" @click="removeFile" />
             </div>
           </div>
         </div>
-        <div class="w-[600px]">
-          <img :src="imageUrl" alt="" />
-        </div>
+        <pre>{{ files }}</pre>
+        {{ selected }}
       </UDashboardPanelContent>
     </UDashboardPanel>
   </UDashboardPage>

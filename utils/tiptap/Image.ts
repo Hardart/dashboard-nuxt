@@ -24,10 +24,10 @@ export const Image = Node.create<ImageOptions>({
 
   addOptions() {
     return {
-      inline: true,
+      inline: false,
       allowBase64: false,
       HTMLAttributes: {
-        class: 'rounded-xl',
+        class: 'rounded-xl mx-auto',
       },
     }
   },
@@ -51,6 +51,9 @@ export const Image = Node.create<ImageOptions>({
         default: null,
       },
       title: {
+        default: null,
+      },
+      class: {
         default: null,
       },
     }

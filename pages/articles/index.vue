@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Article } from '~/scheme/z_article'
 const router = useRouter()
-const { storeRefs } = useArticleStore()
+const { storeRefs, deleteArticle } = useArticleStore()
 const { sortedArticles, selectedStatuses, statusesFilter, selectedCategories, sort, articlesCount, categoriesFilter, query, loading } =
   storeRefs()
 
@@ -26,7 +26,7 @@ const editHandle = (item: Article) => {
     v-model:status="selectedStatuses"
     v-model:category="selectedCategories"
   />
-  <ArticlesTable :loading :news="sortedArticles" v-model="sort" :edit-handle="editHandle" />
+  <ArticlesTable :loading :news="sortedArticles" v-model="sort" :delete-handle="deleteArticle" />
 </template>
 
 <style></style>

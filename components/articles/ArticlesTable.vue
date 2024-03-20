@@ -1,16 +1,37 @@
 <script setup lang="ts">
 import { STATUSES, type Article } from '~/scheme/z_article'
-import { editItems, columns } from './table-config'
+import { columns } from './table-config'
 
 const sort = defineModel({ required: true })
 
-defineProps<{
+const { deleteHandle } = defineProps<{
   news: Article[]
   loading: boolean
-  editHandle: (item: Article) => void
+  deleteHandle: (item: string) => void
 }>()
 
 const selected = ref<Article[]>([])
+
+const editItems = (article: Article) => [
+  [
+    {
+      label: 'Редактировать',
+      icon: 'i-heroicons-pencil-square-20-solid',
+      click: () => {
+        navigateTo(`/articles/${article.id}`)
+      },
+    },
+  ],
+  [
+    {
+      label: 'Удалить',
+      icon: 'i-heroicons-trash-20-solid',
+      click: () => {
+        deleteHandle(article.id)
+      },
+    },
+  ],
+]
 </script>
 
 <template>
@@ -51,7 +72,7 @@ const selected = ref<Article[]>([])
     </template>
 
     <template #actions-data="{ row }">
-      <UDropdown :items="editItems(row, editHandle)">
+      <UDropdown :items="editItems(row)">
         <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />
       </UDropdown>
     </template>

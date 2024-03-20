@@ -29,7 +29,7 @@ async function onSubmit(event: FormSubmitEvent<any>) {
 <template>
   <div class="flex">
     <UForm :validate="validate" :state="articleFormData" :validate-on="['submit']" class="space-y-4 w-2/3 p-4" @submit="onSubmit">
-      <div class="flex gap-x-6">
+      <div class="flex gap-x-6 -mb-14">
         <div class="flex flex-col space-y-7 flex-grow">
           <div class="space-y-3">
             <ArticlesFormTitle v-model="articleFormData.title" />
@@ -37,12 +37,37 @@ async function onSubmit(event: FormSubmitEvent<any>) {
           </div>
           <div class="flex gap-x-5">
             <ArticlesFormCategories v-model="articleFormData.categoryId" :categories="categories" />
-            <ArticlesFormTags v-model="articleFormData.tags" :tags="tags" />
+            <ArticlesFormTags v-model="articleFormData.tags" v-model:options="tags" />
             <ArticlesFormIsPublished v-model="articleFormData.isPublished" />
             <FormPublishDate v-model="articleFormData.publishAt" />
           </div>
         </div>
-        <UiUploadImage v-model="articleFormData.image" />
+        <div class="space-y-2">
+          <UiUploadImage
+            v-model="articleFormData.image"
+            :form="{ label: 'Главное изображение' }"
+            :btn="{ label: 'Загрузить фото', block: true, color: 'gray' }"
+          >
+            <template #preview>
+              <UAvatar
+                icon="i-heroicons-photo"
+                size="3xl"
+                :src="articleFormData.image"
+                imgClass="object-cover object-top w-full h-full"
+                class="w-[347px] h-52 bg-white"
+                :ui="{ rounded: 'rounded-lg' }"
+              />
+            </template>
+          </UiUploadImage>
+          <UPopover>
+            <UButton square color="gray" label="Выбрать фото" block />
+            <template #panel="{ close }">
+              <UiFileSelect v-model="articleFormData.image" @close="close" />
+            </template>
+          </UPopover>
+        </div>
+
+        <!-- <UiUploadImage v-model="articleFormData.image" /> -->
       </div>
 
       <ArticlesFormContentEditor v-model="articleFormData.content" />
