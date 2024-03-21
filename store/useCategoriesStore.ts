@@ -1,3 +1,4 @@
+import { categoriesAPI } from '~/api/categories-api'
 import type { Category, CategoryFormData } from '~/scheme/z_category'
 
 export const useCategoriesStore = defineStore('category', () => {
@@ -8,8 +9,10 @@ export const useCategoriesStore = defineStore('category', () => {
   })
   const categories = ref<Category[]>([])
   const category = ref<Category>()
-  const categoriesCount = computed(() => categories.value.length)
+
   const categoryFormData = ref<CategoryFormData>({ ...categoryState })
+
+  const categoriesCount = computed(() => categories.value.length)
   const loading = ref(false)
   const q = ref(undefined)
   const selectedStatuses = ref([])
@@ -32,41 +35,25 @@ export const useCategoriesStore = defineStore('category', () => {
     if (a) transformCategoryToFormData(a)
   }
 
-  function fetchCategories() {
-    useLazyAsyncData('categories', async () => {
-      loading.value = true
-      const response = await $fetch<Category[]>('/api/categories')
-      categories.value = response
-      loading.value = false
-    })
+  async function fetchCategories() {
+    categories.value = (await categoriesAPI.list(loading)) || []
   }
 
   async function addCategory(input: { data: CategoryFormData }) {
-    try {
-      const data = await $fetch<Category>('/admin/category-add', { method: 'POST', body: input.data })
-      categories.value.unshift(data)
-    } catch (error) {
-      console.log(error)
-    }
+    const response = await categoriesAPI.addOne(input.data, loading)
+    if (!response) return
+    categories.value.unshift(response)
   }
 
   async function updateCategory(input: { data: CategoryFormData }) {
-    try {
-      const data = await $fetch('/admin/category-update', { method: 'POST', body: input.data })
-      console.log(data)
-    } catch (error) {
-      console.log(error)
-    }
+    const response = await categoriesAPI.updateOne(input.data, loading)
+    if (!response) return
   }
 
   async function deleteCategory(id: string) {
-    try {
-      const data = await $fetch('/admin/category-delete', { method: 'POST', body: { id } })
-      console.log(data)
-      categories.value = categories.value.filter(item => item.id !== id)
-    } catch (error) {
-      console.log(error)
-    }
+    const response = await categoriesAPI.deleteOne({ id }, loading)
+    if (!response) return
+    categories.value = categories.value.filter(item => item.id !== id)
   }
 
   function storeRefs() {

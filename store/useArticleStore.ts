@@ -1,3 +1,4 @@
+import { articlesAPI } from '~/api/articles-api'
 import { STATUSES, type Article, type ArticleFormData } from '~/scheme/z_article'
 import type { Category } from '~/scheme/z_category'
 
@@ -9,7 +10,6 @@ interface SortBy {
 }
 
 export const useArticleStore = defineStore('article', () => {
-  const toast = useToast()
   const articleState = reactive<ArticleFormData>({
     title: '',
     slug: '',
@@ -75,60 +75,31 @@ export const useArticleStore = defineStore('article', () => {
     articleFormData.value = { ...articleState }
   }
 
-  function fetchArticles() {
-    useLazyAsyncData('articles', async () => {
-      loading.value = true
-      const [news, tagsData] = await Promise.all([$fetch<Article[]>('/admin/news'), $fetch<string[]>('/api/tags')])
-      articles.value = news.map(addStatus)
-      tags.value = tagsData
-      loading.value = false
-    })
+  async function fetchArticles() {
+    articles.value = await articlesAPI.list(loading)
   }
 
   async function fetchArticle(id: string) {
-    loading.value = true
-    const response = await $fetch<Article>('/admin/article', { query: { id } })
+    const response = await articlesAPI.getOne({ id }, loading)
+    if (!response) return
     transformArticleToFormData(response)
-    loading.value = false
   }
 
   async function updateArticle(input: ArticleFormData) {
-    loading.value = true
-    try {
-      const data = await $fetch<Article>('/admin/article-update', { method: 'POST', body: input })
-      articles.value = articles.value.filter(article => article.id !== input.id)
-      articles.value.push(addStatus(data))
-    } catch (error) {
-      console.log(error)
-    }
-    loading.value = false
+    const response = await articlesAPI.updateOne(input, loading)
+    if (!response) return
+    articles.value = articles.value.filter(article => article.id !== input.id)
+    articles.value.push(response)
   }
 
   async function addArticle(input: ArticleFormData) {
-    loading.value = true
-    try {
-      const data = await $fetch('/admin/article-add', {
-        method: 'POST',
-        body: input,
-        onResponseError({ response }) {
-          toast.add({ title: response._data.message, timeout: 10000, color: 'red', icon: 'i-heroicons-x-circle-20-solid' })
-          return Promise.resolve()
-        },
-      })
-    } catch (error) {
-    } finally {
-      loading.value = false
-    }
+    await articlesAPI.addOne(input, loading)
   }
 
   async function deleteArticle(id: string) {
-    try {
-      const data = await $fetch('/admin/article-delete', { method: 'POST', body: { id } })
-      console.log(data)
-      articles.value = articles.value.filter(item => item.id !== id)
-    } catch (error) {
-      console.log(error)
-    }
+    const response = await articlesAPI.deleteOne({ id }, loading)
+    if (!response) return
+    articles.value = articles.value.filter(item => item.id !== id)
   }
 
   function storeRefs() {
@@ -168,11 +139,4 @@ function filterCategoriesBunlde(acc: Category[], article: Article) {
 function filterStatusesBunlde(acc: STATUSES[], article: Article) {
   if (!acc.includes(article.status)) acc.push(article.status)
   return acc
-}
-
-function addStatus(item: Article) {
-  if (!item.isPublished) item.status = STATUSES.Not_Publish
-  else if (item.isPublished && new Date() > new Date(item.publishAt)) item.status = STATUSES.Publish
-  else item.status = STATUSES.Pending
-  return item
 }

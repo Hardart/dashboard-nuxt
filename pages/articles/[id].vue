@@ -6,7 +6,7 @@ const { resetArticle, storeRefs, updateArticle, fetchArticle } = useArticleStore
 const { categories } = useCategoriesStore().storeRefs()
 const { articleFormData, tags, loading } = storeRefs()
 await fetchArticle(id)
-onUnmounted(resetArticle)
+// onUnmounted(resetArticle)
 </script>
 
 <template>

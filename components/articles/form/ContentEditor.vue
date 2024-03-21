@@ -14,7 +14,7 @@ const image = reactive({
 })
 
 const editor = useEditor({
-  content: '<img src="https://www.diera.ru/blog/content/images/2022/11/nuxt3-logo-dark.png"/>',
+  content: content.value,
   extensions: [TiptapStarterKit, Image],
   editorProps: {
     attributes: { class: 'prose max-w-none dark:prose-invert prose-sm sm:prose-base m-5 focus:outline-none' },
