@@ -3,7 +3,7 @@ import { Image } from '~/utils/tiptap/Image'
 const content = defineModel<string | undefined>({ required: true })
 
 const image = reactive({
-  src: '',
+  src: 'https://www.diera.ru/blog/content/images/2022/11/nuxt3-logo-dark.png',
   description: '',
   apply() {
     editor.value?.chain().focus().setImage({ src: image.src, title: 'IMAGE', desc: image.description }).run()
@@ -14,12 +14,14 @@ const image = reactive({
 })
 
 const editor = useEditor({
-  content: content.value,
+  content: '<img src="https://www.diera.ru/blog/content/images/2022/11/nuxt3-logo-dark.png"/>',
   extensions: [TiptapStarterKit, Image],
   editorProps: {
     attributes: { class: 'prose max-w-none dark:prose-invert prose-sm sm:prose-base m-5 focus:outline-none' },
   },
-  onUpdate: () => (content.value = editor.value?.getText().trim() ? editor.value?.getHTML() : editor.value?.getText().trim()),
+  onUpdate() {
+    content.value = editor.value?.getText().trim() ? editor.value?.getHTML() : editor.value?.getText().trim()
+  },
 })
 
 provide('tiptap', editor)
@@ -28,10 +30,11 @@ provide('tiptap', editor)
 <template>
   <div v-if="editor" class="flex gap-x-3 mb-5">
     <EditorHeading />
-    <EditorBlockquote />
     <EditorBold />
+    <EditorItalic />
+    <EditorBlockquote />
     <EditorFloatLeft />
-    <!-- <EditorImageUpload v-model="image.src" @apply-handler="image.apply" /> -->
+    <EditorFloatRight />
     <UiUploadImage
       v-model="image.src"
       @append-handler="image.apply"
