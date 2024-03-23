@@ -34,7 +34,7 @@ useSeoMeta({
   <div>
     <NuxtLoadingIndicator />
 
-    <NuxtLayout>
+    <NuxtLayout :name="$route.name == 'login' ? 'login' : 'default'">
       <NuxtPage />
     </NuxtLayout>
 

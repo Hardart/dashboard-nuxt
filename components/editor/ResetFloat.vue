@@ -6,7 +6,7 @@ const editor = inject<any>('tiptap')
     square
     variant="outline"
     color="gray"
-    icon="i-material-symbols-im"
+    icon="i-material-symbols-layers-outline-rounded"
     class="editor__button"
     @click="editor.chain().focus().resetAttributes('image', ['class']).run()"
   />

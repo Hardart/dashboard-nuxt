@@ -35,6 +35,7 @@ provide('tiptap', editor)
     <EditorBlockquote />
     <EditorFloatLeft />
     <EditorFloatRight />
+    <EditorResetFloat />
     <UiUploadImage
       v-model="image.src"
       @append-handler="image.apply"

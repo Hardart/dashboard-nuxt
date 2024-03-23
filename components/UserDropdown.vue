@@ -1,103 +1,105 @@
 <script setup lang="ts">
-const { isHelpSlideoverOpen } = useDashboard();
-const { isDashboardSearchModalOpen } = useUIState();
-const { metaSymbol } = useShortcuts();
+const { isHelpSlideoverOpen } = useDashboard()
+const { isDashboardSearchModalOpen } = useUIState()
+const { metaSymbol } = useShortcuts()
 
 const itemsTemplate = computed(() => [
   [
     {
-      slot: "account",
-      label: "",
+      slot: 'account',
+      label: '',
       disabled: true,
     },
   ],
   [
     {
-      label: "Настройки",
-      icon: "i-heroicons-cog-8-tooth",
-      to: "/settings",
+      label: 'Настройки',
+      icon: 'i-heroicons-cog-8-tooth',
+      to: '/settings',
     },
     {
-      label: "Command menu",
-      icon: "i-heroicons-command-line",
-      shortcuts: [metaSymbol.value, "K"],
+      label: 'Command menu',
+      icon: 'i-heroicons-command-line',
+      shortcuts: [metaSymbol.value, 'K'],
       click: () => {
-        isDashboardSearchModalOpen.value = true;
+        isDashboardSearchModalOpen.value = true
       },
     },
     {
-      label: "Help & Support",
-      icon: "i-heroicons-question-mark-circle",
-      shortcuts: ["?"],
+      label: 'Help & Support',
+      icon: 'i-heroicons-question-mark-circle',
+      shortcuts: ['?'],
       click: () => (isHelpSlideoverOpen.value = true),
     },
   ],
   [
     {
-      label: "Documentation",
-      icon: "i-heroicons-book-open",
-      to: "https://ui.nuxt.com/pro/getting-started",
-      target: "_blank",
+      label: 'Documentation',
+      icon: 'i-heroicons-book-open',
+      to: 'https://ui.nuxt.com/pro/getting-started',
+      target: '_blank',
     },
     {
-      label: "GitHub repository",
-      icon: "i-simple-icons-github",
-      to: "https://github.com/nuxt-ui-pro/dashboard",
-      target: "_blank",
+      label: 'GitHub repository',
+      icon: 'i-simple-icons-github',
+      to: 'https://github.com/nuxt-ui-pro/dashboard',
+      target: '_blank',
     },
     {
-      label: "Buy Nuxt UI Pro",
-      icon: "i-heroicons-credit-card",
-      to: "https://ui.nuxt.com/pro/purchase",
-      target: "_blank",
+      label: 'Buy Nuxt UI Pro',
+      icon: 'i-heroicons-credit-card',
+      to: 'https://ui.nuxt.com/pro/purchase',
+      target: '_blank',
     },
   ],
   [
     {
-      label: "Sign out",
-      icon: "i-heroicons-arrow-left-on-rectangle",
+      label: 'Sign out',
+      icon: 'i-heroicons-arrow-left-on-rectangle',
+      to: '/login',
     },
   ],
-]);
+])
 
 const items = computed(() => [
   [
     {
-      slot: "account",
-      label: "",
+      slot: 'account',
+      label: '',
       disabled: true,
     },
   ],
   [
     {
-      label: "Настройки",
-      icon: "i-heroicons-cog-8-tooth",
-      to: "/settings",
+      label: 'Настройки',
+      icon: 'i-heroicons-cog-8-tooth',
+      to: '/settings',
     },
     {
-      label: "Command menu",
-      icon: "i-heroicons-command-line",
-      shortcuts: [metaSymbol.value, "K"],
+      label: 'Command menu',
+      icon: 'i-heroicons-command-line',
+      shortcuts: [metaSymbol.value, 'K'],
       click: () => {
-        isDashboardSearchModalOpen.value = true;
+        isDashboardSearchModalOpen.value = true
       },
     },
   ],
   [
     {
-      label: "Documentation",
-      icon: "i-heroicons-book-open",
-      to: "https://ui.nuxt.com/pro/getting-started",
-      target: "_blank",
+      label: 'Documentation',
+      icon: 'i-heroicons-book-open',
+      to: 'https://ui.nuxt.com/pro/getting-started',
+      target: '_blank',
     },
   ],
   [
     {
-      label: "Выйти",
-      icon: "i-heroicons-arrow-left-on-rectangle",
+      label: 'Выйти',
+      icon: 'i-heroicons-arrow-left-on-rectangle',
+      to: '/login',
     },
   ],
-]);
+])
 </script>
 
 <template>
@@ -109,18 +111,9 @@ const items = computed(() => [
     class="w-full"
   >
     <template #default="{ open }">
-      <UButton
-        color="gray"
-        variant="ghost"
-        class="w-full"
-        label="Benjamin"
-        :class="[open && 'bg-gray-50 dark:bg-gray-800']"
-      >
+      <UButton color="gray" variant="ghost" class="w-full" label="Benjamin" :class="[open && 'bg-gray-50 dark:bg-gray-800']">
         <template #leading>
-          <UAvatar
-            src="https://avatars.githubusercontent.com/u/739984?v=4"
-            size="2xs"
-          />
+          <UAvatar src="https://avatars.githubusercontent.com/u/739984?v=4" size="2xs" />
         </template>
 
         <template #trailing>
@@ -132,9 +125,7 @@ const items = computed(() => [
     <template #account>
       <div class="text-left">
         <p>Signed in as</p>
-        <p class="truncate font-medium text-gray-900 dark:text-white">
-          ben@nuxtlabs.com
-        </p>
+        <p class="truncate font-medium text-gray-900 dark:text-white">ben@nuxtlabs.com</p>
       </div>
     </template>
   </UDropdown>
