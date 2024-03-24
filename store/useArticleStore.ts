@@ -76,30 +76,39 @@ export const useArticleStore = defineStore('article', () => {
   }
 
   async function fetchArticles() {
-    articles.value = await articlesAPI.list(loading)
+    loading.value = true
+    const { news } = await articlesAPI.list()
+    articles.value = news
+    loading.value = false
   }
 
   async function fetchArticle(id: string) {
-    const response = await articlesAPI.getOne({ id }, loading)
-    if (!response) return
-    transformArticleToFormData(response)
+    loading.value = true
+    const { data } = await articlesAPI.getOne({ id })
+    if (!data.value) return
+    transformArticleToFormData(data.value)
+    loading.value = false
   }
 
   async function updateArticle(input: ArticleFormData) {
-    const response = await articlesAPI.updateOne(input, loading)
-    if (!response) return
-    articles.value = articles.value.filter(article => article.id !== input.id)
-    articles.value.push(response)
+    loading.value = true
+    const { article } = await articlesAPI.updateOne(input)
+    if (!article) return
+    articles.value = articles.value.filter(item => item.id !== input.id)
+    articles.value.push(article)
+    loading.value = false
   }
 
   async function addArticle(input: ArticleFormData) {
-    await articlesAPI.addOne(input, loading)
+    await articlesAPI.addOne(input)
   }
 
   async function deleteArticle(id: string) {
-    const response = await articlesAPI.deleteOne({ id }, loading)
-    if (!response) return
+    loading.value = true
+    const { data } = await articlesAPI.deleteOne({ id })
+    if (!data.value) return
     articles.value = articles.value.filter(item => item.id !== id)
+    loading.value = false
   }
 
   function storeRefs() {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const colorMode = useColorMode()
-
+const token = useLocalStorage('auth_access', () => '')
 const color = computed(() => (colorMode.value === 'dark' ? '#111827' : '#ffffff'))
 
 useHead({
@@ -34,7 +34,7 @@ useSeoMeta({
   <div>
     <NuxtLoadingIndicator />
 
-    <NuxtLayout :name="$route.name == 'login' ? 'login' : 'default'">
+    <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>
 

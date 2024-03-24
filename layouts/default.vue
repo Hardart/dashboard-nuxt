@@ -205,7 +205,7 @@ const colors = computed(() =>
 
 <template>
   <UDashboardLayout class="bg-neutral-100 dark:bg-zinc-900">
-    <UDashboardPanel :width="250" :resizable="{ min: 200, max: 300 }" collapsible>
+    <UDashboardPanel :width="250" :resizable="{ min: 200, max: 300 }" collapsible v-if="route.name !== 'login'">
       <UDashboardNavbar class="!border-transparent" :ui="{ left: 'flex-1' }">
         <template #left>
           <TeamsDropdown />
@@ -242,12 +242,12 @@ const colors = computed(() =>
     <slot />
 
     <!-- ~/components/HelpSlideover.vue -->
-    <HelpSlideover />
+    <HelpSlideover v-if="route.name !== 'login'" />
     <!-- ~/components/NotificationsSlideover.vue -->
-    <NotificationsSlideover />
+    <NotificationsSlideover v-if="route.name !== 'login'" />
 
     <ClientOnly>
-      <LazyUDashboardSearch :groups="groups" />
+      <LazyUDashboardSearch :groups="groups" v-if="route.name !== 'login'" />
     </ClientOnly>
   </UDashboardLayout>
 </template>

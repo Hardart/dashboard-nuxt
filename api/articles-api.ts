@@ -1,45 +1,28 @@
 import { STATUSES, type Article, type ArticleFormData } from '~/scheme/z_article'
-import type { CustomFetchOptions } from '~/types/fetch'
+
 export const articlesAPI = {
-  async list(pending?: Ref<boolean>) {
-    const data = await useCustomFetch<Article[]>({ url: '/admin/news' }, pending)
-    return data ? data.map(addStatus) : []
+  async list() {
+    const { data } = await useCustomFetch<Article[]>('/admin/news', {})
+    const news = data.value ? data.value.map(addStatus) : []
+    return { news }
   },
 
-  async getOne(query: { id: string }, pending?: Ref<boolean>) {
-    const options: CustomFetchOptions = {
-      url: '/admin/article',
-      query,
-    }
-    return await useCustomFetch<Article>(options, pending)
+  async getOne(query: { id: string }) {
+    return await useCustomFetch<Article>('/admin/article', { query })
   },
 
-  async updateOne(body: ArticleFormData, pending?: Ref<boolean>) {
-    const options: CustomFetchOptions = {
-      url: '/admin/article-update',
-      method: 'POST',
-      body,
-    }
-    const data = await useCustomFetch<Article>(options, pending)
-    return data ? addStatus(data) : undefined
+  async updateOne(body: ArticleFormData) {
+    const { data } = await useCustomFetch<Article>('/admin/article-update', { body, method: 'POST' })
+    const article = data.value ? addStatus(data.value) : undefined
+    return { article }
   },
 
-  async addOne(body: ArticleFormData, pending?: Ref<boolean>) {
-    const options: CustomFetchOptions = {
-      url: '/admin/article-add',
-      method: 'POST',
-      body,
-    }
-    await useCustomFetch<Article>(options, pending)
+  async addOne(body: ArticleFormData) {
+    await useCustomFetch<Article>('/admin/article-add', { body, method: 'POST' })
   },
 
-  async deleteOne(body: { id: string }, pending?: Ref<boolean>) {
-    const options: CustomFetchOptions = {
-      url: '/admin/article-delete',
-      method: 'POST',
-      body,
-    }
-    return await useCustomFetch<Article>(options, pending)
+  async deleteOne(body: { id: string }) {
+    return await useCustomFetch<Article>('/admin/article-delete', { body, method: 'POST' })
   },
 }
 

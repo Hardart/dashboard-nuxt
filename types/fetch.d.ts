@@ -4,3 +4,8 @@ export interface CustomFetchOptions {
   body?: object
   query?: object
 }
+
+export interface TokensResponse {
+  accessToken: string
+  refreshToken: string
+}

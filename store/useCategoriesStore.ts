@@ -36,22 +36,23 @@ export const useCategoriesStore = defineStore('category', () => {
   }
 
   async function fetchCategories() {
-    categories.value = (await categoriesAPI.list(loading)) || []
+    const { data } = await categoriesAPI.list()
+    categories.value = data.value || []
   }
 
   async function addCategory(input: { data: CategoryFormData }) {
-    const response = await categoriesAPI.addOne(input.data, loading)
-    if (!response) return
-    categories.value.unshift(response)
+    const { data } = await categoriesAPI.addOne(input.data)
+    if (!data.value) return
+    categories.value.unshift(data.value)
   }
 
   async function updateCategory(input: { data: CategoryFormData }) {
-    const response = await categoriesAPI.updateOne(input.data, loading)
+    const response = await categoriesAPI.updateOne(input.data)
     if (!response) return
   }
 
   async function deleteCategory(id: string) {
-    const response = await categoriesAPI.deleteOne({ id }, loading)
+    const response = await categoriesAPI.deleteOne({ id })
     if (!response) return
     categories.value = categories.value.filter(item => item.id !== id)
   }
