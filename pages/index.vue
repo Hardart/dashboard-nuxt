@@ -4,15 +4,25 @@ import type { Period, Range } from '~/types'
 
 const { isNotificationsSlideoverOpen } = useDashboard()
 
-const items = [[{
-  label: 'New mail',
-  icon: 'i-heroicons-paper-airplane',
-  to: '/inbox'
-}, {
-  label: 'New user',
-  icon: 'i-heroicons-user-plus',
-  to: '/users'
-}]]
+const items = [
+  [
+    {
+      label: 'Создать новость',
+      icon: 'i-heroicons-pencil-square',
+      to: '/articles/add',
+    },
+    {
+      label: 'Создать категорию',
+      icon: 'i-heroicons-document-plus',
+      to: '/categories/add',
+    },
+    {
+      label: 'New user',
+      icon: 'i-heroicons-user-plus',
+      to: '/users',
+    },
+  ],
+]
 
 const range = ref<Range>({ start: sub(new Date(), { days: 14 }), end: new Date() })
 const period = ref<Period>('daily')

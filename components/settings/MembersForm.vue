@@ -1,4 +1,3 @@
-
 <script setup lang="ts">
 import type { FormError, FormSubmitEvent } from '#ui/types'
 
@@ -6,17 +5,17 @@ const emit = defineEmits(['close'])
 
 const state = reactive({
   role: 'member',
-  email: undefined
+  email: undefined,
 })
 
-// https://ui.nuxt.com/components/form
+// https://ui.nuxt.com/components/formk
 const validate = (state: any): FormError[] => {
   const errors = []
   if (!state.email) errors.push({ path: 'email', message: 'Please enter an email.' })
   return errors
 }
 
-async function onSubmit (event: FormSubmitEvent<any>) {
+async function onSubmit(event: FormSubmitEvent<any>) {
   // Do something with data
   console.log(event.data)
 
@@ -31,7 +30,11 @@ async function onSubmit (event: FormSubmitEvent<any>) {
     </UFormGroup>
 
     <UFormGroup label="Role" name="role">
-      <USelectMenu v-model="state.role" :options="['member', 'owner']" :ui-menu="{ select: 'capitalize', option: { base: 'capitalize' } }" />
+      <USelectMenu
+        v-model="state.role"
+        :options="['member', 'owner']"
+        :ui-menu="{ select: 'capitalize', option: { base: 'capitalize' } }"
+      />
     </UFormGroup>
 
     <div class="flex justify-end gap-3">

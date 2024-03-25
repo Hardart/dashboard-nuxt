@@ -77,8 +77,9 @@ export const useArticleStore = defineStore('article', () => {
 
   async function fetchArticles() {
     loading.value = true
-    const { news } = await articlesAPI.list()
+    const { news, tags: tagList } = await articlesAPI.list()
     articles.value = news
+    tags.value = tagList
     loading.value = false
   }
 

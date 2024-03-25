@@ -1,19 +1,25 @@
 <script setup lang="ts">
+import { uploadsAPI } from '@/api/uploads-api'
+import { UploadURLS } from '@/scheme/enums'
 const fileRef = ref<{ input: HTMLInputElement }>()
 const src = defineModel({ required: true })
 const emit = defineEmits(['append-handler'])
-defineProps<{
+const { name } = defineProps<{
   form?: object
+  label?: string
+  class?: string
   btn?: {
     label?: string
     icon?: string
     trailingIcon?: string
     variant?: 'link' | 'solid' | 'outline' | 'soft' | 'ghost'
     square?: boolean
-    class?: string
     color?: string
     block?: boolean
+    class?: string
   }
+  name: 'news' | 'avatar' | 'gallery'
+  showSelect?: boolean
 }>()
 
 function onFileClick() {
@@ -27,22 +33,26 @@ async function onFileChange(e: Event) {
 
   const file = input.files[0]
   const body = new FormData()
-  body.append('news', file, file.name)
+  body.append(name, file, file.name)
 
-  try {
-    const imageURL = await $fetch<string>('/uploads/image/news', { body, method: 'POST' })
-    src.value = 'http://localhost:3068' + imageURL
-    emit('append-handler', src.value)
-  } catch (error) {
-    console.log(error)
-  }
+  const { data } = await uploadsAPI.single(UploadURLS[name], body)
+  src.value = 'http://localhost:3068' + data.value
+  emit('append-handler', src.value)
 }
 </script>
 
 <template>
-  <UFormGroup name="news" v-bind="{ ...form, ...$attrs }" :ui="{ container: 'flex flex-col flex-wrap items-center gap-3', help: 'mt-0' }">
+  <UFormGroup :name :label :class v-bind="{ ...form, ...$attrs }">
     <slot name="preview"></slot>
-    <UButton v-bind="{ ...btn, ...$attrs }" @click="onFileClick" />
+    <div :class="[btn?.block && 'w-full', showSelect && 'flex flex-wrap gap-2']">
+      <UButton v-bind="{ ...btn, ...$attrs }" @click="onFileClick" />
+      <UPopover v-if="showSelect">
+        <UButton color="gray" label="Выбрать фото" :block="btn?.block" />
+        <template #panel="{ close }">
+          <UiFileSelect v-model="src" @close="close" />
+        </template>
+      </UPopover>
+    </div>
     <UInput ref="fileRef" type="file" class="hidden" accept=".jpg, .jpeg, .png, .webp, .avif" @change="onFileChange" />
   </UFormGroup>
 </template>

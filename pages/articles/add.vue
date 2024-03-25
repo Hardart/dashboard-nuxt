@@ -2,7 +2,7 @@
 const { resetArticle, storeRefs, addArticle } = useArticleStore()
 const { categories } = useCategoriesStore().storeRefs()
 const { articleFormData, tags, loading } = storeRefs()
-// onUnmounted(resetArticle)
+onUnmounted(resetArticle)
 </script>
 
 <template>

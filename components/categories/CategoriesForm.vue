@@ -34,7 +34,7 @@ const selected = ref([])
 <template>
   <div class="grid grid-cols-12 gap-x-5">
     <UForm :validate="validate" :state="state" :validate-on="['submit']" class="col-span-8 space-y-4" @submit="onSubmit">
-      <FormText label="Заголовок" form-name="title" v-model="state.title" />
+      <FormText label="Заголовок" name="title" v-model="state.title" />
       <FormSlug v-model="state.slug" :input="state.title" />
       <!-- <USelectMenu v-model="tags" creatable multiple searchable :options="options" searchablePlaceholder="Поиск..." /> -->
       <div class="flex justify-end gap-3">

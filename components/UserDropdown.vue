@@ -114,7 +114,7 @@ const items = computed(() => [
     <template #default="{ open }">
       <UButton color="gray" variant="ghost" class="w-full" :label="user?.name" :class="[open && 'bg-gray-50 dark:bg-gray-800']">
         <template #leading>
-          <UAvatar :src="user?.avatar" size="2xs" />
+          <UAvatar :src="user?.avatar" imgClass="object-cover" :alt="user?.name" />
         </template>
 
         <template #trailing>

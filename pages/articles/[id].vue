@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { useCategoriesStore } from '~/store/useCategoriesStore'
 const route = useRoute()
 const id = String(route.params.id)
-const { storeRefs, updateArticle, fetchArticle } = useArticleStore()
+const { storeRefs, updateArticle, fetchArticle, resetArticle } = useArticleStore()
 const { categories } = useCategoriesStore().storeRefs()
 const { articleFormData, tags, loading } = storeRefs()
 await fetchArticle(id)
-// onUnmounted(resetArticle)
+onUnmounted(resetArticle)
 </script>
 
 <template>

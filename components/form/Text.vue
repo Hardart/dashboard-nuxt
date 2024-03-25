@@ -1,14 +1,20 @@
 <script setup lang="ts">
+import type { InputSize } from '#ui/types'
 const title = defineModel({ required: true })
 defineProps<{
   label: string
   required?: boolean
-  formName: string
+  name: string
+  icon?: string
+  autofocus?: boolean
+  description?: string
+  size?: InputSize
+  type?: 'text' | 'password' | 'email'
 }>()
 </script>
 
 <template>
-  <UFormGroup :label="label" class="w-full" :required="required" :name="formName">
-    <UInput v-model="title" autofocus />
+  <UFormGroup :label class="w-full" :required :name :description>
+    <UInput v-model="title" :autofocus :icon autocomplete="off" :size :type />
   </UFormGroup>
 </template>

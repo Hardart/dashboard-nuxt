@@ -1,8 +1,9 @@
 import type { Category, CategoryFormData } from '~/scheme/z_category'
-import type { CustomFetchOptions } from '~/types/fetch'
+
 export const categoriesAPI = {
   async list() {
-    return await useCustomFetch<Category[]>('/api/categories')
+    const nuxt = useNuxtApp()
+    return await useAsyncData<Category[]>('categories', () => $fetch('/api/categories'), { getCachedData: key => nuxt.payload.data[key] })
   },
 
   async getOne(query: { id: string }) {

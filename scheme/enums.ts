@@ -1,3 +1,9 @@
+export enum UploadURLS {
+  news = '/uploads/image/news',
+  avatar = '/uploads/image/avatar',
+  gallery = '/uploads/image/gallery',
+  delete_folder = '/uploads/folder-delete',
+}
 export const API_URLs = [
   '/admin/news',
   '/admin/article',
@@ -11,4 +17,11 @@ export const API_URLs = [
   '/admin/category-add',
   '/admin/category-delete',
   '/admin/check',
+  '/admin/files',
+  '/admin/user-update',
+  '/uploads/image-delete',
+  UploadURLS.news,
+  UploadURLS.avatar,
+  UploadURLS.gallery,
+  UploadURLS.delete_folder,
 ] as const

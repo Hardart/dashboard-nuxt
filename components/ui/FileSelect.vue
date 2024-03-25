@@ -11,7 +11,7 @@ const onImage = (src: string) => {
 </script>
 
 <template>
-  <div class="flex justify-start flex-wrap lg:items-center gap-4 p-4 w-[355px] max-h-96 overflow-y-auto">
+  <div class="grid grid-cols-3 lg:items-center justify-items-center gap-4 p-4 max-h-96 overflow-y-auto min-w-[380px]">
     <div
       class="flex flex-col items-center size-24 justify-center py-4 hover:bg-neutral-200 dark:hover:bg-slate-800 cursor-pointer"
       v-if="!isBasePath"

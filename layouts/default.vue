@@ -86,7 +86,7 @@ const links = [
   {
     id: 'categories',
     label: 'Категории',
-    icon: 'i-heroicons-newspaper',
+    icon: 'i-heroicons-rectangle-stack',
     to: '/categories',
     tooltip: {
       text: 'список категорий',

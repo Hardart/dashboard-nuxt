@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { FormError, FormSubmitEvent } from '#ui/types'
 import { articleFormDataSchema, type ArticleFormData } from '@/scheme/z_article'
+import { UploadURLS } from '~/scheme/enums'
 import type { Category } from '~/scheme/z_category'
 const articleFormData = defineModel<ArticleFormData>({ required: true })
 const tags = defineModel<string[]>('tags', { required: true })
@@ -47,6 +48,8 @@ async function onSubmit(event: FormSubmitEvent<any>) {
             v-model="articleFormData.image"
             :form="{ label: 'Главное изображение' }"
             :btn="{ label: 'Загрузить фото', block: true, color: 'gray' }"
+            name="news"
+            :ui="{ container: 'flex flex-col flex-wrap items-center gap-3', help: 'mt-0' }"
           >
             <template #preview>
               <UAvatar
