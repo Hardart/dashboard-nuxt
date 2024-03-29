@@ -5,11 +5,13 @@ import type { User, UserFormData } from '~/scheme/z_user'
 export const useUserStore = defineStore('user', () => {
   const { decodeAccessToken, setAccessToken, getAccessToken, cleanAccessToken } = useTokens()
   const userState = reactive<UserFormData>({
-    name: '',
+    firstName: '',
+    lastName: '',
     email: '',
     password: '',
     password_new: '',
     avatar: '',
+    fullName: '',
   })
   const user = ref<User>()
   const userFormData = ref({ ...userState })
@@ -30,13 +32,14 @@ export const useUserStore = defineStore('user', () => {
     user.value = decodeAccessToken()
     if (!user.value?.id) return console.log('fail decode')
 
-    const { name, email, avatar, roles, id } = user.value
-    userFormData.value = { ...userFormData.value, id, name, email, avatar, roles }
+    const { email, avatar, roles, id, fullName } = user.value
+    userFormData.value = { ...userFormData.value, id, email, avatar, roles, fullName }
   }
 
   async function login(loginData: UserFormData) {
     loading.value = true
     const { data } = await authAPI.login(loginData)
+
     loading.value = false
     if (!data.value) return false
     setAccessToken(data.value.accessToken)

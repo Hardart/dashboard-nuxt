@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { uploadsAPI } from '@/api/uploads-api'
+import { filesAPI } from '@/api/files-api'
 import { UploadURLS } from '@/scheme/enums'
 const fileRef = ref<{ input: HTMLInputElement }>()
 const src = defineModel({ required: true })
@@ -35,8 +35,8 @@ async function onFileChange(e: Event) {
   const body = new FormData()
   body.append(name, file, file.name)
 
-  const { data } = await uploadsAPI.single(UploadURLS[name], body)
-  src.value = 'http://localhost:3068' + data.value
+  const srcData = await filesAPI.single(UploadURLS[name], body)
+  src.value = 'http://localhost:3068' + srcData
   emit('append-handler', src.value)
 }
 </script>
@@ -58,3 +58,4 @@ async function onFileChange(e: Event) {
 </template>
 
 <style></style>
+~/api/files-api

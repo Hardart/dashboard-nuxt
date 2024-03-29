@@ -36,8 +36,7 @@ export const useCategoriesStore = defineStore('category', () => {
   }
 
   async function fetchCategories() {
-    const { data } = await categoriesAPI.list()
-    categories.value = data.value || []
+    categories.value = await categoriesAPI.list()
   }
 
   async function addCategory(input: { data: CategoryFormData }) {

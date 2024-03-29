@@ -5,11 +5,11 @@ interface UserResponse {
 }
 export const authAPI = {
   async login(body: UserFormData) {
-    return await useCustomFetch<UserResponse>('/admin/login', { body, method: 'POST' })
+    return await useCustomFetch<UserResponse>('/login', { body })
   },
 
   async checkToken() {
-    const { data } = await useCustomFetch<Record<'user', User>>('/admin/check')
+    const { data } = await useCustomFetch<Record<'user', User>>('/check')
     return
   },
 }

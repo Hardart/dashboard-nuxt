@@ -5,6 +5,6 @@ interface UserResponse {
 }
 export const userAPI = {
   async update(body: UserFormData) {
-    return await useCustomFetch<UserResponse>('/admin/user-update', { body, method: 'POST' })
+    return await useCustomFetch<UserResponse>('/api/v1/dashboard/user-update', { body })
   },
 }

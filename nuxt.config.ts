@@ -17,14 +17,11 @@ export default defineNuxtConfig({
     enabled: false,
   },
   routeRules: {
-    '/api/**': {
-      proxy: process.env.BASE_URL,
-    },
-    '/admin/**': {
-      proxy: process.env.ADMIN_URL,
-    },
     '/uploads/**': {
       proxy: process.env.FILES_URL,
+    },
+    '/dashboard/**': {
+      proxy: process.env.BASE_URL,
     },
   },
 })

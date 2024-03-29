@@ -37,7 +37,7 @@ async function onSubmit(event: FormSubmitEvent<any>) {
 
         <FormText
           class="grid grid-cols-2 gap-2 items-center"
-          v-model="userFormData.name"
+          v-model="userFormData.fullName"
           name="name"
           label="Имя"
           icon="i-heroicons-user"
@@ -89,6 +89,6 @@ async function onSubmit(event: FormSubmitEvent<any>) {
 
     <UDivider class="mb-4" />
     <pre>{{ userFormData }}</pre>
-    <pre>{{ user }}</pre>
+    <!-- <pre>{{ user }}</pre> -->
   </UDashboardPanelContent>
 </template>

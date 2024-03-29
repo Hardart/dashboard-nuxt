@@ -27,7 +27,7 @@ export const useTracksStore = defineStore('tracks', () => {
 
   async function fetchTracks() {
     if (tracks.value.length) return
-    const data = await $fetch<Track[]>('/api/tracks')
+    const data = await $fetch<Track[]>('/dashboard/tracks')
     tracks.value = data
     tracksCount.value = data.length
   }

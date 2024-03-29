@@ -1,23 +1,19 @@
 <script setup lang="ts">
-import { uploadsAPI } from '@/api/uploads-api'
+import { filesAPI } from '@/api/files-api'
 const { getFiles, files, goBack, isBasePath, imageUrl, selected, folder, isImage, setSource, onImage, onFolder, correctSrc } =
   useFilesystem()
 getFiles()
 const removeFile = async () => {
-  try {
-    const data = await $fetch('/uploads/image-delete', { method: 'POST', body: { path: imageUrl.value.preview } })
-    console.log(data)
-    files.value = files.value?.filter(item => item !== imageUrl.value.preview)
-    selected.value = NaN
-    imageUrl.value.original = ''
-    imageUrl.value.preview = ''
-  } catch (error) {
-    console.log(error)
-  }
+  const fileData = await filesAPI.deleteSingle('delete_image', { path: imageUrl.value.preview })
+  if (!fileData) return
+  files.value = files.value?.filter(item => item !== imageUrl.value.preview)
+  selected.value = NaN
+  imageUrl.value.original = ''
+  imageUrl.value.preview = ''
 }
 const removeFolder = async () => {
-  const { data } = await uploadsAPI.deleteFolder('delete_folder', { path: folder.value.path })
-  if (!data.value || !data.value.status) return
+  const fileData = await filesAPI.deleteSingle('delete_folder', { path: folder.value.path })
+  if (!fileData) return
   files.value = files.value?.filter(item => item !== folder.value.path)
   folder.value.path = ''
   folder.value.index = NaN
@@ -58,3 +54,4 @@ const removeFolder = async () => {
 </template>
 
 <style></style>
+~/api/files-api

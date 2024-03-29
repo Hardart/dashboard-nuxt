@@ -112,9 +112,9 @@ const items = computed(() => [
     class="w-full"
   >
     <template #default="{ open }">
-      <UButton color="gray" variant="ghost" class="w-full" :label="user?.name" :class="[open && 'bg-gray-50 dark:bg-gray-800']">
+      <UButton color="gray" variant="ghost" class="w-full" :label="user?.fullName" :class="[open && 'bg-gray-50 dark:bg-gray-800']">
         <template #leading>
-          <UAvatar :src="user?.avatar" imgClass="object-cover" :alt="user?.name" />
+          <UAvatar :src="user?.avatar" imgClass="object-cover" :alt="user?.fullName" />
         </template>
 
         <template #trailing>
@@ -125,7 +125,7 @@ const items = computed(() => [
 
     <template #account>
       <div class="text-left">
-        <p>Signed in as</p>
+        <p>Твоя учётка</p>
         <p class="truncate font-medium text-gray-900 dark:text-white">{{ user?.email }}</p>
       </div>
     </template>

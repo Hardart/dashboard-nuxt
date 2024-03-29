@@ -4,6 +4,7 @@ const id = String(route.params.id)
 const { storeRefs, updateArticle, fetchArticle, resetArticle } = useArticleStore()
 const { categories } = useCategoriesStore().storeRefs()
 const { articleFormData, tags, loading } = storeRefs()
+
 await fetchArticle(id)
 onUnmounted(resetArticle)
 </script>
@@ -11,7 +12,7 @@ onUnmounted(resetArticle)
 <template>
   <UDashboardNavbar title="Редактировать новостю">
     <template #right>
-      <UButton label="Назад" icon="i-heroicons-arrow-long-left-16-solid" color="gray" to="/articles" />
+      <UButton label="Назад" icon="i-heroicons-arrow-long-left-16-solid" color="gray" @click="$router.back" />
     </template>
   </UDashboardNavbar>
   <UDashboardPanelContent>

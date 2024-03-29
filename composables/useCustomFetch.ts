@@ -1,48 +1,64 @@
 import type { NitroFetchOptions, NitroFetchRequest } from 'nitropack'
+import type { TokensResponse, CustomResponse } from '~/types/fetch'
+import type { FetchContext, FetchResponse } from 'ofetch'
 import defu from 'defu'
-import { API_URLs } from '@/scheme/enums'
-import type { TokensResponse } from '~/types/fetch'
-const { getAccessToken, setAccessToken, decodeAccessToken, cleanAccessToken } = useTokens()
 
-const refreshOptions: NitroFetchOptions<NitroFetchRequest> = {
-  credentials: 'include',
-  async onResponseError({ response }) {
-    if (response.status == 401) {
-      cleanAccessToken()
-      await navigateTo('/login')
-    }
-  },
-}
+type onResponseError = (ctx: FetchContext & { response: FetchResponse<ResponseType> }) => void | Promise<void>
+type onRequest = (ctx: FetchContext) => void | Promise<void>
 
-export const useCustomFetch = async <T>(url: (typeof API_URLs)[number], options: NitroFetchOptions<NitroFetchRequest> = {}) => {
+export const useCustomFetch = async <T>(url: string, options: NitroFetchOptions<NitroFetchRequest> = {}) => {
   const toast = useToast()
-  const data = ref<T>()
+  const { getAccessToken, setAccessToken, decodeAccessToken, cleanAccessToken } = useTokens()
 
-  const defaults: NitroFetchOptions<NitroFetchRequest> = {
-    onRequest({ options }) {
-      options.headers = { ...options.headers, authorization: `Bearer ${getAccessToken()}` }
-    },
-    async onResponseError({ response }) {
-      if (response.status == 500) showError({ message: response.statusText, statusCode: 500 })
-      else if (response.status == 401) {
-        const tokens = await $fetch<TokensResponse>('/admin/refresh', refreshOptions)
+  const onRefreshResponseError: onResponseError = async ({ response }) => {
+    if (response.status !== 401) return
+    cleanAccessToken()
+    await navigateTo('/login')
+  }
 
-        setAccessToken(tokens.accessToken)
-        data.value = decodeAccessToken() as T
-      } else if (response._data.message)
+  const onDefaultResponseError: onResponseError = async ({ response }) => {
+    switch (response.status) {
+      case 401:
+        const res = await $fetch<CustomResponse<TokensResponse>>('/refresh', refreshOptions)
+        if (res.status === 'success') setAccessToken(res.data.accessToken)
+        break
+
+      case 500:
+        showError({ message: response.statusText, statusCode: 500 })
+        break
+      default:
         toast.add({ title: response._data.message, timeout: 10000, color: 'red', icon: 'i-heroicons-x-circle-20-solid' })
-    },
+        console.log(response._data)
+    }
+  }
+
+  const onDefaultRequest: onRequest = ({ options }) => {
+    options.headers = { ...options.headers, authorization: `Bearer ${getAccessToken()}` }
+  }
+
+  const refreshOptions: NitroFetchOptions<NitroFetchRequest> = {
+    baseURL: '/dashboard',
+    credentials: 'include',
+    method: 'POST',
+    onResponseError: onRefreshResponseError,
+  }
+
+  const defaultOptions: NitroFetchOptions<NitroFetchRequest> = {
+    baseURL: '/dashboard',
+    onRequest: onDefaultRequest,
+    onResponseError: onDefaultResponseError,
     retryStatusCodes: [401],
     method: 'POST',
     retry: 1,
   }
 
-  const params = defu(options, defaults)
+  const fetchParams = defu(options, defaultOptions)
 
   try {
-    data.value = (await $fetch(url, params)) as T
-    return { data }
+    const response = (await $fetch(url, fetchParams)) as CustomResponse<T>
+    if (response.status === 'success') return { data: toRef(response.data) }
+    else return { data: toRef(null), error: { message: response.message, status: response.status, errors: response.errors } }
   } catch (error) {
-    return { data, error }
+    return { data: toRef(null), error }
   }
 }

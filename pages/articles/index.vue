@@ -1,15 +1,7 @@
 <script setup lang="ts">
-import type { Article } from '~/scheme/z_article'
-const router = useRouter()
 const { storeRefs, deleteArticle } = useArticleStore()
 const { sortedArticles, selectedStatuses, statusesFilter, selectedCategories, sort, articlesCount, categoriesFilter, query, loading } =
   storeRefs()
-
-const statuses = ['опубликовано', 'не опубликовано', 'в ожидании']
-
-const editHandle = (item: Article) => {
-  router.push(`/articles/${item.id}`)
-}
 </script>
 
 <template>

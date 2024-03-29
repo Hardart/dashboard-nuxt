@@ -1,32 +1,36 @@
 import { STATUSES, type Article, type ArticleFormData } from '~/scheme/z_article'
+import type { ResponseApi } from '~/types/fetch'
 
 export const articlesAPI = {
   async list() {
-    const { data } = await useAsyncData('news', async () => {
-      const [articles, tags] = await Promise.all<[Promise<Article[]>, Promise<string[]>]>([$fetch('/admin/news'), $fetch('/api/tags')])
-      return { articles, tags }
-    })
-    const news = data.value ? data.value.articles.map(addStatus) : []
-    const tags = data.value?.tags || []
-    return { news, tags }
+    const { data } = await useCustomFetch<ResponseApi.ArticleList>('/article-list')
+    return data.value ? data.value.articles.map(addStatus) : []
   },
 
-  async getOne(query: { id: string }) {
-    return await useCustomFetch<Article>('/admin/article', { query, method: 'GET' })
+  async getOne(body: { id: string }) {
+    const { data } = await useCustomFetch<ResponseApi.ArticleSingle>('/article', { body })
+    return data.value ? data.value.article : undefined
   },
 
   async updateOne(body: ArticleFormData) {
-    const { data } = await useCustomFetch<Article>('/admin/article-update', { body })
-    const article = data.value ? addStatus(data.value) : undefined
-    return { article }
+    const toast = useToast()
+    const { data } = await useCustomFetch<ResponseApi.ArticleSingle>('/article-update', { body })
+    toast.add({ title: 'Новость успешно обновлена', timeout: 3000, color: 'emerald', icon: 'i-heroicons-check-circle-16-solid' })
+    return data.value ? addStatus(data.value.article) : undefined
   },
 
   async addOne(body: ArticleFormData) {
-    await useCustomFetch<Article>('/admin/article-add', { body })
+    const toast = useToast()
+    const { data } = await useCustomFetch<ResponseApi.ArticleSingle>('/article-add', { body })
+    toast.add({ title: 'Новость успешно добавлена', timeout: 3000, color: 'emerald', icon: 'i-heroicons-check-circle-16-solid' })
+    return data.value ? addStatus(data.value.article) : undefined
   },
 
   async deleteOne(body: { id: string }) {
-    return await useCustomFetch<Article>('/admin/article-delete', { body })
+    const toast = useToast()
+    const { data } = await useCustomFetch<ResponseApi.ArticleSingle>('/article-delete', { body })
+    toast.add({ title: 'Новость успешно удалена', timeout: 3000, color: 'emerald', icon: 'i-heroicons-check-circle-16-solid' })
+    return data.value ? data.value.article : undefined
   },
 }
 

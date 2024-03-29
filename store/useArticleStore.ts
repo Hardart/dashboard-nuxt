@@ -53,6 +53,7 @@ export const useArticleStore = defineStore('article', () => {
 
   const sortedArticles = computed(() =>
     filteredArticles.value.sort((a, b) => {
+      console.log('filter')
       const aValue = a[sort.value.column]
       const bValue = b[sort.value.column]
 
@@ -77,37 +78,40 @@ export const useArticleStore = defineStore('article', () => {
 
   async function fetchArticles() {
     loading.value = true
-    const { news, tags: tagList } = await articlesAPI.list()
-    articles.value = news
-    tags.value = tagList
+    const articleList = await articlesAPI.list()
+    articles.value = articleList
     loading.value = false
   }
 
   async function fetchArticle(id: string) {
     loading.value = true
-    const { data } = await articlesAPI.getOne({ id })
-    if (!data.value) return
-    transformArticleToFormData(data.value)
+    const articleData = await articlesAPI.getOne({ id })
+    if (!articleData) return
+    transformArticleToFormData(articleData)
     loading.value = false
   }
 
   async function updateArticle(input: ArticleFormData) {
     loading.value = true
-    const { article } = await articlesAPI.updateOne(input)
-    if (!article) return
+    const articleData = await articlesAPI.updateOne(input)
+    if (!articleData) return
     articles.value = articles.value.filter(item => item.id !== input.id)
-    articles.value.push(article)
+    articles.value.push(articleData)
     loading.value = false
   }
 
   async function addArticle(input: ArticleFormData) {
-    await articlesAPI.addOne(input)
+    loading.value = true
+    const articleData = await articlesAPI.addOne(input)
+    if (!articleData) return
+    articles.value.push(articleData)
+    loading.value = false
   }
 
   async function deleteArticle(id: string) {
     loading.value = true
-    const { data } = await articlesAPI.deleteOne({ id })
-    if (!data.value) return
+    const data = await articlesAPI.deleteOne({ id })
+    if (!data) return
     articles.value = articles.value.filter(item => item.id !== id)
     loading.value = false
   }

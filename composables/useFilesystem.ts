@@ -1,4 +1,5 @@
 import { createSharedComposable } from '@vueuse/core'
+import type { ResponseApi } from '~/types/fetch'
 
 const _useFilesystem = () => {
   const files = ref<string[]>()
@@ -28,8 +29,8 @@ const _useFilesystem = () => {
   }
 
   const getFiles = async () => {
-    const { data } = await useCustomFetch<string[]>('/admin/files', { query: { src: src.value }, method: 'GET' })
-    files.value = data.value
+    const { data } = await useCustomFetch<ResponseApi.FileList>('/files', { body: { src: src.value } })
+    files.value = data.value?.files
   }
 
   const goBack = () => {

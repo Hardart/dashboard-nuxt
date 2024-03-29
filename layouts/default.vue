@@ -103,16 +103,16 @@ const links = [
       shortcuts: ['G', 'N'],
     },
   },
-  {
-    id: 'tracks',
-    label: 'Треки',
-    icon: 'i-heroicons-musical-note',
-    to: '/tracks',
-    tooltip: {
-      text: 'список песен',
-      shortcuts: ['G', 'M'],
-    },
-  },
+  // {
+  //   id: 'tracks',
+  //   label: 'Треки',
+  //   icon: 'i-heroicons-musical-note',
+  //   to: '/tracks',
+  //   tooltip: {
+  //     text: 'список песен',
+  //     shortcuts: ['G', 'M'],
+  //   },
+  // },
   {
     id: 'files',
     label: 'Файлы',

@@ -1,24 +1,29 @@
 import type { Category, CategoryFormData } from '~/scheme/z_category'
+import type { ResponseApi } from '~/types/fetch'
 
 export const categoriesAPI = {
   async list() {
-    const nuxt = useNuxtApp()
-    return await useAsyncData<Category[]>('categories', () => $fetch('/api/categories'), { getCachedData: key => nuxt.payload.data[key] })
+    const { data } = await useCustomFetch<ResponseApi.CategoryList>('/category-list')
+    return data.value ? data.value.categories : []
   },
 
-  async getOne(query: { id: string }) {
-    return await useCustomFetch<Category>('/admin/category', { query })
+  async getOne(body: { id: string }) {
+    const { data } = await useCustomFetch<ResponseApi.CategorySingle>('/category', { body })
+    return data.value ? data.value.category : undefined
   },
 
   async updateOne(body: CategoryFormData) {
-    return await useCustomFetch<Category>('/admin/category-update', { body, method: 'POST' })
+    const { data } = await useCustomFetch<ResponseApi.CategorySingle>('/category-update', { body })
+    return data.value ? data.value.category : undefined
   },
 
   async addOne(body: CategoryFormData) {
-    return await useCustomFetch<Category>('/admin/category-add', { body, method: 'POST' })
+    const { data } = await useCustomFetch<ResponseApi.CategorySingle>('/category-add', { body })
+    return data.value ? data.value.category : undefined
   },
 
   async deleteOne(body: { id: string }) {
-    return await useCustomFetch<Category>('/admin/category-delete', { body, method: 'POST' })
+    const { data } = await useCustomFetch<ResponseApi.CategorySingle>('/category-delete', { body })
+    return data.value ? data.value.category : undefined
   },
 }
