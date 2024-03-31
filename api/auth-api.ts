@@ -10,6 +10,7 @@ export const authAPI = {
 
   async checkToken() {
     const { data } = await useCustomFetch<Record<'user', User>>('/check')
+    console.log(data)
     return
   },
 }

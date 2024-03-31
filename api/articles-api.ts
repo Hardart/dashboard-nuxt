@@ -4,7 +4,9 @@ import type { ResponseApi } from '~/types/fetch'
 export const articlesAPI = {
   async list() {
     const { data } = await useCustomFetch<ResponseApi.ArticleList>('/article-list')
-    return data.value ? data.value.articles.map(addStatus) : []
+    const articles = data.value?.articles.map(addStatus) || []
+    const tags = data.value?.tags || []
+    return { articles, tags }
   },
 
   async getOne(body: { id: string }) {
@@ -15,21 +17,24 @@ export const articlesAPI = {
   async updateOne(body: ArticleFormData) {
     const toast = useToast()
     const { data } = await useCustomFetch<ResponseApi.ArticleSingle>('/article-update', { body })
-    toast.add({ title: 'Новость успешно обновлена', timeout: 3000, color: 'emerald', icon: 'i-heroicons-check-circle-16-solid' })
+    if (data.value)
+      toast.add({ title: 'Новость успешно обновлена', timeout: 3000, color: 'emerald', icon: 'i-heroicons-check-circle-16-solid' })
     return data.value ? addStatus(data.value.article) : undefined
   },
 
   async addOne(body: ArticleFormData) {
     const toast = useToast()
     const { data } = await useCustomFetch<ResponseApi.ArticleSingle>('/article-add', { body })
-    toast.add({ title: 'Новость успешно добавлена', timeout: 3000, color: 'emerald', icon: 'i-heroicons-check-circle-16-solid' })
+    if (data.value)
+      toast.add({ title: 'Новость успешно добавлена', timeout: 3000, color: 'emerald', icon: 'i-heroicons-check-circle-16-solid' })
     return data.value ? addStatus(data.value.article) : undefined
   },
 
   async deleteOne(body: { id: string }) {
     const toast = useToast()
     const { data } = await useCustomFetch<ResponseApi.ArticleSingle>('/article-delete', { body })
-    toast.add({ title: 'Новость успешно удалена', timeout: 3000, color: 'emerald', icon: 'i-heroicons-check-circle-16-solid' })
+    if (data.value)
+      toast.add({ title: 'Новость успешно удалена', timeout: 3000, color: 'emerald', icon: 'i-heroicons-check-circle-16-solid' })
     return data.value ? data.value.article : undefined
   },
 }

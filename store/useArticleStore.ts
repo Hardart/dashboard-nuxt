@@ -53,7 +53,6 @@ export const useArticleStore = defineStore('article', () => {
 
   const sortedArticles = computed(() =>
     filteredArticles.value.sort((a, b) => {
-      console.log('filter')
       const aValue = a[sort.value.column]
       const bValue = b[sort.value.column]
 
@@ -78,8 +77,9 @@ export const useArticleStore = defineStore('article', () => {
 
   async function fetchArticles() {
     loading.value = true
-    const articleList = await articlesAPI.list()
+    const { articles: articleList, tags: tagsList } = await articlesAPI.list()
     articles.value = articleList
+    tags.value = tagsList
     loading.value = false
   }
 

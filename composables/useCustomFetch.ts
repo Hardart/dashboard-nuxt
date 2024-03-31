@@ -13,6 +13,12 @@ export const useCustomFetch = async <T>(url: string, options: NitroFetchOptions<
   const onRefreshResponseError: onResponseError = async ({ response }) => {
     if (response.status !== 401) return
     cleanAccessToken()
+    toast.add({
+      title: 'Время сессии истекло, войдите в свою учетную запись снова',
+      timeout: 10000,
+      color: 'red',
+      icon: 'i-heroicons-x-circle-20-solid',
+    })
     await navigateTo('/login')
   }
 

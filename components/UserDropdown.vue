@@ -104,15 +104,11 @@ const items = computed(() => [
 </script>
 
 <template>
-  <UDropdown
-    mode="hover"
-    :items="items"
-    :ui="{ width: 'w-full', item: { disabled: 'cursor-text select-text' } }"
-    :popper="{ strategy: 'absolute', placement: 'top' }"
-    class="w-full"
-  >
+  <UDropdown mode="hover" :items="items" :ui="{ width: 'w-full', item: { disabled: 'cursor-text select-text' } }"
+    :popper="{ strategy: 'absolute', placement: 'top' }" class="w-full">
     <template #default="{ open }">
-      <UButton color="gray" variant="ghost" class="w-full" :label="user?.fullName" :class="[open && 'bg-gray-50 dark:bg-gray-800']">
+      <UButton color="gray" variant="ghost" class="w-full" :label="user?.fullName"
+        :class="[open && 'bg-gray-50 dark:bg-gray-800']">
         <template #leading>
           <UAvatar :src="user?.avatar" imgClass="object-cover" :alt="user?.fullName" />
         </template>

@@ -11,14 +11,12 @@ export const useUserStore = defineStore('user', () => {
     password: '',
     password_new: '',
     avatar: '',
-    fullName: '',
   })
   const user = ref<User>()
   const userFormData = ref({ ...userState })
   const loading = ref(false)
 
   const isLoggedIn = computed(() => !!user.value?.id)
-  const isAuthenticated = computed(() => !!getAccessToken())
 
   watch(
     () => userFormData.value.avatar,
@@ -27,13 +25,16 @@ export const useUserStore = defineStore('user', () => {
     }
   )
 
-  function setUser() {
-    if (!isAuthenticated.value) return console.log('fail Auth')
+  function setUserDataFromToken() {
+    if (isLoggedIn.value) return
     user.value = decodeAccessToken()
-    if (!user.value?.id) return console.log('fail decode')
+    setUserFormData()
+  }
 
-    const { email, avatar, roles, id, fullName } = user.value
-    userFormData.value = { ...userFormData.value, id, email, avatar, roles, fullName }
+  function setUserFormData() {
+    if (userFormData.value.id || !user.value?.id) return
+    const { email, avatar, roles, id, firstName, lastName } = user.value
+    userFormData.value = { ...userFormData.value, id, email, avatar, roles, firstName, lastName }
   }
 
   async function login(loginData: UserFormData) {
@@ -61,6 +62,7 @@ export const useUserStore = defineStore('user', () => {
   }
 
   async function updateUserInfo(body: UserFormData) {
+
     const { data } = await userAPI.update(body)
     if (!data.value) return false
     const { accessToken } = data.value
@@ -69,7 +71,7 @@ export const useUserStore = defineStore('user', () => {
     return true
   }
 
-  const storeRefs = () => ({ loading, user, isLoggedIn, isAuthenticated, userFormData })
+  const storeRefs = () => ({ loading, user, isLoggedIn, userFormData })
 
-  return { login, storeRefs, tryRefreshToken, logout, setUser, updateUserInfo }
+  return { login, storeRefs, tryRefreshToken, logout, setUserDataFromToken, setUserFormData, updateUserInfo }
 })
