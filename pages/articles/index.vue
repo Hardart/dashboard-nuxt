@@ -8,7 +8,7 @@ const { sortedArticles, selectedStatuses, statusesFilter, selectedCategories, so
   <DashboardNavbar
     title="Новости"
     :badge="articlesCount"
-    :btn="{ label: 'Добавить новость', to: '/articles/add', 'trailing-icon': 'i-heroicons-plus' }"
+    :btn="{ label: 'Добавить новость', to: '/articles/add', trailingIcon: 'i-heroicons-plus' }"
     query-input
     v-model="query"
   />

@@ -20,7 +20,7 @@ export default defineNuxtConfig({
     '/uploads/**': {
       proxy: process.env.FILES_URL,
     },
-    '/dashboard/**': {
+    '/v1/dashboard/**': {
       proxy: process.env.BASE_URL,
     },
   },

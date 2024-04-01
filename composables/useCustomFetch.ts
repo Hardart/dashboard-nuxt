@@ -43,14 +43,14 @@ export const useCustomFetch = async <T>(url: string, options: NitroFetchOptions<
   }
 
   const refreshOptions: NitroFetchOptions<NitroFetchRequest> = {
-    baseURL: '/dashboard',
+    baseURL: '/v1/dashboard',
     credentials: 'include',
     method: 'POST',
     onResponseError: onRefreshResponseError,
   }
 
   const defaultOptions: NitroFetchOptions<NitroFetchRequest> = {
-    baseURL: '/dashboard',
+    baseURL: '/v1/dashboard',
     onRequest: onDefaultRequest,
     onResponseError: onDefaultResponseError,
     retryStatusCodes: [401],
