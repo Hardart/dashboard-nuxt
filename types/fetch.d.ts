@@ -1,6 +1,7 @@
 import type { Article } from '~/scheme/z_article'
 import type { Category } from '~/scheme/z_category'
 import type { Program } from '~/scheme/z_program'
+import type { User } from '~/scheme/z_user'
 
 export interface CustomFetchOptions {
   url: string
@@ -16,17 +17,18 @@ export interface TokensResponse {
 
 export type CustomResponse<T> =
   | {
-    status: 'success'
-    data: T
-  }
+      status: 'success'
+      data: T
+    }
   | {
-    status: 'fail' | 'error'
-    message: string
-    errors: object[]
-  }
+      status: 'fail' | 'error'
+      message: string
+      errors: object[]
+    }
 
 export declare module ResponseApi {
-  export type ArticleList = { articles: Article[], tags: string[] }
+  type LoginData = { accessToken: string; user: User }
+  export type ArticleList = { articles: Article[]; tags: string[] }
   export type ArticleSingle = { article: Article }
   export type CategoryList = { categories: Category[] }
   export type CategorySingle = { category: Category }

@@ -114,6 +114,16 @@ const links = [
   //   },
   // },
   {
+    id: 'programs',
+    label: 'Программы',
+    icon: 'i-heroicons-radio',
+    to: '/programs',
+    tooltip: {
+      text: 'список программ',
+      shortcuts: ['G', 'P'],
+    },
+  },
+  {
     id: 'files',
     label: 'Файлы',
     icon: 'i-heroicons-folder',

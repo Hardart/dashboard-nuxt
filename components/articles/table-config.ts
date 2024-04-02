@@ -1,5 +1,3 @@
-import type { Article } from '~/scheme/z_article'
-
 export const columns = [
   {
     key: 'title',

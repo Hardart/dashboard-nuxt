@@ -9,6 +9,7 @@ type onRequest = (ctx: FetchContext) => void | Promise<void>
 export const useCustomFetch = async <T>(url: string, options: NitroFetchOptions<NitroFetchRequest> = {}) => {
   const toast = useToast()
   const { getAccessToken, setAccessToken, decodeAccessToken, cleanAccessToken } = useTokens()
+  const errorData = ref()
 
   const onRefreshResponseError: onResponseError = async ({ response }) => {
     if (response.status !== 401) return
@@ -34,7 +35,7 @@ export const useCustomFetch = async <T>(url: string, options: NitroFetchOptions<
         break
       default:
         toast.add({ title: response._data.message, timeout: 10000, color: 'red', icon: 'i-heroicons-x-circle-20-solid' })
-        console.log(response._data)
+        errorData.value = response._data
     }
   }
 
@@ -61,10 +62,10 @@ export const useCustomFetch = async <T>(url: string, options: NitroFetchOptions<
   const fetchParams = defu(options, defaultOptions)
 
   try {
-    const response = (await $fetch(url, fetchParams)) as CustomResponse<T>
+    const response = await $fetch<CustomResponse<T>>(url, fetchParams)
     if (response.status === 'success') return { data: toRef(response.data) }
     else return { data: toRef(null), error: { message: response.message, status: response.status, errors: response.errors } }
   } catch (error) {
-    return { data: toRef(null), error }
+    return { data: toRef(null), error: toValue(errorData) }
   }
 }

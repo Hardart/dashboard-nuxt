@@ -32,7 +32,7 @@ export const useUserStore = defineStore('user', () => {
   }
 
   function setUserFormData() {
-    if (userFormData.value.id || !user.value?.id) return
+    if (!user.value?.id) return console.warn('NO USER')
     const { email, avatar, roles, id, firstName, lastName } = user.value
     userFormData.value = { ...userFormData.value, id, email, avatar, roles, firstName, lastName }
   }
@@ -44,7 +44,8 @@ export const useUserStore = defineStore('user', () => {
     loading.value = false
     if (!data.value) return false
     setAccessToken(data.value.accessToken)
-    user.value = decodeAccessToken()
+    user.value = data.value.user
+    setUserFormData()
     return true
   }
 
@@ -62,7 +63,6 @@ export const useUserStore = defineStore('user', () => {
   }
 
   async function updateUserInfo(body: UserFormData) {
-
     const { data } = await userAPI.update(body)
     if (!data.value) return false
     const { accessToken } = data.value

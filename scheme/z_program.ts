@@ -4,6 +4,15 @@ export type Program = z.output<typeof programSchema>
 export type ProgramSchedule = z.output<typeof scheduleSchema>
 export type ProgramFormData = z.output<typeof programFormData>
 
+export interface Weekday {
+  id: number
+  title: {
+    full: string
+    short: string
+  }
+  selected: boolean
+}
+
 const scheduleSchema = z.object({
   dayId: z.array(z.number()),
   start: z.object({

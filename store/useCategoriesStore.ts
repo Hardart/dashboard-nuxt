@@ -40,19 +40,19 @@ export const useCategoriesStore = defineStore('category', () => {
   }
 
   async function addCategory(input: { data: CategoryFormData }) {
-    const { data } = await categoriesAPI.addOne(input.data)
-    if (!data.value) return
-    categories.value.unshift(data.value)
+    const response = await categoriesAPI.addOne(input.data)
+    if (!response) return console.warn('Данные не получены')
+    categories.value.unshift(response)
   }
 
   async function updateCategory(input: { data: CategoryFormData }) {
     const response = await categoriesAPI.updateOne(input.data)
-    if (!response) return
+    if (!response) return console.warn('Данные не получены')
   }
 
   async function deleteCategory(id: string) {
     const response = await categoriesAPI.deleteOne({ id })
-    if (!response) return
+    if (!response) return console.warn('Данные не получены')
     categories.value = categories.value.filter(item => item.id !== id)
   }
 

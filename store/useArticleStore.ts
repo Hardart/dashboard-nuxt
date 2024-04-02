@@ -86,34 +86,34 @@ export const useArticleStore = defineStore('article', () => {
   async function fetchArticle(id: string) {
     loading.value = true
     const articleData = await articlesAPI.getOne({ id })
-    if (!articleData) return
-    transformArticleToFormData(articleData)
     loading.value = false
+    if (!articleData) return console.warn('Данные не получены')
+    transformArticleToFormData(articleData)
   }
 
   async function updateArticle(input: ArticleFormData) {
     loading.value = true
     const articleData = await articlesAPI.updateOne(input)
-    if (!articleData) return
+    loading.value = false
+    if (!articleData) return console.warn('Данные не получены')
     articles.value = articles.value.filter(item => item.id !== input.id)
     articles.value.push(articleData)
-    loading.value = false
   }
 
   async function addArticle(input: ArticleFormData) {
     loading.value = true
     const articleData = await articlesAPI.addOne(input)
-    if (!articleData) return
-    articles.value.push(articleData)
     loading.value = false
+    if (!articleData) return console.warn('Данные не получены')
+    articles.value.push(articleData)
   }
 
   async function deleteArticle(id: string) {
     loading.value = true
     const data = await articlesAPI.deleteOne({ id })
-    if (!data) return
-    articles.value = articles.value.filter(item => item.id !== id)
     loading.value = false
+    if (!data) return console.warn('Данные не получены')
+    articles.value = articles.value.filter(item => item.id !== id)
   }
 
   function storeRefs() {

@@ -36,18 +36,8 @@ provide('tiptap', editor)
     <EditorFloatLeft />
     <EditorFloatRight />
     <EditorResetFloat />
-    <UiUploadImage
-      name="news"
-      v-model="image.src"
-      @append-handler="image.apply"
-      :btn="{ variant: 'outline', icon: 'i-material-symbols-add-photo-alternate-outline-rounded', color: 'gray', class: 'editor__button' }"
-    />
-    <UPopover>
-      <UButton square variant="outline" color="gray" icon="i-material-symbols-image-search-rounded" class="editor__button" />
-      <template #panel="{ close }">
-        <UiFileSelect v-model="image.src" @close="close" @append-handler="image.apply" />
-      </template>
-    </UPopover>
+    <EditorUploadImage v-model="image" />
+    <EditorSelectImage v-model="image" />
   </div>
   <UFormGroup label="Текст новости" name="content" required>
     <TiptapEditorContent

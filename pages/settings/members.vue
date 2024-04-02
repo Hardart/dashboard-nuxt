@@ -95,7 +95,7 @@ const filteredMembers = computed(() => {
       :ui="{ container: 'lg:sticky top-2' }"
     >
       <template #links>
-        <UButton label="Invite people" color="black" @click="isInviteModalOpen = true" />
+        <UButton label="Добавить пользователя" color="black" @click="isInviteModalOpen = true" />
       </template>
 
       <UCard :ui="{ header: { padding: 'p-4 sm:px-6' }, body: { padding: '' } }" class="min-w-0">
@@ -110,8 +110,8 @@ const filteredMembers = computed(() => {
 
     <UDashboardModal
       v-model="isInviteModalOpen"
-      title="Invite people"
-      description="Invite new members by email address"
+      title="Добавить пользователя"
+      description="Добавить редактора сайта или ведущего программ"
       :ui="{ width: 'sm:max-w-md' }"
     >
       <!-- ~/components/settings/MembersForm.vue -->
