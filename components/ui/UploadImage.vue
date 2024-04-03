@@ -2,6 +2,7 @@
 import { filesAPI } from '@/api/files-api'
 import { UploadURLS } from '@/scheme/enums'
 import type { Button } from '#ui/types'
+import type { ImageName } from '~/types'
 const fileRef = ref<{ input: HTMLInputElement }>()
 const src = defineModel({ required: true })
 const emit = defineEmits(['append-handler'])
@@ -10,7 +11,8 @@ const { name } = defineProps<{
   label?: string
   class?: string
   btn?: Button & { class?: string }
-  name: 'news' | 'avatar' | 'gallery'
+  selectBtn?: Button & { class?: string }
+  name: ImageName
   showSelect?: boolean
 }>()
 
@@ -37,7 +39,12 @@ async function onFileChange(e: Event) {
   <UFormGroup :name :label :class v-bind="{ ...form, ...$attrs }">
     <slot name="preview"></slot>
     <UButton v-bind="{ ...btn, ...$attrs }" @click="onFileClick" />
-    <UiImageSelect v-if="showSelect" v-model="src" :btn="{ label: 'Выбрать фото', block: true }" :container="{ class: 'w-full' }" />
+    <UiImageSelect
+      v-if="showSelect"
+      v-model="src"
+      :btn="{ label: 'Выбрать фото', block: true }"
+      :container="{ class: selectBtn?.class || 'w-full' }"
+    />
     <UInput ref="fileRef" type="file" class="hidden" accept=".jpg, .jpeg, .png, .webp, .avif" @change="onFileChange" />
   </UFormGroup>
 </template>

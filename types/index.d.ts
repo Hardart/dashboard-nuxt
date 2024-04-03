@@ -36,6 +36,7 @@ export interface Notification {
 }
 
 export type Period = 'daily' | 'weekly' | 'monthly'
+export type ImageName = 'gallery' | 'news' | 'programs' | 'category' | 'avatar'
 
 export interface Range {
   start: Date

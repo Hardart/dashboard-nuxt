@@ -1,5 +1,10 @@
 <script setup lang="ts">
+import type { ImageName } from '~/types'
+
 const src = defineModel({ required: true })
+defineProps<{
+  name: ImageName
+}>()
 </script>
 
 <template>
@@ -7,7 +12,7 @@ const src = defineModel({ required: true })
     v-model="src"
     :form="{ label: 'Главное изображение' }"
     :btn="{ label: 'Загрузить фото', block: true, color: 'gray' }"
-    name="news"
+    :name
     :ui="{ container: 'flex flex-col flex-wrap items-center gap-3 mb-2', help: 'mt-0' }"
     showSelect
   >

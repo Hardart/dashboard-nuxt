@@ -2,6 +2,7 @@
 const route = useRoute()
 const appConfig = useAppConfig()
 const { isHelpSlideoverOpen } = useDashboard()
+const {user} = useUserStore().storeRefs()
 
 const linksTemplate = [
   {
@@ -72,7 +73,7 @@ const linksTemplate = [
   },
 ]
 
-const links = [
+const linksBase = [
   {
     id: 'home',
     label: 'Главная',
@@ -132,6 +133,7 @@ const links = [
       text: 'список файлов',
       shortcuts: ['G', 'F'],
     },
+    exeptRoles: ['editor', 'host']
   },
   {
     id: 'settings',
@@ -147,10 +149,12 @@ const links = [
       {
         label: 'Администраторы',
         to: '/settings/members',
+        exeptRoles: ['hero', 'admin']
       },
       {
         label: 'Уведомления',
         to: '/settings/notifications',
+        exeptRoles: ['hero', 'admin']
       },
     ],
     tooltip: {
@@ -159,6 +163,11 @@ const links = [
     },
   },
 ]
+
+const links = computed(() => linksBase.filter(link => {
+  return !user.value?.roles.some(role => link.exeptRoles?.includes(role))
+}))
+
 
 const footerLinks = [
   {
@@ -177,7 +186,7 @@ const groups = [
   {
     key: 'links',
     label: 'Go to',
-    commands: links.map(link => ({
+    commands: links.value.map(link => ({
       ...link,
       shortcuts: link.tooltip?.shortcuts,
     })),

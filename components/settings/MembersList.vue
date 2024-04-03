@@ -1,14 +1,16 @@
 <script setup lang="ts">
-import type { Member } from '~/types'
+import type { User } from '~/scheme/z_user';
+
+
 
 defineProps({
   members: {
-    type: Array as PropType<Member[]>,
+    type: Array as PropType<User[]>,
     default: () => []
   }
 })
 
-function getItems (member: Member) {
+function getItems (member: User) {
   return [[{
     label: 'Edit member',
     click: () => console.log('Edit', member)
@@ -19,32 +21,33 @@ function getItems (member: Member) {
   }]]
 }
 
-function onRoleChange (member: Member, role: string) {
+function onRoleChange (member: User, role: string) {
   // Do something with data
-  console.log(member.username, role)
+  console.log(member.fullName, role)
 }
+
 </script>
 
 <template>
   <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-800">
-    <li v-for="(member, index) in members" :key="index" class="flex items-center justify-between gap-3 py-3 px-4 sm:px-6">
+    <li v-for="(user, index) in members" :key="index" class="flex items-center justify-between gap-3 py-3 px-4 sm:px-6">
       <div class="flex items-center gap-3 min-w-0">
-        <UAvatar v-bind="member.avatar" size="md" />
+        <UAvatar :src="user.avatar" size="md" />
 
         <div class="text-sm min-w-0">
           <p class="text-gray-900 dark:text-white font-medium truncate">
-            {{ member.name }}
+            {{ user.fullName }}
           </p>
           <p class="text-gray-500 dark:text-gray-400 truncate">
-            {{ member.username }}
+            {{ user.email }}
           </p>
         </div>
       </div>
 
       <div class="flex items-center gap-3">
-        <USelectMenu :model-value="member.role" :options="['member', 'owner']" color="white" :ui-menu="{ select: 'capitalize', option: { base: 'capitalize' } }" @update:model-value="onRoleChange(member, $event)" />
+        <p class="text-gray-500 dark:text-gray-400">{{ user.roles }}</p>
 
-        <UDropdown :items="getItems(member)" position="bottom-end">
+        <UDropdown :items="getItems(user)" position="bottom-end">
           <UButton icon="i-heroicons-ellipsis-vertical" color="gray" variant="ghost" />
         </UDropdown>
       </div>

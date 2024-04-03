@@ -65,10 +65,10 @@ async function onSubmit(event: FormSubmitEvent<any>) {
           class="grid grid-cols-2 gap-2 items-center"
           v-model="userFormData.avatar"
           name="avatar"
-          :url="UploadURLS.avatar"
           :btn="{ label: 'Загрузить фото', color: 'gray' }"
           :ui="{ container: 'flex gap-3 items-center' }"
           show-select
+          :select-btn="{ class: 'w-auto' }"
         >
           <template #preview>
             <UAvatar icon="i-heroicons-photo" size="xl" :src="userFormData.avatar" imgClass="object-cover object-top w-full h-full" />

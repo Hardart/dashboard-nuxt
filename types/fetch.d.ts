@@ -28,11 +28,12 @@ export type CustomResponse<T> =
 
 export declare module ResponseApi {
   type LoginData = { accessToken: string; user: User }
-  export type ArticleList = { articles: Article[]; tags: string[] }
-  export type ArticleSingle = { article: Article }
-  export type CategoryList = { categories: Category[] }
-  export type CategorySingle = { category: Category }
-  export type FileList = { files: string[] }
-  export type FileSingle = { path: string }
-  export type ProgramList = { programs: Program[] }
+  type ArticleList = { articles: Article[]; tags: string[] }
+  type ArticleSingle = { article: Article }
+  type CategoryList = { categories: Category[] }
+  type CategorySingle = { category: Category }
+  type FileList = { files: string[] }
+  type FileSingle = { path: string }
+  type ProgramList = { programs: Program[] }
+  type UserList = { users: User[] }
 }

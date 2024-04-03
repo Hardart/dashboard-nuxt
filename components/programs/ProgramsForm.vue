@@ -35,7 +35,7 @@ function resetScheduleState() {
         <UButton label="Добавить расписание" @click="toggleModalState(true)" class="mt-8" />
       </div>
       <div class="col-span-2">
-        <FormImageUpload v-model="programState.image" />
+        <FormImageUpload v-model="programState.image" name="programs"/>
       </div>
     </div>
 
