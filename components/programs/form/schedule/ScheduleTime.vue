@@ -42,7 +42,7 @@ function calcEndMinutes() {
 
 function increaseTime(value: number | string, inc: number, type: 'mm' | 'hh' = 'hh') {
   const time = (typeof value === 'number' ? value : parseInt(value)) + inc
-  const topValue = type === 'mm' ? 60 : 23
+  const topValue = type === 'mm' ? 60 : 24
   return time >= topValue ? convertTimeToString(0) : convertTimeToString(time)
 }
 

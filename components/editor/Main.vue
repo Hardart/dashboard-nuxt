@@ -3,32 +3,38 @@ import { Image } from '~/utils/tiptap/Image'
 const content = defineModel<string | undefined>({ required: true })
 
 const image = reactive({
-  src: 'https://www.diera.ru/blog/content/images/2022/11/nuxt3-logo-dark.png',
-  description: '',
-  apply() {
-    editor.value?.chain().focus().setImage({ src: image.src, title: 'IMAGE', desc: image.description }).run()
-
-    // editor.value?.commands.enter()
-    // editor.value?.commands.focus('end')
-  },
+  src: '',
+  description: ''
 })
+
+watch(
+  () => image.src,
+  () => {
+    editor.value?.chain().focus().setImage({ src: image.src }).run()
+  }
+)
 
 const editor = useEditor({
   content: content.value,
   extensions: [TiptapStarterKit, Image],
   editorProps: {
-    attributes: { class: 'prose max-w-none dark:prose-invert prose-sm sm:prose-base m-5 focus:outline-none' },
+    attributes: {
+      class:
+        'prose max-w-none dark:prose-invert prose-sm sm:prose-base m-5 focus:outline-none'
+    }
   },
   onUpdate() {
-    content.value = editor.value?.getText().trim() ? editor.value?.getHTML() : editor.value?.getText().trim()
-  },
+    content.value = editor.value?.getText().trim()
+      ? editor.value?.getHTML()
+      : editor.value?.getText().trim()
+  }
 })
 
 provide('tiptap', editor)
 </script>
 
 <template>
-  <div v-if="editor" class="flex gap-x-3 mb-5">
+  <div v-if="editor" class="mb-5 flex gap-x-3">
     <EditorHeading />
     <EditorBold />
     <EditorItalic />
@@ -36,13 +42,13 @@ provide('tiptap', editor)
     <EditorFloatLeft />
     <EditorFloatRight />
     <EditorResetFloat />
-    <EditorUploadImage v-model="image" />
-    <EditorSelectImage v-model="image" />
+    <EditorUploadImage v-model="image.src" />
+    <EditorSelectImage v-model="image.src" />
   </div>
   <UFormGroup label="Текст новости" name="content" required>
     <TiptapEditorContent
       :editor="editor"
-      class="bg-white dark:bg-zinc-800 border dark:border-zinc-700 rounded-lg min-h-[400px] max-h-[400px] overflow-y-auto cursor-text"
+      class="max-h-[400px] min-h-[400px] cursor-text overflow-y-auto rounded-lg border bg-white dark:border-zinc-700 dark:bg-zinc-800"
       @click="editor?.commands.focus()"
     />
   </UFormGroup>
@@ -50,8 +56,8 @@ provide('tiptap', editor)
 
 <style>
 .editor__button {
-  @apply size-9 grid place-items-center rounded-md  bg-white dark:bg-zinc-900 ring-zinc-600/30 dark:ring-zinc-600/80
-        hover:border-neutral-300 dark:hover:bg-zinc-800 dark:active:bg-zinc-700;
+  @apply grid size-9 place-items-center rounded-md  bg-white ring-zinc-600/30 hover:border-neutral-300 dark:bg-zinc-900
+        dark:ring-zinc-600/80 dark:hover:bg-zinc-800 dark:active:bg-zinc-700;
 }
 
 .editor__button.active {

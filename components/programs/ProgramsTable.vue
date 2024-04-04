@@ -19,8 +19,8 @@ const editItems = (program: Program) => [
       icon: 'i-heroicons-pencil-square-20-solid',
       click: () => {
         navigateTo(`/programs/${program.id}`)
-      },
-    },
+      }
+    }
   ],
   [
     {
@@ -28,9 +28,9 @@ const editItems = (program: Program) => [
       icon: 'i-heroicons-trash-20-solid',
       click: () => {
         deleteHandle(program.id)
-      },
-    },
-  ],
+      }
+    }
+  ]
 ]
 </script>
 
@@ -41,7 +41,10 @@ const editItems = (program: Program) => [
     :loading="loading"
     :columns="columns"
     class="w-full"
-    :ui="{ divide: 'divide-gray-200 dark:divide-gray-800', td: { padding: 'py-2' } }"
+    :ui="{
+      divide: 'divide-gray-200 dark:divide-gray-800',
+      td: { padding: 'py-2' }
+    }"
   >
     <template #title-data="{ row }">
       <div class="flex items-center gap-3">
@@ -50,14 +53,18 @@ const editItems = (program: Program) => [
     </template>
 
     <template #image-data="{ row }">
-      <div class="flex items-center gap-3 size-10">
-        <img :src="row.image" class="rounded" alt="" />
+      <div class="flex size-10 items-center gap-3 overflow-clip rounded">
+        <img :src="row.image" class="size-10 object-cover" alt="" />
       </div>
     </template>
 
     <template #actions-data="{ row }">
       <UDropdown :items="editItems(row)">
-        <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />
+        <UButton
+          color="gray"
+          variant="ghost"
+          icon="i-heroicons-ellipsis-horizontal-20-solid"
+        />
       </UDropdown>
     </template>
   </UTable>

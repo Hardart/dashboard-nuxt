@@ -1,54 +1,63 @@
 <script setup lang="ts">
-import type { User } from '~/scheme/z_user';
+import type { User } from '~/scheme/z_user'
 
+defineProps<{
+  users: User[]
+}>()
 
-
-defineProps({
-  members: {
-    type: Array as PropType<User[]>,
-    default: () => []
-  }
-})
-
-function getItems (member: User) {
-  return [[{
-    label: 'Edit member',
-    click: () => console.log('Edit', member)
-  }, {
-    label: 'Remove member',
-    labelClass: 'text-red-500 dark:text-red-400',
-    click: () => console.log('Remove', member)
-  }]]
+function getItems(member: User) {
+  return [
+    [
+      {
+        label: 'Редактировать',
+        click: () => console.log('Edit', member)
+      },
+      {
+        label: 'Удалить',
+        labelClass: 'text-red-500 dark:text-red-400',
+        click: () => console.log('Remove', member)
+      }
+    ]
+  ]
 }
 
-function onRoleChange (member: User, role: string) {
+function onRoleChange(member: User, role: string) {
   // Do something with data
   console.log(member.fullName, role)
 }
-
 </script>
 
 <template>
   <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-800">
-    <li v-for="(user, index) in members" :key="index" class="flex items-center justify-between gap-3 py-3 px-4 sm:px-6">
-      <div class="flex items-center gap-3 min-w-0">
-        <UAvatar :src="user.avatar" size="md" />
+    <li
+      v-for="(user, index) in users"
+      :key="index"
+      class="flex items-center justify-between gap-3 px-4 py-3 sm:px-6"
+    >
+      <div class="flex min-w-0 items-center gap-3">
+        <UAvatar :src="user.avatar" imgClass="object-cover" size="xl" />
 
-        <div class="text-sm min-w-0">
-          <p class="text-gray-900 dark:text-white font-medium truncate">
+        <div class="min-w-0 text-sm">
+          <p class="truncate font-medium text-gray-900 dark:text-white">
             {{ user.fullName }}
           </p>
-          <p class="text-gray-500 dark:text-gray-400 truncate">
+          <p class="truncate text-gray-500 dark:text-gray-400">
             {{ user.email }}
           </p>
         </div>
       </div>
 
       <div class="flex items-center gap-3">
-        <p class="text-gray-500 dark:text-gray-400">{{ user.roles }}</p>
+        <p class="text-gray-500 dark:text-gray-400">
+          {{ user.roles.join(', ') }}
+        </p>
 
         <UDropdown :items="getItems(user)" position="bottom-end">
-          <UButton icon="i-heroicons-ellipsis-vertical" color="gray" variant="ghost" />
+          <UButton
+            icon="i-heroicons-ellipsis-vertical"
+            color="gray"
+            variant="ghost"
+          />
         </UDropdown>
       </div>
     </li>

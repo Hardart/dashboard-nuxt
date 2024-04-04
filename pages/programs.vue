@@ -1,4 +1,7 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const { getProgramList } = useProgramsStore()
+getProgramList()
+</script>
 
 <template>
   <UDashboardPage>

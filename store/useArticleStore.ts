@@ -1,5 +1,9 @@
 import { articlesAPI } from '~/api/articles-api'
-import { STATUSES, type Article, type ArticleFormData } from '~/scheme/z_article'
+import {
+  STATUSES,
+  type Article,
+  type ArticleFormData
+} from '~/scheme/z_article'
 import type { Category } from '~/scheme/z_category'
 
 const sortValues = ['title', 'createdAt'] as const
@@ -18,7 +22,7 @@ export const useArticleStore = defineStore('article', () => {
     publishAt: new Date(),
     content: '',
     isPublished: false,
-    categoryId: '',
+    categoryId: ''
   })
 
   const tags = ref<string[]>([])
@@ -32,22 +36,32 @@ export const useArticleStore = defineStore('article', () => {
   const selectedStatuses = ref<string[]>([])
   const selectedCategories = ref<string[]>([])
   const sort = ref<SortBy>({ column: 'createdAt', direction: 'desc' as const })
-  const categoriesFilter = computed(() => articles.value.reduce(filterCategoriesBunlde, []))
-  const statusesFilter = computed(() => articles.value.reduce(filterStatusesBunlde, []))
+  const categoriesFilter = computed(() =>
+    articles.value.reduce(filterCategoriesBunlde, [])
+  )
+  const statusesFilter = computed(() =>
+    articles.value.reduce(filterStatusesBunlde, [])
+  )
 
   const filterByTitle = computed(() =>
-    articles.value.filter(article =>
-      query.value.trim() ? article.title.toLowerCase().includes(query.value.toLowerCase().trim()) : article
+    articles.value.filter((article) =>
+      query.value.trim()
+        ? article.title.toLowerCase().includes(query.value.toLowerCase().trim())
+        : article
     )
   )
   const filterByStatus = computed(() =>
     selectedStatuses.value.length
-      ? filterByTitle.value.filter(article => selectedStatuses.value.includes(article.status.toLowerCase()))
+      ? filterByTitle.value.filter((article) =>
+          selectedStatuses.value.includes(article.status.toLowerCase())
+        )
       : filterByTitle.value
   )
   const filteredArticles = computed(() =>
     selectedCategories.value.length
-      ? filterByStatus.value.filter(article => selectedCategories.value.includes(article.category.id))
+      ? filterByStatus.value.filter((article) =>
+          selectedCategories.value.includes(article.category.id)
+        )
       : filterByStatus.value
   )
 
@@ -62,12 +76,32 @@ export const useArticleStore = defineStore('article', () => {
     })
   )
 
-  function transformArticleToFormData({ title, image, slug, content, isPublished, tags, category, publishAt, id }: Article) {
-    articleFormData.value = { title, image, slug, content, isPublished, tags, publishAt: new Date(publishAt), categoryId: category.id, id }
+  function transformArticleToFormData({
+    title,
+    image,
+    slug,
+    content,
+    isPublished,
+    tags,
+    category,
+    publishAt,
+    id
+  }: Article) {
+    articleFormData.value = {
+      title,
+      image,
+      slug,
+      content,
+      isPublished,
+      tags,
+      publishAt: new Date(publishAt),
+      categoryId: category.id,
+      id
+    }
   }
 
   function findOne(id: string) {
-    const a = articles.value.find(item => item.id === id)
+    const a = articles.value.find((item) => item.id === id)
     if (a) transformArticleToFormData(a)
   }
 
@@ -96,7 +130,7 @@ export const useArticleStore = defineStore('article', () => {
     const articleData = await articlesAPI.updateOne(input)
     loading.value = false
     if (!articleData) return console.warn('Данные не получены')
-    articles.value = articles.value.filter(item => item.id !== input.id)
+    articles.value = articles.value.filter((item) => item.id !== input.id)
     articles.value.push(articleData)
   }
 
@@ -113,7 +147,7 @@ export const useArticleStore = defineStore('article', () => {
     const data = await articlesAPI.deleteOne({ id })
     loading.value = false
     if (!data) return console.warn('Данные не получены')
-    articles.value = articles.value.filter(item => item.id !== id)
+    articles.value = articles.value.filter((item) => item.id !== id)
   }
 
   function storeRefs() {
@@ -129,7 +163,7 @@ export const useArticleStore = defineStore('article', () => {
       articlesCount,
       categoriesFilter,
       statusesFilter,
-      loading,
+      loading
     }
   }
 
@@ -141,12 +175,13 @@ export const useArticleStore = defineStore('article', () => {
     storeRefs,
     findOne,
     updateArticle,
-    deleteArticle,
+    deleteArticle
   }
 })
 
 function filterCategoriesBunlde(acc: Category[], article: Article) {
-  if (!acc.some(accItem => accItem.id === article.category.id)) acc.push(article.category)
+  if (!acc.some((accItem) => accItem.id === article.category.id))
+    acc.push(article.category)
   return acc
 }
 

@@ -17,13 +17,13 @@ const scheduleSchema = z.object({
   dayId: z.array(z.number()),
   start: z.object({
     hh: z.string(),
-    mm: z.string(),
+    mm: z.string()
   }),
   end: z.object({
     hh: z.string(),
-    mm: z.string(),
+    mm: z.string()
   }),
-  isReplay: z.boolean(),
+  isReplay: z.boolean()
 })
 
 export const programSchema = z.object({
@@ -32,9 +32,9 @@ export const programSchema = z.object({
   description: z.string().optional(),
   image: z.string().optional(),
   hosts: z.array(userSchema),
-  schedule: z.array(scheduleSchema),
+  schedule: z.array(scheduleSchema)
 })
 
 export const programFormData = programSchema.omit({ id: true }).extend({
-  id: z.string().optional(),
+  id: z.string().optional()
 })
