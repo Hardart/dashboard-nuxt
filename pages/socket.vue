@@ -22,7 +22,7 @@ const onMouseDown = (e: PointerEvent) => {
 }
 const onMouseMove = () => {
   if (!pressed.value) return
-  const value = (deltaY.value - y.value) * -1
+  const value = y.value - deltaY.value 
   // height.value = value % 5 == 0 ? value : height.value
   height.value = value
   programs.value[programs.value.length - 1].style =
