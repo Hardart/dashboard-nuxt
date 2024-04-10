@@ -1,21 +1,20 @@
 <script setup lang="ts">
-import type { Weekday } from '~/scheme/z_program'
-
+import { weekdays } from '@/utils/schedule'
 defineProps<{
   isCustomMode: boolean
-  weekdays: Weekday[]
-  onChange: (id: number) => void
 }>()
+
+defineEmits(['onChange'])
 </script>
 
 <template>
-  <div class="flex justify-center gap-5 p-4 ring-1 rounded-lg relative mb-4" v-if="isCustomMode">
+  <div class="relative mb-4 flex justify-center gap-5 rounded-lg p-4 ring-1" v-if="isCustomMode">
     <UCheckbox
-      v-for="(day, index) in weekdays"
+      v-for="day in weekdays"
       :ui="{ base: 'w-5 h-5', label: 'text-base capitalize' }"
       :label="day.title.short"
-      v-model="day.selected"
-      @change="onChange(day.id)"
+      :modelValue="weekdays.includes(day)"
+      @change="$emit('onChange', day.id)"
     />
   </div>
 </template>

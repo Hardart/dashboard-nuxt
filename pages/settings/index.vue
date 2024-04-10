@@ -11,7 +11,10 @@ function validate(state: UserFormData): FormError[] {
   try {
     userFormDataSchema.parse(state)
   } catch (error) {
-    const parsedErrors = (JSON.parse(error as string) as any[]).map(item => ({ path: item.path[0], message: item.message }))
+    const parsedErrors = (JSON.parse(error as string) as any[]).map((item) => ({
+      path: item.path[0],
+      message: item.message
+    }))
     errors.push(...parsedErrors)
     console.log(error)
   }
@@ -29,7 +32,13 @@ async function onSubmit(event: FormSubmitEvent<any>) {
 
 <template>
   <UDashboardPanelContent class="pb-24">
-    <UForm :state="userFormData" :schema="userFormDataSchema" :validate="validate" :validate-on="['submit']" @submit="onSubmit">
+    <UForm
+      :state="userFormData"
+      :schema="userFormDataSchema"
+      :validate="validate"
+      :validate-on="['submit']"
+      @submit="onSubmit"
+    >
       <UDashboardSection title="Профиль" description="Изменение данных учётной записи">
         <template #links>
           <UButton type="submit" label="Сохранить данные" color="black" />
@@ -51,7 +60,7 @@ async function onSubmit(event: FormSubmitEvent<any>) {
         </div>
 
         <FormText
-          class="grid grid-cols-2 gap-2 items-center"
+          class="grid grid-cols-2 items-center gap-2"
           v-model="userFormData.email"
           name="email"
           label="E-mail"
@@ -62,16 +71,21 @@ async function onSubmit(event: FormSubmitEvent<any>) {
 
         <UiUploadImage
           label="Аватар"
-          class="grid grid-cols-2 gap-2 items-center"
+          class="grid grid-cols-2 items-center gap-2"
           v-model="userFormData.avatar"
           name="avatar"
-          :btn="{ label: 'Загрузить фото', color: 'gray' }"
-          :ui="{ container: 'flex gap-3 items-center' }"
-          show-select
+          :btn="{ label: 'Загрузить фото', color: 'gray', size: '2xs' }"
+          :ui="{ container: 'flex gap-2 items-center' }"
           :select-btn="{ class: 'w-auto' }"
+          show-select
         >
           <template #preview>
-            <UAvatar icon="i-heroicons-photo" size="xl" :src="userFormData.avatar" imgClass="object-cover object-top w-full h-full" />
+            <UAvatar
+              icon="i-heroicons-photo"
+              size="xl"
+              :src="userFormData.avatar"
+              imgClass="object-cover w-full h-full"
+            />
           </template>
         </UiUploadImage>
 
@@ -83,7 +97,13 @@ async function onSubmit(event: FormSubmitEvent<any>) {
           class="grid grid-cols-2 gap-2"
           :ui="{ container: '' }"
         >
-          <UInput v-model="userFormData.password" autocomplete="off" type="password" placeholder="Ваш пароль" size="md" />
+          <UInput
+            v-model="userFormData.password"
+            autocomplete="off"
+            type="password"
+            placeholder="Ваш пароль"
+            size="md"
+          />
         </UFormGroup>
 
         <UFormGroup

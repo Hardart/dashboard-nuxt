@@ -19,14 +19,11 @@ const editor = useEditor({
   extensions: [TiptapStarterKit, Image],
   editorProps: {
     attributes: {
-      class:
-        'prose max-w-none dark:prose-invert prose-sm sm:prose-base m-5 focus:outline-none'
+      class: 'prose max-w-none dark:prose-invert prose-sm sm:prose-base m-5 focus:outline-none'
     }
   },
   onUpdate() {
-    content.value = editor.value?.getText().trim()
-      ? editor.value?.getHTML()
-      : editor.value?.getText().trim()
+    content.value = editor.value?.getText().trim() ? editor.value?.getHTML() : editor.value?.getText().trim()
   }
 })
 
@@ -48,7 +45,7 @@ provide('tiptap', editor)
   <UFormGroup label="Текст новости" name="content" required>
     <TiptapEditorContent
       :editor="editor"
-      class="max-h-[400px] min-h-[400px] cursor-text overflow-y-auto rounded-lg border bg-white dark:border-zinc-700 dark:bg-zinc-800"
+      class="max-h-[450px] min-h-[450px] cursor-text overflow-y-auto rounded-lg border bg-white dark:border-zinc-700 dark:bg-zinc-800"
       @click="editor?.commands.focus()"
     />
   </UFormGroup>
@@ -62,5 +59,9 @@ provide('tiptap', editor)
 
 .editor__button.active {
   @apply dark:bg-zinc-800 dark:active:bg-zinc-700;
+}
+
+img.ProseMirror-selectednode {
+  @apply outline outline-2 outline-offset-4 outline-zinc-300/70;
 }
 </style>

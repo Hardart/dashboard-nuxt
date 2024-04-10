@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const { getProgramList } = useProgramsStore()
-getProgramList()
+await getProgramList()
 </script>
 
 <template>

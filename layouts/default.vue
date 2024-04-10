@@ -2,7 +2,7 @@
 const route = useRoute()
 const appConfig = useAppConfig()
 const { isHelpSlideoverOpen } = useDashboard()
-const {user} = useUserStore().storeRefs()
+const { user } = useUserStore().storeRefs()
 
 const linksTemplate = [
   {
@@ -12,8 +12,8 @@ const linksTemplate = [
     to: '/',
     tooltip: {
       text: 'Home',
-      shortcuts: ['G', 'H'],
-    },
+      shortcuts: ['G', 'H']
+    }
   },
   {
     id: 'inbox',
@@ -23,8 +23,8 @@ const linksTemplate = [
     badge: '4',
     tooltip: {
       text: 'Inbox',
-      shortcuts: ['G', 'I'],
-    },
+      shortcuts: ['G', 'I']
+    }
   },
   {
     id: 'users',
@@ -33,8 +33,8 @@ const linksTemplate = [
     to: '/users',
     tooltip: {
       text: 'Users',
-      shortcuts: ['G', 'U'],
-    },
+      shortcuts: ['G', 'U']
+    }
   },
   {
     id: 'users',
@@ -43,8 +43,8 @@ const linksTemplate = [
     to: '/users',
     tooltip: {
       text: 'Users',
-      shortcuts: ['G', 'U'],
-    },
+      shortcuts: ['G', 'U']
+    }
   },
   {
     id: 'settings',
@@ -55,22 +55,22 @@ const linksTemplate = [
       {
         label: 'General',
         to: '/settings',
-        exact: true,
+        exact: true
       },
       {
         label: 'Members',
-        to: '/settings/members',
+        to: '/settings/members'
       },
       {
         label: 'Notifications',
-        to: '/settings/notifications',
-      },
+        to: '/settings/notifications'
+      }
     ],
     tooltip: {
       text: 'Settings',
-      shortcuts: ['G', 'S'],
-    },
-  },
+      shortcuts: ['G', 'S']
+    }
+  }
 ]
 
 const linksBase = [
@@ -81,8 +81,8 @@ const linksBase = [
     to: '/',
     tooltip: {
       text: 'на главную',
-      shortcuts: ['G', 'H'],
-    },
+      shortcuts: ['G', 'H']
+    }
   },
   {
     id: 'categories',
@@ -91,8 +91,8 @@ const linksBase = [
     to: '/categories',
     tooltip: {
       text: 'список категорий',
-      shortcuts: ['G', 'K'],
-    },
+      shortcuts: ['G', 'K']
+    }
   },
   {
     id: 'articles',
@@ -101,8 +101,8 @@ const linksBase = [
     to: '/articles',
     tooltip: {
       text: 'список новостей',
-      shortcuts: ['G', 'N'],
-    },
+      shortcuts: ['G', 'N']
+    }
   },
   // {
   //   id: 'tracks',
@@ -121,8 +121,8 @@ const linksBase = [
     to: '/programs',
     tooltip: {
       text: 'список программ',
-      shortcuts: ['G', 'P'],
-    },
+      shortcuts: ['G', 'P']
+    }
   },
   {
     id: 'files',
@@ -131,7 +131,7 @@ const linksBase = [
     to: '/files',
     tooltip: {
       text: 'список файлов',
-      shortcuts: ['G', 'F'],
+      shortcuts: ['G', 'F']
     },
     exeptRoles: ['editor', 'host']
   },
@@ -144,7 +144,7 @@ const linksBase = [
       {
         label: 'Основные',
         to: '/settings',
-        exact: true,
+        exact: true
       },
       {
         label: 'Администраторы',
@@ -155,41 +155,42 @@ const linksBase = [
         label: 'Уведомления',
         to: '/settings/notifications',
         exeptRoles: ['hero', 'admin']
-      },
+      }
     ],
     tooltip: {
       text: 'Settings',
-      shortcuts: ['G', 'S'],
-    },
-  },
+      shortcuts: ['G', 'S']
+    }
+  }
 ]
 
-const links = computed(() => linksBase.filter(link => {
-  return !user.value?.roles.some(role => link.exeptRoles?.includes(role))
-}))
-
+const links = computed(() =>
+  linksBase.filter((link) => {
+    return !user.value?.roles.some((role) => link.exeptRoles?.includes(role))
+  })
+)
 
 const footerLinks = [
   {
     label: 'Invite people',
     icon: 'i-heroicons-plus',
-    to: '/settings/members',
+    to: '/settings/members'
   },
   {
     label: 'Help & Support',
     icon: 'i-heroicons-question-mark-circle',
-    click: () => (isHelpSlideoverOpen.value = true),
-  },
+    click: () => (isHelpSlideoverOpen.value = true)
+  }
 ]
 
 const groups = [
   {
     key: 'links',
     label: 'Go to',
-    commands: links.value.map(link => ({
+    commands: links.value.map((link) => ({
       ...link,
-      shortcuts: link.tooltip?.shortcuts,
-    })),
+      shortcuts: link.tooltip?.shortcuts
+    }))
   },
   {
     key: 'code',
@@ -200,24 +201,27 @@ const groups = [
         label: 'View page source',
         icon: 'i-simple-icons-github',
         click: () => {
-          window.open(`https://github.com/nuxt-ui-pro/dashboard/blob/main/pages${route.path === '/' ? '/index' : route.path}.vue`, '_blank')
-        },
-      },
-    ],
-  },
+          window.open(
+            `https://github.com/nuxt-ui-pro/dashboard/blob/main/pages${route.path === '/' ? '/index' : route.path}.vue`,
+            '_blank'
+          )
+        }
+      }
+    ]
+  }
 ]
 
 const defaultColors = ref(
-  ['green', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet'].map(color => ({
+  ['green', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet'].map((color) => ({
     label: color,
     chip: color,
-    click: () => (appConfig.ui.primary = color),
+    click: () => (appConfig.ui.primary = color)
   }))
 )
 const colors = computed(() =>
-  defaultColors.value.map(color => ({
+  defaultColors.value.map((color) => ({
     ...color,
-    active: appConfig.ui.primary === color.label,
+    active: appConfig.ui.primary === color.label
   }))
 )
 </script>
@@ -238,12 +242,12 @@ const colors = computed(() =>
 
         <UDashboardSidebarLinks :links="links" />
 
-        <UDivider />
+        <!-- <UDivider /> -->
 
-        <UDashboardSidebarLinks
+        <!-- <UDashboardSidebarLinks
           :links="[{ label: 'Colors', draggable: true, children: colors }]"
           @update:links="colors => (defaultColors = colors)"
-        />
+        /> -->
 
         <div class="flex-1" />
 

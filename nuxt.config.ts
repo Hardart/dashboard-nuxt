@@ -2,17 +2,15 @@
 export default defineNuxtConfig({
   ssr: false,
   extends: [process.env.NUXT_UI_PRO_PATH || '@nuxt/ui-pro'],
-  modules: [
-    '@pinia/nuxt',
-    '@nuxt/ui',
-    '@nuxt/fonts',
-    '@vueuse/nuxt',
-    'nuxt-tiptap-editor',
-    '@samk-dev/nuxt-vcalendar'
-  ],
+  modules: ['@pinia/nuxt', '@nuxt/ui', '@nuxt/fonts', '@vueuse/nuxt', 'nuxt-tiptap-editor', '@samk-dev/nuxt-vcalendar'],
   ui: {
     icons: ['heroicons', 'simple-icons', 'material-symbols'],
     safelistColors: ['primary', 'red', 'orange', 'green']
+  },
+  runtimeConfig: {
+    public: {
+      BASE_URL: 'http://localhost:3068'
+    }
   },
   pinia: {
     storesDirs: ['./store/**']

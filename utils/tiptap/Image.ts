@@ -27,8 +27,8 @@ export const Image = Node.create<ImageOptions>({
       inline: false,
       allowBase64: false,
       HTMLAttributes: {
-        class: 'rounded-xl mx-auto',
-      },
+        class: 'rounded-xl mx-auto select-none cursor-default'
+      }
     }
   },
 
@@ -45,25 +45,25 @@ export const Image = Node.create<ImageOptions>({
   addAttributes() {
     return {
       src: {
-        default: null,
+        default: null
       },
       alt: {
-        default: null,
+        default: null
       },
       title: {
-        default: null,
+        default: null
       },
       class: {
-        default: null,
-      },
+        default: null
+      }
     }
   },
 
   parseHTML() {
     return [
       {
-        tag: this.options.allowBase64 ? 'img[src]' : 'img[src]:not([src^="data:"])',
-      },
+        tag: this.options.allowBase64 ? 'img[src]' : 'img[src]:not([src^="data:"])'
+      }
     ]
   },
 
@@ -74,13 +74,13 @@ export const Image = Node.create<ImageOptions>({
   addCommands() {
     return {
       setImage:
-        options =>
+        (options) =>
         ({ commands }) => {
           return commands.insertContent({
             type: this.name,
-            attrs: options,
+            attrs: options
           })
-        },
+        }
     }
   },
 
@@ -89,12 +89,12 @@ export const Image = Node.create<ImageOptions>({
       nodeInputRule({
         find: inputRegex,
         type: this.type,
-        getAttributes: match => {
+        getAttributes: (match) => {
           const [, , alt, src, title] = match
 
           return { src, alt, title }
-        },
-      }),
+        }
+      })
     ]
-  },
+  }
 })

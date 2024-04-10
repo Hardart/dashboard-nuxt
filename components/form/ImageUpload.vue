@@ -4,6 +4,8 @@ import type { ImageName } from '~/types'
 const src = defineModel({ required: true })
 defineProps<{
   name: ImageName
+  width?: string
+  height?: string
 }>()
 </script>
 
@@ -11,9 +13,9 @@ defineProps<{
   <UiUploadImage
     v-model="src"
     :form="{ label: 'Главное изображение' }"
-    :btn="{ label: 'Загрузить фото', block: true, color: 'gray' }"
+    :btn="{ label: 'Загрузить фото', block: true, color: 'gray', size: '2xs' }"
     :name
-    :ui="{ container: 'flex flex-col flex-wrap items-center gap-3 mb-2', help: 'mt-0' }"
+    :ui="{ container: 'flex flex-col flex-wrap items-center gap-1' }"
     showSelect
   >
     <template #preview>
@@ -21,8 +23,9 @@ defineProps<{
         :src
         icon="i-heroicons-photo"
         size="3xl"
-        imgClass="object-cover object-top w-full h-full"
-        class="w-[347px] h-52 bg-white"
+        imgClass="object-cover object-top w-full h-full aspect-square"
+        class="mb-1 bg-white ring-1 ring-zinc-700"
+        :class="[width || 'w-[347px]', height || 'h-52']"
         :ui="{ rounded: 'rounded-lg' }"
       />
     </template>

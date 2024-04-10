@@ -2,6 +2,7 @@ import { createSharedComposable } from '@vueuse/core'
 import type { ResponseApi } from '~/types/fetch'
 
 const _useFilesystem = () => {
+  const config = useRuntimeConfig()
   const files = ref<string[]>()
   const basePath = '/images'
   const src = ref<string>(basePath)
@@ -12,14 +13,14 @@ const _useFilesystem = () => {
 
   const imageUrl = ref({
     preview: '',
-    original: '',
+    original: ''
   })
   const selected = ref(NaN)
 
   const folder = ref({
     // maybe just ref(string)
     path: '',
-    index: NaN,
+    index: NaN
   })
 
   const setSource = (path: string) => {
@@ -42,7 +43,7 @@ const _useFilesystem = () => {
 
   const onImage = (path: string, index: number) => {
     selected.value = index
-    imageUrl.value.preview = path
+    imageUrl.value.preview = correctSrc(path)
     imageUrl.value.original = correctSrc(path.replace('_preview', '_orig'))
   }
 
@@ -53,15 +54,28 @@ const _useFilesystem = () => {
     folder.value.path = path
   }
 
-  const correctSrc = (src: string) => `http://localhost:3068${src}`
+  const correctSrc = (src: string) => (process.dev ? config.public.BASE_URL + src : src)
 
-  watch(src, async curr => {
+  watch(src, async (curr) => {
     await getFiles()
     prevPath.value = curr.match(/(\/+.+)\//)?.[1] || basePath
     isBasePath.value = src.value === basePath
   })
 
-  return { files, goBack, isBasePath, imageUrl, selected, folder, isImage, getFiles, setSource, onImage, onFolder, correctSrc }
+  return {
+    files,
+    goBack,
+    isBasePath,
+    imageUrl,
+    selected,
+    folder,
+    isImage,
+    getFiles,
+    setSource,
+    onImage,
+    onFolder,
+    correctSrc
+  }
 }
 
 export const useFilesystem = createSharedComposable(_useFilesystem)

@@ -1,9 +1,5 @@
 import { articlesAPI } from '~/api/articles-api'
-import {
-  STATUSES,
-  type Article,
-  type ArticleFormData
-} from '~/scheme/z_article'
+import { STATUSES, type Article, type ArticleFormData } from '~/scheme/z_article'
 import type { Category } from '~/scheme/z_category'
 
 const sortValues = ['title', 'createdAt'] as const
@@ -36,32 +32,22 @@ export const useArticleStore = defineStore('article', () => {
   const selectedStatuses = ref<string[]>([])
   const selectedCategories = ref<string[]>([])
   const sort = ref<SortBy>({ column: 'createdAt', direction: 'desc' as const })
-  const categoriesFilter = computed(() =>
-    articles.value.reduce(filterCategoriesBunlde, [])
-  )
-  const statusesFilter = computed(() =>
-    articles.value.reduce(filterStatusesBunlde, [])
-  )
+  const categoriesFilter = computed(() => articles.value.reduce(filterCategoriesBunlde, []))
+  const statusesFilter = computed(() => articles.value.reduce(filterStatusesBunlde, []))
 
   const filterByTitle = computed(() =>
     articles.value.filter((article) =>
-      query.value.trim()
-        ? article.title.toLowerCase().includes(query.value.toLowerCase().trim())
-        : article
+      query.value.trim() ? article.title.toLowerCase().includes(query.value.toLowerCase().trim()) : article
     )
   )
   const filterByStatus = computed(() =>
     selectedStatuses.value.length
-      ? filterByTitle.value.filter((article) =>
-          selectedStatuses.value.includes(article.status.toLowerCase())
-        )
+      ? filterByTitle.value.filter((article) => selectedStatuses.value.includes(article.status.toLowerCase()))
       : filterByTitle.value
   )
   const filteredArticles = computed(() =>
     selectedCategories.value.length
-      ? filterByStatus.value.filter((article) =>
-          selectedCategories.value.includes(article.category.id)
-        )
+      ? filterByStatus.value.filter((article) => selectedCategories.value.includes(article.category.id))
       : filterByStatus.value
   )
 
@@ -126,6 +112,8 @@ export const useArticleStore = defineStore('article', () => {
   }
 
   async function updateArticle(input: ArticleFormData) {
+    console.log(input)
+
     loading.value = true
     const articleData = await articlesAPI.updateOne(input)
     loading.value = false
@@ -180,8 +168,7 @@ export const useArticleStore = defineStore('article', () => {
 })
 
 function filterCategoriesBunlde(acc: Category[], article: Article) {
-  if (!acc.some((accItem) => accItem.id === article.category.id))
-    acc.push(article.category)
+  if (!acc.some((accItem) => accItem.id === article.category.id)) acc.push(article.category)
   return acc
 }
 

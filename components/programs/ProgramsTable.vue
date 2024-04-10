@@ -4,7 +4,7 @@ import { columns } from './table-config'
 
 // const sort = defineModel({ required: true })
 
-const { deleteHandle } = defineProps<{
+const { deleteHandle, programs } = defineProps<{
   programs: Program[]
   loading: boolean
   deleteHandle: (item: string) => void
@@ -60,11 +60,7 @@ const editItems = (program: Program) => [
 
     <template #actions-data="{ row }">
       <UDropdown :items="editItems(row)">
-        <UButton
-          color="gray"
-          variant="ghost"
-          icon="i-heroicons-ellipsis-horizontal-20-solid"
-        />
+        <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />
       </UDropdown>
     </template>
   </UTable>

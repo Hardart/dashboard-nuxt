@@ -6,6 +6,7 @@ import type { ImageName } from '~/types'
 const fileRef = ref<{ input: HTMLInputElement }>()
 const src = defineModel({ required: true })
 const emit = defineEmits(['append-handler'])
+const config = useRuntimeConfig()
 const { name } = defineProps<{
   form?: object
   label?: string
@@ -30,7 +31,7 @@ async function onFileChange(e: Event) {
   body.append(name, file, file.name)
 
   const srcData = await filesAPI.single(UploadURLS[name], body)
-  src.value = 'http://localhost:3068' + srcData
+  src.value = process.dev ? config.public.BASE_URL + srcData : srcData
   emit('append-handler', src.value)
 }
 </script>
@@ -42,7 +43,7 @@ async function onFileChange(e: Event) {
     <UiImageSelect
       v-if="showSelect"
       v-model="src"
-      :btn="{ label: 'Выбрать фото', block: true }"
+      :btn="{ label: 'Выбрать фото', block: true, size: '2xs' }"
       :container="{ class: selectBtn?.class || 'w-full' }"
     />
     <UInput ref="fileRef" type="file" class="hidden" accept=".jpg, .jpeg, .png, .webp, .avif" @change="onFileChange" />

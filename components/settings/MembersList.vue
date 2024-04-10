@@ -5,37 +5,30 @@ defineProps<{
   users: User[]
 }>()
 
+const emit = defineEmits(['on-edit', 'on-delete'])
+
 function getItems(member: User) {
   return [
     [
       {
         label: 'Редактировать',
-        click: () => console.log('Edit', member)
+        click: () => emit('on-edit', member)
       },
       {
         label: 'Удалить',
         labelClass: 'text-red-500 dark:text-red-400',
-        click: () => console.log('Remove', member)
+        click: () => emit('on-delete', member)
       }
     ]
   ]
 }
-
-function onRoleChange(member: User, role: string) {
-  // Do something with data
-  console.log(member.fullName, role)
-}
 </script>
 
 <template>
-  <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-800">
-    <li
-      v-for="(user, index) in users"
-      :key="index"
-      class="flex items-center justify-between gap-3 px-4 py-3 sm:px-6"
-    >
+  <ul role="list" class="divide-y divide-gray-200 overflow-y-scroll dark:divide-gray-800">
+    <li v-for="(user, index) in users" :key="index" class="flex items-center justify-between gap-3 px-4 py-3 sm:px-6">
       <div class="flex min-w-0 items-center gap-3">
-        <UAvatar :src="user.avatar" imgClass="object-cover" size="xl" />
+        <UAvatar :src="user.avatar" :alt="user.fullName" class="uppercase" imgClass="object-cover" size="xl" />
 
         <div class="min-w-0 text-sm">
           <p class="truncate font-medium text-gray-900 dark:text-white">
@@ -53,11 +46,7 @@ function onRoleChange(member: User, role: string) {
         </p>
 
         <UDropdown :items="getItems(user)" position="bottom-end">
-          <UButton
-            icon="i-heroicons-ellipsis-vertical"
-            color="gray"
-            variant="ghost"
-          />
+          <UButton icon="i-heroicons-ellipsis-vertical" color="gray" variant="ghost" />
         </UDropdown>
       </div>
     </li>

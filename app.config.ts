@@ -1,18 +1,18 @@
 export default defineAppConfig({
   ui: {
-    primary: 'cyan',
+    primary: 'orange',
     gray: 'zinc',
     tooltip: {
       default: {
-        openDelay: 500,
-      },
+        openDelay: 500
+      }
     },
     notifications: {
       // Show toasts at the top right of the screen
-      position: 'top-0 bottom-auto',
+      position: 'top-0 bottom-auto'
     },
     icons: {
-      dynamic: true,
-    },
-  },
+      dynamic: true
+    }
+  }
 })

@@ -28,6 +28,7 @@ export type CustomResponse<T> =
 
 export declare module ResponseApi {
   type LoginData = { accessToken: string; user: User }
+  type RegistrationData = { user: User }
   type ArticleList = { articles: Article[]; tags: string[] }
   type ArticleSingle = { article: Article }
   type CategoryList = { categories: Category[] }

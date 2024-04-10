@@ -1,25 +1,18 @@
-import type { ProgramFormData, ProgramSchedule } from '~/scheme/z_program'
+import type { ProgramSchedule, Weekday } from '~/scheme/z_program'
+import { weekdayIds, weekdays } from '@/utils/schedule'
 export const useSchedule = () => {
-  const weekdays = ref([
-    { id: 1, title: { full: 'понедельник', short: 'пн' }, selected: false },
-    { id: 2, title: { full: 'вторник', short: 'вт' }, selected: false },
-    { id: 3, title: { full: 'среда', short: 'ср' }, selected: false },
-    { id: 4, title: { full: 'четверг', short: 'чт' }, selected: false },
-    { id: 5, title: { full: 'пятница', short: 'пт' }, selected: false },
-    { id: 6, title: { full: 'суббота', short: 'сб' }, selected: false },
-    { id: 7, title: { full: 'воскресенье', short: 'вс' }, selected: false }
-  ])
-
-  const weekdayIds = weekdays.value.map((day) => day.id)
+  const weekdaysWithSelectedKey = weekdays.map((d) => {
+    const el = d as Weekday
+    el.selected = false
+    return el
+  })
   const selectedScheduleMode = ref('everyday')
   const selectedScheduleDays = ref<ProgramSchedule[]>([])
-
-  const isSameTime = ref(true)
+  const isTimeEqual = ref(true)
 
   const isCustomMode = computed(() => selectedScheduleMode.value == 'custom')
-  const selectedWeekdayIds = computed(() =>
-    weekdays.value.filter((day) => day.selected).map((day) => day.id)
-  )
+  const selectedWeekdayIds = computed(() => weekdaysWithSelectedKey.filter((day) => day.selected).map((day) => day.id))
+
   const scheduleModeDayIds = computed(() => {
     switch (selectedScheduleMode.value) {
       case 'everyday':
@@ -42,39 +35,49 @@ export const useSchedule = () => {
     }
   }
 
+  const isNearDay = (dayIds: number[]) => {
+    const elem = { startFrom: 1, width: 1 }
+    let nextValue = 0
+    return dayIds.reduce(
+      (curr, value) => {
+        if (value === nextValue) {
+          curr = curr.map((el) => {
+            if (el.startFrom == elem.startFrom) el.width++
+            return el
+          })
+        } else {
+          elem.startFrom = value
+          curr.push({ ...elem })
+        }
+        nextValue = value + 1
+        return curr
+      },
+      [] as { startFrom: number; width: number }[]
+    )
+  }
+
   const onChange = (id: number) => {
-    if (isSameTime.value)
-      selectedScheduleDays.value = [setScheduleState(selectedWeekdayIds.value)]
+    if (isTimeEqual.value) selectedScheduleDays.value = [setScheduleState(selectedWeekdayIds.value)]
     else selectedDaysLoop(id)
   }
 
   function selectedDaysLoop(id: number) {
-    if (
-      !selectedScheduleDays.value.some((schedule) =>
-        schedule.dayId.includes(id)
-      )
-    ) {
+    if (!selectedScheduleDays.value.some((schedule) => schedule.dayId.includes(id))) {
       selectedScheduleDays.value.push(setScheduleState([id]))
       selectedScheduleDays.value.sort((a, b) => (a.dayId > b.dayId ? 1 : -1))
-    } else
-      selectedScheduleDays.value = selectedScheduleDays.value.filter(
-        (schedule) => !schedule.dayId.includes(id)
-      )
+    } else selectedScheduleDays.value = selectedScheduleDays.value.filter((schedule) => !schedule.dayId.includes(id))
   }
 
   function initSelectedDays() {
-    const daysArray = isCustomMode.value
-      ? selectedWeekdayIds.value
-      : scheduleModeDayIds.value
-    selectedScheduleDays.value = isSameTime.value
+    const daysArray = isCustomMode.value ? selectedWeekdayIds.value : scheduleModeDayIds.value
+    selectedScheduleDays.value = isTimeEqual.value
       ? [setScheduleState(daysArray)]
       : daysArray.map((dayId) => setScheduleState([dayId]))
 
-    if (isCustomMode.value && !selectedWeekdayIds.value.length)
-      selectedScheduleDays.value = []
+    if (isCustomMode.value && !selectedWeekdayIds.value.length) selectedScheduleDays.value = []
   }
 
-  watch([isSameTime, selectedScheduleMode], initSelectedDays, {
+  watch([isTimeEqual, selectedScheduleMode], initSelectedDays, {
     immediate: true
   })
 
@@ -84,10 +87,11 @@ export const useSchedule = () => {
     selectedWeekdayIds,
     selectedScheduleMode,
     selectedScheduleDays,
-    isSameTime,
+    isTimeEqual,
     isCustomMode,
     scheduleModeDayIds,
     setScheduleState,
-    onChange
+    onChange,
+    isNearDay
   }
 }

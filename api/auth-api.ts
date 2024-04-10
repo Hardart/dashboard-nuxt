@@ -1,12 +1,19 @@
 import { type User, type UserFormData } from '@/scheme/z_user'
 import type { ResponseApi } from '~/types/fetch'
-interface UserResponse {
-  accessToken: string
-  refreshToken: string
-}
+
 export const authAPI = {
   async registration(body: object) {
-    return await useCustomFetch<UserResponse>('/registration', { body })
+    const toast = useToast()
+    const { data } = await useCustomFetch<ResponseApi.RegistrationData>('/registration', { body })
+
+    if (data.value?.user)
+      toast.add({
+        title: 'Пользователь успешно добавлен',
+        timeout: 3000,
+        color: 'emerald',
+        icon: 'i-heroicons-check-circle-16-solid'
+      })
+    return data.value?.user
   },
 
   async login(body: UserFormData) {
@@ -17,5 +24,5 @@ export const authAPI = {
     const { data } = await useCustomFetch<Record<'user', User>>('/check')
     console.log(data)
     return
-  },
+  }
 }

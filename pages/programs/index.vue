@@ -13,9 +13,6 @@ const remove = (id: string) => console.log(id)
       to: '/programs/add'
     }"
   />
-  <ProgramsTable
-    :programs="programs || []"
-    :loading="false"
-    :delete-handle="remove"
-  />
+  <!-- <ProgramsTable :programs="programs || []" :loading="false" :delete-handle="remove" /> -->
+  <TestTable :programs />
 </template>

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 const levels = [1, 2, 3, 4]
-const headings = levels.map(level => `Heading ${level}`)
+const headings = levels.map((level) => `Heading ${level}`)
 const formatItems = ['Paragraph', ...headings]
 const selected = ref(formatItems[0])
 const editor = inject<any>('tiptap')
@@ -10,7 +10,7 @@ watch(
   () => {
     if (editor.value?.isActive('paragraph')) selected.value = 'Paragraph'
     else
-      levels.forEach(level => {
+      levels.forEach((level) => {
         if (editor.value?.isActive('heading', { level })) selected.value = formatItems[level]
       })
   }

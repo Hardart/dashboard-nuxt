@@ -16,7 +16,13 @@ onUnmounted(resetArticle)
     </template>
   </UDashboardNavbar>
   <UDashboardPanelContent>
-    <ArticlesForm :submit-handle="updateArticle" :loading v-model="articleFormData" v-model:tags="tags" v-model:categories="categories" />
+    <ArticlesForm
+      :loading
+      v-model="articleFormData"
+      v-model:tags="tags"
+      v-model:categories="categories"
+      @on-submit="updateArticle"
+    />
   </UDashboardPanelContent>
 </template>
 

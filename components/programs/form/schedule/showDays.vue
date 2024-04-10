@@ -1,11 +1,10 @@
 <script setup lang="ts">
-// import type { ProgramFormData, ProgramSchedule } from '~/scheme/z_program'
 const selectedSchedule = defineModel({ required: true })
 const programSchedule = [
   { value: 'everyday', label: 'Каждый день' },
   { value: 'workdays', label: 'По будням' },
   { value: 'weekend', label: 'По выходным' },
-  { value: 'custom', label: 'Выбрать день' },
+  { value: 'custom', label: 'Выбрать день' }
 ]
 </script>
 
