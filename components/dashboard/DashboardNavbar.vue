@@ -6,7 +6,9 @@ defineProps<{
   badge?: string | number
   btn?: Button
   queryInput?: boolean
+  clickAction?: boolean
 }>()
+defineEmits(['on-btn'])
 const input = ref<{ input: HTMLInputElement }>()
 defineShortcuts({ '/': () => input.value?.input?.focus() })
 </script>
@@ -29,7 +31,11 @@ defineShortcuts({ '/': () => input.value?.input?.focus() })
         </template>
       </UInput>
 
-      <UButton v-if="btn" v-bind="{ ...btn, ...$attrs }" color="gray" @click="!btn.to ? $router.back() : undefined" />
+      <UButton
+        v-bind="{ ...btn, ...$attrs }"
+        color="gray"
+        @click="!btn?.to ? (clickAction ? $emit('on-btn') : $router.back()) : undefined"
+      />
     </template>
   </UDashboardNavbar>
 </template>

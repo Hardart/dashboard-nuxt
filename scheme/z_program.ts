@@ -14,16 +14,20 @@ export interface Weekday {
 }
 
 const scheduleSchema = z.object({
-  dayId: z.array(z.number()),
-  start: z.object({
-    hh: z.string(),
-    mm: z.string()
-  }),
-  end: z.object({
-    hh: z.string(),
-    mm: z.string()
-  }),
-  isReplay: z.boolean()
+  weekdayIds: z.array(z.number()),
+  properties: z.array(
+    z.object({
+      start: z.object({
+        hh: z.string(),
+        mm: z.string()
+      }),
+      end: z.object({
+        hh: z.string(),
+        mm: z.string()
+      }),
+      isReplay: z.boolean()
+    })
+  )
 })
 
 export const programSchema = z.object({

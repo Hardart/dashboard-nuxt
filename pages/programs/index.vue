@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { programs } = useProgramsStore().storeRefs()
+const [isOpen, toggleAddProgramModalState] = useToggle(true)
 
 const remove = (id: string) => console.log(id)
 </script>
@@ -9,10 +10,11 @@ const remove = (id: string) => console.log(id)
     title="Программы"
     :btn="{
       label: 'добавить программу',
-      icon: 'i-heroicons-plus',
-      to: '/programs/add'
+      icon: 'i-heroicons-plus'
     }"
+    click-action
+    @on-btn="toggleAddProgramModalState"
   />
   <!-- <ProgramsTable :programs="programs || []" :loading="false" :delete-handle="remove" /> -->
-  <TestTable :programs />
+  <TestTable v-if="programs" :programs v-model="isOpen" />
 </template>

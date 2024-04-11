@@ -1,11 +1,4 @@
-export interface PTest {
-  id: number
-  startFrom: number
-  width: number
-  color: string
-  isReplay: boolean
-  title?: string
-  image?: string
+export interface ScheduleProps {
   start: {
     hh: string
     mm: string
@@ -14,4 +7,15 @@ export interface PTest {
     hh: string
     mm: string
   }
+  isReplay: boolean
+}
+
+export interface PTest {
+  id: number
+  startFrom: number
+  width: number
+  color: string
+  title?: string
+  image?: string
+  scheduleProps: ScheduleProps[]
 }
