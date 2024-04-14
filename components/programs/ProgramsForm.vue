@@ -1,91 +1,76 @@
 <script setup lang="ts">
-const { storeRefs, deleteSchedule, addProgram } = useProgramsStore()
-const {
-  selectedScheduleMode,
-  isSameTime,
-  isCustomMode,
-  selectedScheduleDays,
-  selectedWeekdayIds,
-  scheduleModeDayIds,
-  weekdays,
-  onChange
-} = useSchedule()
-const { programState } = storeRefs()
-const [isModalOpen, toggleModalState] = useToggle()
+import type { ProgramSchedule, ProgramSchedulePropsItem, ProgramStateSchema } from '~/scheme/z_program'
 
-const onAddSchedule = () => {
-  programState.schedule.push(...selectedScheduleDays.value)
+// const { storeRefs, deleteSchedule, addProgram } = useProgramsStore()
+const { isTimeEqual, selectedIdsToWeekday, setScheduleTimeString } = useSchedule()
+const [isModalOpen, toggleModalState] = useToggle()
+const selectedWeekdayIds = ref<number[]>([])
+const scheduleInfoState = ref<Record<string, ProgramSchedulePropsItem[]>>({})
+const programState = reactive<ProgramStateSchema>({
+  title: undefined,
+  image: undefined,
+  color: undefined,
+  schedule: []
+})
+
+const scheduleState = reactive<ProgramSchedule>({
+  properties: [],
+  weekdayIds: []
+})
+const resetScheduleState = () => {
+  selectedWeekdayIds.value = []
+  scheduleInfoState.value = {}
+}
+const onAddProgram = () => {}
+const onAddSchedule = (properties: Record<string, ProgramSchedulePropsItem[]>) => {
+  Object.entries(properties).forEach(([key, value]) => {
+    scheduleState.weekdayIds = parseInt(key) === 0 ? selectedWeekdayIds.value : [parseInt(key)]
+    scheduleState.properties = value
+    programState.schedule.push({ ...scheduleState })
+  })
   toggleModalState()
   resetScheduleState()
-}
-
-function resetScheduleState() {
-  selectedScheduleDays.value = []
-  selectedScheduleMode.value = 'everyday'
-  isSameTime.value = true
 }
 </script>
 
 <template>
   <div class="max-w-4xl divide-y divide-zinc-700">
     <div class="grid grid-cols-5 gap-6">
-      <div class="col-span-3">
+      <div class="col-span-4">
         <UFormGroup label="Название программы" class="flex-grow">
           <UInput v-model="programState.title" />
         </UFormGroup>
-        <ProgramsFormScheduleList
-          :delete-handle="deleteSchedule"
-          :weekdays
-          :program-state
-        />
-        <UButton
-          label="Добавить расписание"
-          @click="toggleModalState(true)"
-          class="mt-8"
-        />
+        <UButton label="Добавить расписание" @click="toggleModalState(true)" class="mt-8" />
+        <ul>
+          <li v-for="schedule in programState.schedule" class="border-primary relative my-2 rounded-lg border p-2">
+            <h4>{{ selectedIdsToWeekday(schedule.weekdayIds) }}</h4>
+            <ul class="flex gap-2">
+              <li v-for="info in schedule.properties" class="relative mt-1">
+                <p class="border-primary/30 rounded-lg border px-5 py-1.5 pt-2 text-sm leading-3">
+                  {{ setScheduleTimeString(info) }}
+                </p>
+                <div v-if="info.isReplay" class="absolute -top-1.5 right-2 text-xs">п</div>
+              </li>
+            </ul>
+          </li>
+        </ul>
       </div>
-      <div class="col-span-2">
-        <FormImageUpload v-model="programState.image" name="programs" />
+      <div class="col-span-1">
+        <UiImage size="size-44" v-model="programState.image" />
       </div>
     </div>
+
     <div class="mt-6 py-6 text-right">
-      <UButton label="Добавить программу" @click="addProgram" />
+      <UButton label="Добавить программу" @click="onAddProgram" />
     </div>
-    {{ programState }}
 
     <UModal v-model="isModalOpen" :ui="{ base: 'lg:w-[900px] sm:max-w-none' }">
-      <div class="grid grid-cols-5 p-6">
-        <div class="col-span-1 flex flex-col gap-8">
-          <ProgramsFormScheduleShowDays v-model="selectedScheduleMode" />
-          <UFormGroup label="Единое время">
-            <UToggle v-model="isSameTime" />
-          </UFormGroup>
-        </div>
-
-        <div class="col-span-4 space-y-4 py-2">
-          <ProgramsFormScheduleWeekdays
-            :on-change="onChange"
-            :weekdays="weekdays"
-            :is-custom-mode="isCustomMode"
-          />
-          <ProgramsFormScheduleItemList
-            :selected-days-schedule="selectedScheduleDays"
-            :weekdays="weekdays"
-            :selected-days="selectedWeekdayIds"
-            :day-ids="scheduleModeDayIds"
-            :is-custom-mode="isCustomMode"
-            :is-same-time="isSameTime"
-          />
-        </div>
-
-        <div class="mt-8">
-          <UButton
-            label="Добавить"
-            @click="onAddSchedule"
-            :disabled="!selectedScheduleDays.length"
-          />
-        </div>
-      </div>
+      <ScheduleCard
+        v-model:ids="selectedWeekdayIds"
+        v-model:time="isTimeEqual"
+        @on-add="onAddSchedule"
+        v-model:info="scheduleInfoState"
+      />
     </UModal>
   </div>
 </template>

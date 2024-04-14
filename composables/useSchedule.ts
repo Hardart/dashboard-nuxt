@@ -1,31 +1,48 @@
-import type { ProgramSchedule, Weekday } from '~/scheme/z_program'
+import type { ProgramSchedulePropsItem } from '~/scheme/z_program'
 
 export const useSchedule = () => {
   const isTimeEqual = ref(true)
 
   const isNearDay = (weekdayIds: number[]) => {
-    const elem = { startFrom: 1, width: 1 }
     let nextValue = 0
     return weekdayIds.reduce(
-      (curr, value) => {
-        if (value === nextValue) {
-          curr = curr.map((el) => {
-            if (el.startFrom == elem.startFrom) el.width++
-            return el
-          })
-        } else {
-          elem.startFrom = value
-          curr.push({ ...elem })
+      (acc, curr) => {
+        if (!acc.startFromId) {
+          nextValue = curr
+          acc.startFromId = curr
+          acc.width = 1
         }
-        nextValue = value + 1
-        return curr
+        if (nextValue + 1 == curr) {
+          nextValue++
+          acc.width++
+        }
+
+        return acc
       },
-      [] as { startFrom: number; width: number }[]
+      {} as { startFromId: number; width: number }
     )
+  }
+
+  const setScheduleTimeString = (info: ProgramSchedulePropsItem) =>
+    `с ${info.start.hh}:${info.start.mm} до ${info.end.hh}:${info.end.mm}`
+
+  const selectedIdsToWeekday = (array: number[]) => {
+    switch (true) {
+      case array.length == 7:
+        return 'Каждый день'
+      case array.length == 5 && array[0] === 1 && array[4] === 5:
+        return 'По будням'
+      case array.length == 2 && array.includes(6) && array.includes(7):
+        return 'По выходным'
+      default:
+        return array.map((n) => weekdays.find((day) => day.id === n)?.title.full || '').join(', ')
+    }
   }
 
   return {
     isTimeEqual,
-    isNearDay
+    isNearDay,
+    selectedIdsToWeekday,
+    setScheduleTimeString
   }
 }

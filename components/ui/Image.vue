@@ -6,8 +6,8 @@ defineProps<{
 }>()
 </script>
 <template>
-  <div class="aspect-photo group relative size-32 overflow-clip rounded-lg">
-    <img v-if="src" class="aspect-photo absolute h-full w-full object-cover" :src alt="" />
+  <div class="group relative aspect-photo overflow-clip rounded-lg" :class="size || 'size-32'">
+    <img v-if="src" class="absolute aspect-photo h-full w-full object-cover" :src alt="" />
     <div v-else class="absolute inset-0 grid place-items-center bg-zinc-700">
       <UIcon name="i-heroicons-photo" class="size-10" />
     </div>

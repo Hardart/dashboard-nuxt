@@ -40,7 +40,7 @@ const editItems = (program: Program) => [
     :rows="programs"
     :loading="loading"
     :columns="columns"
-    class="w-full"
+    class="w-2/5"
     :ui="{
       divide: 'divide-gray-200 dark:divide-gray-800',
       td: { padding: 'py-2' }

@@ -10,11 +10,12 @@ const remove = (id: string) => console.log(id)
     title="Программы"
     :btn="{
       label: 'добавить программу',
-      icon: 'i-heroicons-plus'
+      icon: 'i-heroicons-plus',
+      to: '/programs/add'
     }"
-    click-action
-    @on-btn="toggleAddProgramModalState"
   />
-  <!-- <ProgramsTable :programs="programs || []" :loading="false" :delete-handle="remove" /> -->
-  <TestTable v-if="programs" :programs v-model="isOpen" />
+  <div class="flex gap-4">
+    <!-- <ProgramsTable :programs="programs || []" :loading="false" :delete-handle="remove" /> -->
+    <ScheduleTable v-if="programs" :programs v-model="isOpen" />
+  </div>
 </template>
