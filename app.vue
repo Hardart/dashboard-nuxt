@@ -1,18 +1,20 @@
 <script setup lang="ts">
 const colorMode = useColorMode()
-const token = useLocalStorage('auth_access', () => '')
+const { storeRefs, tryRefreshToken } = useUserStore()
+// const { isLoggedIn } = storeRefs()
+await tryRefreshToken()
 const color = computed(() => (colorMode.value === 'dark' ? '#111827' : '#ffffff'))
 
 useHead({
   meta: [
     { charset: 'utf-8' },
     { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-    { name: 'theme-color', content: color },
+    { name: 'theme-color', content: color }
   ],
   link: [{ rel: 'icon', href: '/favicon.ico' }],
   htmlAttrs: {
-    lang: 'ru',
-  },
+    lang: 'ru'
+  }
 })
 
 const title = 'Радио "Штаны" - Панель управления'
@@ -26,7 +28,7 @@ useSeoMeta({
   ogDescription: description,
   ogImage: 'https://dashboard-template.nuxt.dev/social-card.png',
   twitterImage: 'https://dashboard-template.nuxt.dev/social-card.png',
-  twitterCard: 'summary_large_image',
+  twitterCard: 'summary_large_image'
 })
 </script>
 

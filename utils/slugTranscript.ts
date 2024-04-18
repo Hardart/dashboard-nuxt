@@ -31,7 +31,7 @@ const alphavite: { [key: string]: string } = {
   ъ: '',
   э: 'e',
   ю: 'yu',
-  я: 'ya',
+  я: 'ya'
 }
 
 const transcript = (title: string) =>
@@ -40,10 +40,11 @@ const transcript = (title: string) =>
     .trim()
     .replace(/ь([е])/gm, 'y$1')
     .split('')
-    .map(l => {
+    .map((l) => {
       return l in alphavite ? alphavite[l] : l
     })
     .join('')
     .replace(/[^-a-zA-Z0-9 ]/gm, '')
     .replace(/\s+/gm, '-')
+
 export default transcript

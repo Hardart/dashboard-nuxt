@@ -1,52 +1,35 @@
 <script setup lang="ts">
-import type { ProgramSchedule, ProgramSchedulePropsItem, ProgramStateSchema } from '~/scheme/z_program'
+import type { Program } from '~/scheme/z_program'
+import type { User } from '~/scheme/z_user'
+const { selectedWeekdayIds, isTimeEqual, scheduleInfoState, selectedIdsToWeekday, setScheduleTimeString } = useSchedule()
+const scheduleModalState = defineModel({ required: true })
+defineEmits(['open-schedule-modal'])
+defineProps<{
+  hosts: User[]
+}>()
 
-// const { storeRefs, deleteSchedule, addProgram } = useProgramsStore()
-const { isTimeEqual, selectedIdsToWeekday, setScheduleTimeString } = useSchedule()
-const [isModalOpen, toggleModalState] = useToggle()
-const selectedWeekdayIds = ref<number[]>([])
-const scheduleInfoState = ref<Record<string, ProgramSchedulePropsItem[]>>({})
-const programState = reactive<ProgramStateSchema>({
-  title: undefined,
-  image: undefined,
-  color: undefined,
-  schedule: []
-})
+const addProgram = inject<() => void>('add-program')
+if (typeof addProgram === 'undefined') throw createError("can't inject add function")
 
-const scheduleState = reactive<ProgramSchedule>({
-  properties: [],
-  weekdayIds: []
-})
-const resetScheduleState = () => {
-  selectedWeekdayIds.value = []
-  scheduleInfoState.value = {}
-}
-const onAddProgram = () => {}
-const onAddSchedule = (properties: Record<string, ProgramSchedulePropsItem[]>) => {
-  Object.entries(properties).forEach(([key, value]) => {
-    scheduleState.weekdayIds = parseInt(key) === 0 ? selectedWeekdayIds.value : [parseInt(key)]
-    scheduleState.properties = value
-    programState.schedule.push({ ...scheduleState })
-  })
-  toggleModalState()
-  resetScheduleState()
-}
+const programFormData = inject<Ref<Program>>('program-form-data')
+if (!programFormData) throw createError('programFormData is undefined')
 </script>
 
 <template>
-  <div class="max-w-4xl divide-y divide-zinc-700">
-    <div class="grid grid-cols-5 gap-6">
-      <div class="col-span-4">
-        <UFormGroup label="Название программы" class="flex-grow">
-          <UInput v-model="programState.title" />
+  <div class="w-auto max-w-2xl flex-grow divide-y divide-zinc-700">
+    <div class="flex gap-6">
+      <div class="flex-grow">
+        <UFormGroup label="Название программы" class="flex-grow" required>
+          <UInput v-model="programFormData.title" />
         </UFormGroup>
-        <UButton label="Добавить расписание" @click="toggleModalState(true)" class="mt-8" />
+        <ProgramsFormHostSelect :hosts v-model="programFormData.hosts" />
+        <UButton label="Добавить расписание" @click="$emit('open-schedule-modal')" class="mt-8" />
         <ul>
-          <li v-for="schedule in programState.schedule" class="border-primary relative my-2 rounded-lg border p-2">
+          <li v-for="schedule in programFormData.schedule" class="border-primary relative my-2 rounded-lg border-2 p-2">
             <h4>{{ selectedIdsToWeekday(schedule.weekdayIds) }}</h4>
             <ul class="flex gap-2">
               <li v-for="info in schedule.properties" class="relative mt-1">
-                <p class="border-primary/30 rounded-lg border px-5 py-1.5 pt-2 text-sm leading-3">
+                <p class="border-primary/60 rounded-lg border px-3 py-2 text-sm leading-3">
                   {{ setScheduleTimeString(info) }}
                 </p>
                 <div v-if="info.isReplay" class="absolute -top-1.5 right-2 text-xs">п</div>
@@ -55,24 +38,17 @@ const onAddSchedule = (properties: Record<string, ProgramSchedulePropsItem[]>) =
           </li>
         </ul>
       </div>
-      <div class="col-span-1">
-        <UiImage size="size-44" v-model="programState.image" />
+      <div class="">
+        <UiImage size="size-32" v-model="programFormData.image" />
       </div>
     </div>
 
     <div class="mt-6 py-6 text-right">
-      <UButton label="Добавить программу" @click="onAddProgram" />
+      <UButton label="Добавить программу" @click="addProgram()" />
     </div>
 
-    <UModal v-model="isModalOpen" :ui="{ base: 'lg:w-[900px] sm:max-w-none' }">
-      <ScheduleCard
-        v-model:ids="selectedWeekdayIds"
-        v-model:time="isTimeEqual"
-        @on-add="onAddSchedule"
-        v-model:info="scheduleInfoState"
-      />
+    <UModal v-model="scheduleModalState" :ui="{ base: 'lg:w-[900px] sm:max-w-none' }">
+      <ScheduleCard v-model:ids="selectedWeekdayIds" v-model:time="isTimeEqual" v-model:info="scheduleInfoState" />
     </UModal>
   </div>
 </template>
-
-<style></style>

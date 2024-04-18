@@ -2,27 +2,8 @@ import type { ProgramSchedulePropsItem } from '~/scheme/z_program'
 
 export const useSchedule = () => {
   const isTimeEqual = ref(true)
-
-  const isNearDay = (weekdayIds: number[]) => {
-    let nextValue = 0
-    return weekdayIds.reduce(
-      (acc, curr) => {
-        if (!acc.startFromId) {
-          nextValue = curr
-          acc.startFromId = curr
-          acc.width = 1
-        }
-        if (nextValue + 1 == curr) {
-          nextValue++
-          acc.width++
-        }
-
-        return acc
-      },
-      {} as { startFromId: number; width: number }
-    )
-  }
-
+  const selectedWeekdayIds = useState<number[]>('weekday-ids', () => [])
+  const scheduleInfoState = useState<Record<string, ProgramSchedulePropsItem[]>>('schedule-info', () => ({}))
   const setScheduleTimeString = (info: ProgramSchedulePropsItem) =>
     `с ${info.start.hh}:${info.start.mm} до ${info.end.hh}:${info.end.mm}`
 
@@ -40,8 +21,9 @@ export const useSchedule = () => {
   }
 
   return {
+    scheduleInfoState,
+    selectedWeekdayIds,
     isTimeEqual,
-    isNearDay,
     selectedIdsToWeekday,
     setScheduleTimeString
   }

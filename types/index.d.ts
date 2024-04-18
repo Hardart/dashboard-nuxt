@@ -1,5 +1,10 @@
 import type { Avatar } from '#ui/types'
 
+interface INearDayProp {
+  startFromId: number
+  width: number
+}
+
 export type UserStatus = 'subscribed' | 'unsubscribed' | 'bounced'
 
 export interface User {

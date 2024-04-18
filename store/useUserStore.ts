@@ -4,13 +4,14 @@ import type { User, UserFormData } from '~/scheme/z_user'
 
 export const useUserStore = defineStore('user', () => {
   const { decodeAccessToken, setAccessToken, getAccessToken, cleanAccessToken } = useTokens()
+
   const userState = reactive<UserFormData>({
     firstName: '',
     lastName: '',
     email: '',
     password: '',
     password_new: '',
-    avatar: '',
+    avatar: ''
   })
   const user = ref<User>()
   const userFormData = ref({ ...userState })
@@ -50,7 +51,7 @@ export const useUserStore = defineStore('user', () => {
   }
 
   async function tryRefreshToken() {
-    if (!getAccessToken()) return
+    if (!getAccessToken()) return false
     await authAPI.checkToken()
     return true
   }

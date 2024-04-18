@@ -15,16 +15,14 @@ const isStartHourValueLast = () => props.info.start.hh === '23'
 const isStarMinutesValueLast = () => props.info.start.mm === '55'
 
 const watchStartHour = () => {
-  props.info.end.hh = isEndHourOverStart() ? props.info.start.hh : props.info.end.hh
-  props.info.end.mm =
-    isEndMinutesOverStart() && isHoursEqual() ? increaseTime(props.info.start.mm, 5, 'mm') : props.info.end.mm
-  if (isHoursEqual() && isStarMinutesValueLast()) props.info.end.hh = increaseTime(props.info.start.hh, 1)
+  props.info.end.hh = isEndHourOverStart() ? increaseTime(1, 'start', 'hh') : props.info.end.hh
+  props.info.end.mm = isEndMinutesOverStart() && isHoursEqual() ? increaseTime(30, 'end', 'mm') : props.info.end.mm
+  if (isHoursEqual() && isStarMinutesValueLast()) props.info.end.hh = increaseTime(1, 'start', 'hh')
 }
 
 const watchStartMinutesAndEndHour = () => {
-  props.info.end.mm =
-    isEndMinutesOverStart() && isHoursEqual() ? increaseTime(props.info.start.mm, 5, 'mm') : props.info.end.mm
-  if (isStarMinutesValueLast() && isHoursEqual()) props.info.end.hh = increaseTime(props.info.end.hh, 1)
+  props.info.end.mm = isEndMinutesOverStart() && isHoursEqual() ? increaseTime(5, 'start', 'mm') : props.info.end.mm
+  if (isStarMinutesValueLast() && isHoursEqual()) props.info.end.hh = increaseTime(1, 'end', 'hh')
 }
 
 watch(() => props.info.start.hh, watchStartHour)
@@ -44,9 +42,10 @@ function calcEndMinutes() {
   return isHoursEqual() ? minutes.filter((m) => m > props.info.start.mm) : minutes
 }
 
-function increaseTime(value: number | string, inc: number, type: 'mm' | 'hh' = 'hh') {
+function increaseTime(inc: number, key1: 'start' | 'end', key2: 'mm' | 'hh') {
+  const value = props.info[key1][key2]
   const time = (typeof value === 'number' ? value : parseInt(value)) + inc
-  const topValue = type === 'mm' ? 60 : 24
+  const topValue = key2 === 'mm' ? 60 : 24
   return time >= topValue ? convertTimeToString(0) : convertTimeToString(time)
 }
 

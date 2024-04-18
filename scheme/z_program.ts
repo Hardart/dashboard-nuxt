@@ -46,12 +46,17 @@ export const programSchema = z.object({
 
 export const programForTableSchema = z.object({
   id: z.string(),
-  startFromId: z.number(),
-  width: z.number(),
+  sizes: z.array(
+    z.object({
+      startFromId: z.number(),
+      width: z.number()
+    })
+  ),
   title: z.string(),
   color: z.string(),
   image: z.string().optional(),
-  props: z.array(schedulePropsItemSchema)
+  properties: z.array(schedulePropsItemSchema),
+  weekdayIds: z.array(z.number())
 })
 
 export const programFormData = programSchema.omit({ id: true }).extend({
@@ -60,6 +65,7 @@ export const programFormData = programSchema.omit({ id: true }).extend({
 
 export const programStateSchema = z.object({
   title: z.string().optional(),
+  slug: z.string().optional(),
   image: z.string().optional(),
   color: z.string().optional(),
   schedule: z.array(scheduleSchema)

@@ -5,7 +5,7 @@ const selectedWeekdayIds = defineModel<number[]>({ required: true })
 const isTimeEqual = defineModel<boolean>('time', { required: true })
 const scheduleInfoState = defineModel<Record<string, ProgramSchedulePropsItem[]>>('info', { required: true })
 
-const scheduleProp = () => ({ start: { hh: '00', mm: '00' }, end: { hh: '23', mm: '00' }, isReplay: false })
+const scheduleProp = () => ({ start: { hh: '00', mm: '00' }, end: { hh: '01', mm: '00' }, isReplay: false })
 watch(
   [isTimeEqual, selectedWeekdayIds],
   () => {
@@ -19,7 +19,7 @@ watch(
 
     if (!selectedWeekdayIds.value.length) scheduleInfoState.value = {}
   },
-  { deep: true }
+  { deep: true, immediate: true }
 )
 
 const onAddInfo = (id?: number) => {
@@ -31,21 +31,22 @@ const onRemoveInfo = (id?: number) => {
 }
 </script>
 <template>
-  <div body class="space-y-8">
-    <ScheduleCardSameTimeList
-      v-if="isTimeEqual && selectedWeekdayIds.length"
+  <div body class="space-y-8" v-if="selectedWeekdayIds.length">
+    <ScheduleCardTimeList
+      v-if="isTimeEqual"
       :is-time-equal
-      :selected-weekday-ids
       :schedule-info-state
+      :ids="selectedWeekdayIds"
       @add-info="onAddInfo"
       @remove-info="onRemoveInfo"
     />
 
-    <ScheduleCardSeparateTimeList
+    <ScheduleCardTimeList
       v-else
+      v-for="weekdayId in selectedWeekdayIds"
       :is-time-equal
-      :selected-weekday-ids
       :schedule-info-state
+      :ids="weekdayId"
       @add-info="onAddInfo"
       @remove-info="onRemoveInfo"
     />
