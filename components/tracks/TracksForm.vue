@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { FormError, FormSubmitEvent } from '#ui/types'
+import { trackAPI } from '~/api/track-api'
 
-const { track } = storeToRefs(useTracksStore())
-
+const { track, loading } = useTracksStore().storeRefs()
 const emit = defineEmits(['close'])
 
 // https://ui.nuxt.com/components/form
@@ -23,11 +23,38 @@ async function onSubmit(event: FormSubmitEvent<any>) {
   console.log(event.data)
   emit('close')
 }
+
+async function onLoadMeta() {
+  const toast = useToast()
+  const trackData = toValue(track)
+  if (!trackData) return console.warn('No track data')
+  loading.value = true
+  const { artistName, trackTitle } = trackData
+
+  const res = await trackAPI.getITunesMetadata(`${trackData.artistName} - ${trackData.trackTitle}`)
+  loading.value = false
+  if (res === null)
+    return toast.add({
+      timeout: 4000,
+      title: 'Пусто',
+      description: `Трека "${artistName} - ${trackTitle}" в базе iTunes не нашлось, попробуй изменить Имя артиста или Название трека`,
+      icon: 'heroicons:shield-exclamation-solid',
+      color: 'red'
+    })
+  toast.add({
+    timeout: 2000,
+    title: 'Мета данные трека загружены',
+    icon: 'heroicons:bolt-20-solid',
+    color: 'primary'
+  })
+  const { artworkUrl60 } = res
+  trackData.cover = artworkUrl60
+}
 </script>
 
 <template>
   <UForm :state="track" class="space-y-4" @submit="onSubmit">
-    <div class="flex items-center max-md:flex-col md:items-end gap-5 mb-10">
+    <div class="mb-10 flex items-center gap-5 max-md:flex-col md:items-end">
       <UAvatar :src="track?.cover" size="xl" />
       <UFormGroup label="Имя артиста" class="w-full md:w-1/2" required name="title">
         <UInput v-model="track!.artistName" autofocus />
@@ -38,6 +65,7 @@ async function onSubmit(event: FormSubmitEvent<any>) {
     </div>
 
     <div class="flex justify-end gap-3">
+      <UButton label="Подгрузить метаданные" class="mr-auto" @click="onLoadMeta" :loading />
       <UButton label="Отменить" color="gray" variant="ghost" @click="emit('close')" />
       <UButton type="submit" label="Сохранить" color="black" />
     </div>

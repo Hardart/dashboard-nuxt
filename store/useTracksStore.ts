@@ -1,6 +1,8 @@
-import type { Track } from '~/types/track'
+import { trackAPI } from '~/api/track-api'
+import type { Track } from '~/scheme/z_track'
 
 export const useTracksStore = defineStore('tracks', () => {
+  const loading = ref(false)
   const tracks = ref<Track[]>([])
   const track = ref<Track>()
   const [isTrackEditModalOpen, toggleEditTrackModalState] = useToggle()
@@ -14,7 +16,7 @@ export const useTracksStore = defineStore('tracks', () => {
 
   const filteredTracks = computed(() => {
     const filtered = tracks.value.filter(
-      track =>
+      (track) =>
         track.artistName.toLowerCase().includes(artistFilter.value.toLowerCase()) ||
         track.trackTitle.toLowerCase().includes(artistFilter.value.toLowerCase())
     )
@@ -26,14 +28,22 @@ export const useTracksStore = defineStore('tracks', () => {
   const tracksByPage = computed(() => filteredTracks.value.slice((page.value - 1) * pageCount, page.value * pageCount))
 
   async function fetchTracks() {
-    if (tracks.value.length) return
-    const data = await $fetch<Track[]>('/dashboard/tracks')
-    tracks.value = data
-    tracksCount.value = data.length
+    tracks.value = await trackAPI.list()
   }
 
   function storeRefs() {
-    return { tracks, tracksCount, tracksByPage, pageCount, page, artistFilter, filteredCount, track, isTrackEditModalOpen }
+    return {
+      tracks,
+      tracksCount,
+      tracksByPage,
+      pageCount,
+      page,
+      artistFilter,
+      filteredCount,
+      track,
+      isTrackEditModalOpen,
+      loading
+    }
   }
 
   return { fetchTracks, toggleEditTrackModalState, storeRefs }

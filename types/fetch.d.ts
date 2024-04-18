@@ -1,6 +1,7 @@
 import type { Article } from '~/scheme/z_article'
 import type { Category } from '~/scheme/z_category'
 import type { Program } from '~/scheme/z_program'
+import type { Track } from '~/scheme/z_track'
 import type { User } from '~/scheme/z_user'
 
 export interface CustomFetchOptions {
@@ -37,4 +38,5 @@ export declare module ResponseApi {
   type FileSingle = { path: string }
   type ProgramList = { programs: Program[]; hosts: User[] }
   type UserList = { users: User[] }
+  type TrackList = { tracks: Track[] }
 }
