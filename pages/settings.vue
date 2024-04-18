@@ -5,33 +5,33 @@ const links = [
       label: 'Аккаунт',
       icon: 'i-heroicons-user-circle',
       to: '/settings',
-      exact: true,
+      exact: true
     },
     {
       label: 'Админы',
       icon: 'i-heroicons-user-group',
-      to: '/settings/members',
+      to: '/settings/members'
     },
     {
       label: 'Уведомления',
       icon: 'i-heroicons-bell',
-      to: '/settings/notifications',
-    },
+      to: '/settings/notifications'
+    }
   ],
   [
     {
       label: 'Documentation',
       icon: 'i-heroicons-book-open',
       to: 'https://ui.nuxt.com/pro',
-      target: '_blank',
+      target: '_blank'
     },
     {
       label: 'Buy now',
       icon: 'i-heroicons-credit-card',
       to: 'https://ui.nuxt.com/pro/purchase',
-      target: '_blank',
-    },
-  ],
+      target: '_blank'
+    }
+  ]
 ]
 </script>
 
@@ -40,7 +40,7 @@ const links = [
     <UDashboardPanel grow>
       <UDashboardNavbar title="Настройки" />
 
-      <UDashboardToolbar class="py-0 px-1.5 overflow-x-auto">
+      <UDashboardToolbar class="overflow-x-auto px-1.5 py-0">
         <UHorizontalNavigation :links="links" />
       </UDashboardToolbar>
 

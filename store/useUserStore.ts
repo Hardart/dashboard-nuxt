@@ -17,6 +17,7 @@ export const useUserStore = defineStore('user', () => {
   const userFormData = ref({ ...userState })
   const loading = ref(false)
 
+  const isAdmin = computed(() => user.value?.roles.includes('hero' || 'admin'))
   const isLoggedIn = computed(() => !!user.value?.id)
 
   watch(
@@ -72,7 +73,7 @@ export const useUserStore = defineStore('user', () => {
     return true
   }
 
-  const storeRefs = () => ({ loading, user, isLoggedIn, userFormData })
+  const storeRefs = () => ({ loading, user, isLoggedIn, userFormData, isAdmin })
 
   return { login, storeRefs, tryRefreshToken, logout, setUserDataFromToken, setUserFormData, updateUserInfo }
 })

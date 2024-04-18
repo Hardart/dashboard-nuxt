@@ -149,12 +149,12 @@ const linksBase = [
       {
         label: 'Администраторы',
         to: '/settings/members',
-        exeptRoles: ['hero', 'admin']
+        exeptRoles: ['editor', 'host']
       },
       {
         label: 'Уведомления',
         to: '/settings/notifications',
-        exeptRoles: ['hero', 'admin']
+        exeptRoles: ['editor', 'host']
       }
     ],
     tooltip: {
@@ -166,6 +166,12 @@ const linksBase = [
 
 const links = computed(() =>
   linksBase.filter((link) => {
+    if (link.children) {
+      link.children = link.children.filter((childLink) => {
+        return !user.value?.roles.some((role) => childLink.exeptRoles?.includes(role))
+      })
+    }
+
     return !user.value?.roles.some((role) => link.exeptRoles?.includes(role))
   })
 )

@@ -10,14 +10,14 @@ const fields = [
     name: 'email',
     type: 'mail',
     label: 'Email',
-    placeholder: 'Введите Email',
+    placeholder: 'Введите Email'
   },
   {
     name: 'password',
     label: 'Пароль',
     type: 'password',
-    placeholder: 'Введите пароль',
-  },
+    placeholder: 'Введите пароль'
+  }
 ]
 
 const validate = (state: any) => {
@@ -29,15 +29,15 @@ const validate = (state: any) => {
 
 const onSubmit = async (data: any) => {
   const res = await login(data)
-  if (res) await navigateTo('/')
+  if (res) navigateTo('/', { external: true })
 }
 </script>
 
 <template>
   <UDashboardPage>
     <UDashboardPanel grow>
-      <div class="grid place-items-center h-full">
-        <UCard class="max-w-sm w-full">
+      <div class="grid h-full place-items-center">
+        <UCard class="w-full max-w-sm">
           <UAuthForm
             :loading
             :fields

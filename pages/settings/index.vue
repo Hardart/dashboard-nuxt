@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { userFormDataSchema, type UserFormData } from '@/scheme/z_user'
 import type { FormError, FormSubmitEvent } from '#ui/types'
-import { UploadURLS } from '~/scheme/enums'
+
 const toast = useToast()
 const { updateUserInfo, storeRefs } = useUserStore()
-const { userFormData, user } = storeRefs()
+const { userFormData, user, isAdmin } = storeRefs()
 
 function validate(state: UserFormData): FormError[] {
   const errors = [] as FormError[]
@@ -32,13 +32,7 @@ async function onSubmit(event: FormSubmitEvent<any>) {
 
 <template>
   <UDashboardPanelContent class="pb-24">
-    <UForm
-      :state="userFormData"
-      :schema="userFormDataSchema"
-      :validate="validate"
-      :validate-on="['submit']"
-      @submit="onSubmit"
-    >
+    <UForm :state="userFormData" :schema="userFormDataSchema" :validate="validate" :validate-on="['submit']" @submit="onSubmit">
       <UDashboardSection title="Профиль" description="Изменение данных учётной записи">
         <template #links>
           <UButton type="submit" label="Сохранить данные" color="black" />
@@ -60,6 +54,7 @@ async function onSubmit(event: FormSubmitEvent<any>) {
         </div>
 
         <FormText
+          v-if="isAdmin"
           class="grid grid-cols-2 items-center gap-2"
           v-model="userFormData.email"
           name="email"
@@ -80,12 +75,7 @@ async function onSubmit(event: FormSubmitEvent<any>) {
           show-select
         >
           <template #preview>
-            <UAvatar
-              icon="i-heroicons-photo"
-              size="xl"
-              :src="userFormData.avatar"
-              imgClass="object-cover w-full h-full"
-            />
+            <UAvatar icon="i-heroicons-photo" size="xl" :src="userFormData.avatar" imgClass="object-cover w-full h-full" />
           </template>
         </UiUploadImage>
 
@@ -97,13 +87,7 @@ async function onSubmit(event: FormSubmitEvent<any>) {
           class="grid grid-cols-2 gap-2"
           :ui="{ container: '' }"
         >
-          <UInput
-            v-model="userFormData.password"
-            autocomplete="off"
-            type="password"
-            placeholder="Ваш пароль"
-            size="md"
-          />
+          <UInput v-model="userFormData.password" autocomplete="off" type="password" placeholder="Ваш пароль" size="md" />
         </UFormGroup>
 
         <UFormGroup
