@@ -1,23 +1,20 @@
 <script setup lang="ts">
-type Properties = Record<string, ProgramSchedulePropsItem[]>
-import type { ProgramSchedulePropsItem } from '~/scheme/z_program'
-const selectedWeekdayIds = defineModel<number[]>('ids', { required: true })
-const isTimeEqual = defineModel<boolean>('time', { required: true })
+import { SCHEDULE_STATE } from '~/enums/scheduleEnum'
 
-const scheduleInfoState = defineModel<Properties>('info', { required: true })
-
-const addSchedule = inject<(p: Properties) => void>('add-schedule')
-if (typeof addSchedule === 'undefined') throw createError("can't inject add function")
+const ids = useState<number[]>(SCHEDULE_STATE.IDS)
+const save = tryInject<VoidFunction>(SCHEDULE_STATE.SAVE)
+const cancel = tryInject<VoidFunction>(SCHEDULE_STATE.CANCEL)
 </script>
 
 <template>
-  <UCard>
+  <UCard :ui="{ base: 'flex flex-col h-full flex-grow', body: { base: 'flex-grow' } }">
     <template #header>
-      <ScheduleCardHeader v-model="selectedWeekdayIds" v-model:time="isTimeEqual" />
+      <ScheduleCardHeader />
     </template>
-    <ScheduleCardBody v-model:info="scheduleInfoState" v-model:time="isTimeEqual" v-model="selectedWeekdayIds" />
+    <ScheduleCardBody />
     <template #footer>
-      <UButton label="Добавить" :disabled="!selectedWeekdayIds.length" @click="addSchedule(scheduleInfoState)" />
+      <UButton label="Сохранить" @click="save" :disabled="!ids.length" />
+      <UButton label="Отменить" @click="cancel" />
     </template>
   </UCard>
 </template>

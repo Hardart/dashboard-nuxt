@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { SCHEDULE_STATE } from '~/enums/scheduleEnum'
+
+const ids = useState(SCHEDULE_STATE.IDS)
+
 const props = [
   { label: 'Каждый день', color: 'sky', emit: () => weekdayIds },
   { label: 'По будням', color: 'sky', emit: () => weekdayIds.slice(0, 5) },
@@ -7,17 +11,10 @@ const props = [
   { label: 'По нечетным', color: 'sky', emit: () => weekdayIds.filter((day) => day % 2 !== 0) },
   { label: 'Сбросить', color: 'orange', emit: () => [] }
 ]
-
-defineEmits(['on-click'])
 </script>
 
 <template>
   <div buttons class="flex gap-2">
-    <ScheduleCardHelpButton
-      v-for="prop in props"
-      :label="prop.label"
-      :color="prop.color"
-      @click="$emit('on-click', prop.emit())"
-    />
+    <ScheduleCardHelpButton v-for="prop in props" :label="prop.label" :color="prop.color" @click="ids = prop.emit()" />
   </div>
 </template>

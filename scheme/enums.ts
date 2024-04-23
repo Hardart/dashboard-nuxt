@@ -5,5 +5,5 @@ export enum UploadURLS {
   programs = '/image-programs',
   category = '/image-category',
   delete_image = '/image-delete',
-  delete_folder = '/folder-delete',
+  delete_folder = '/folder-delete'
 }

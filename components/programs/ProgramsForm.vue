@@ -1,41 +1,31 @@
 <script setup lang="ts">
+import { PROGRAM_STATE } from '~/enums/programsEnum'
+import { SCHEDULE_STATE } from '~/enums/scheduleEnum'
 import type { Program } from '~/scheme/z_program'
 import type { User } from '~/scheme/z_user'
-const { selectedWeekdayIds, isTimeEqual, scheduleInfoState, selectedIdsToWeekday, setScheduleTimeString } = useSchedule()
-const scheduleModalState = defineModel({ required: true })
-defineEmits(['open-schedule-modal'])
-defineProps<{
-  hosts: User[]
-}>()
+const { isOpenScheduleModal } = useSchedule()
 
-const addProgram = inject<() => void>('add-program')
-if (typeof addProgram === 'undefined') throw createError("can't inject add function")
-
-const programFormData = inject<Ref<Program>>('program-form-data')
-if (!programFormData) throw createError('programFormData is undefined')
+defineProps<{ hosts: User[] }>()
+const programFormData = tryInject<Program>(PROGRAM_STATE.FORM_DATA)
+const saveProgram = tryInject<(p: Program) => void>(PROGRAM_STATE.SAVE)
+const addSchedule = tryInject<VoidFunction>(SCHEDULE_STATE.ADD)
+defineEmits(['open-schedule-modal', 'on-add-program'])
 </script>
 
 <template>
   <div class="w-auto max-w-2xl flex-grow divide-y divide-zinc-700">
     <div class="flex gap-6">
       <div class="flex-grow">
-        <UFormGroup label="Название программы" class="flex-grow" required>
-          <UInput v-model="programFormData.title" />
-        </UFormGroup>
-        <ProgramsFormHostSelect :hosts v-model="programFormData.hosts" />
-        <UButton label="Добавить расписание" @click="$emit('open-schedule-modal')" class="mt-8" />
+        <div class="space-y-4">
+          <ProgramsFormProgramTitle v-model="programFormData.title" />
+          <div class="flex justify-between">
+            <ProgramsFormHostSelect :hosts v-model="programFormData.hosts" />
+            <ProgramsFormIsPublished v-model="programFormData.isPublished" />
+          </div>
+        </div>
+        <UButton label="Добавить расписание" @click="addSchedule" class="mb-2 mt-8" />
         <ul>
-          <li v-for="schedule in programFormData.schedule" class="border-primary relative my-2 rounded-lg border-2 p-2">
-            <h4>{{ selectedIdsToWeekday(schedule.weekdayIds) }}</h4>
-            <ul class="flex gap-2">
-              <li v-for="info in schedule.properties" class="relative mt-1">
-                <p class="border-primary/60 rounded-lg border px-3 py-2 text-sm leading-3">
-                  {{ setScheduleTimeString(info) }}
-                </p>
-                <div v-if="info.isReplay" class="absolute -top-1.5 right-2 text-xs">п</div>
-              </li>
-            </ul>
-          </li>
+          <ProgramsFormScheduleItem v-for="(schedule, idx) in programFormData.schedule" :schedule :idx />
         </ul>
       </div>
       <div class="">
@@ -44,11 +34,18 @@ if (!programFormData) throw createError('programFormData is undefined')
     </div>
 
     <div class="mt-6 py-6 text-right">
-      <UButton label="Добавить программу" @click="addProgram()" />
+      <UButton label="Сохранить программу" @click="saveProgram(programFormData)" />
     </div>
 
-    <UModal v-model="scheduleModalState" :ui="{ base: 'lg:w-[900px] sm:max-w-none' }">
-      <ScheduleCard v-model:ids="selectedWeekdayIds" v-model:time="isTimeEqual" v-model:info="scheduleInfoState" />
+    <UModal
+      v-model="isOpenScheduleModal"
+      :ui="{
+        base: 'lg:w-[900px] sm:max-w-none h-full flex-grow',
+        container: 'flex flex-col min-h-full items-end sm:items-start justify-start ml-12 text-center'
+      }"
+      prevent-close
+    >
+      <ScheduleCard />
     </UModal>
   </div>
 </template>

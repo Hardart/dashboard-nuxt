@@ -37,6 +37,7 @@ export declare module ResponseApi {
   type FileList = { files: string[] }
   type FileSingle = { path: string }
   type ProgramList = { programs: Program[]; hosts: User[] }
+  type ProgramSngle = { program: Program }
   type UserList = { users: User[] }
   type TrackList = { tracks: Track[] }
 }

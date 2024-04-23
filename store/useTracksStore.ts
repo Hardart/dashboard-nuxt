@@ -29,6 +29,7 @@ export const useTracksStore = defineStore('tracks', () => {
 
   async function fetchTracks() {
     tracks.value = await trackAPI.list()
+    tracksCount.value = tracks.value.length
   }
 
   function storeRefs() {

@@ -1,16 +1,12 @@
 <script setup lang="ts">
-import type { ProgramSchedulePropsItem } from '~/scheme/z_program'
-const [showAddBtn, toggleShowBtnState] = useToggle(false)
-const props = defineProps<{
-  ids: number[] | number
-  scheduleInfoState: Record<string, ProgramSchedulePropsItem[]>
-  isTimeEqual: boolean
-}>()
+import type { Schedule } from '~/scheme/z_program'
 
-const infoId = computed(() => {
-  return typeof props.ids === 'number' ? props.ids : 0
-})
-defineEmits(['addInfo', 'removeInfo'])
+const { addPropertyToSchedule, isTimeEqual } = useSchedule()
+const [showAddBtn, toggleShowBtnState] = useToggle(false)
+const props = defineProps<{ schedule: Schedule }>()
+
+const onAddInfo = () => props.schedule.properties.push(addPropertyToSchedule())
+const onRemoveInfo = () => props.schedule.properties.pop()
 </script>
 <template>
   <div
@@ -18,13 +14,13 @@ defineEmits(['addInfo', 'removeInfo'])
     @mouseenter="toggleShowBtnState(true)"
     @mouseleave="toggleShowBtnState(false)"
   >
-    <ScheduleCardWeekdayLabel :ids="typeof ids === 'number' ? [ids] : ids" />
+    <ScheduleCardWeekdayLabel :ids="schedule.weekdayIds" />
     <ul>
-      <ScheduleCardTime v-if="scheduleInfoState[infoId]" v-for="info in scheduleInfoState[infoId]" :info :isTimeEqual />
+      <ScheduleCardTime v-for="property in schedule.properties" :property :isTimeEqual />
     </ul>
     <div class="absolute -bottom-4 space-x-6" v-if="showAddBtn">
-      <ScheduleCardAddBtn @click="$emit('addInfo', ids)" />
-      <ScheduleCardRemoveBtn @click="$emit('removeInfo', ids)" :show-if="scheduleInfoState[infoId].length > 1" />
+      <ScheduleCardAddBtn @click="onAddInfo" />
+      <ScheduleCardRemoveBtn @click="onRemoveInfo" :show-if="schedule.properties.length > 1" />
     </div>
   </div>
 </template>

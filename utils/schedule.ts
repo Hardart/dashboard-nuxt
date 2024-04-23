@@ -1,13 +1,13 @@
 import type { INearDayProp } from '~/types'
 
 export const weekdays = [
-  { id: 1, title: { full: 'понедельник', short: 'пн' } },
-  { id: 2, title: { full: 'вторник', short: 'вт' } },
-  { id: 3, title: { full: 'среда', short: 'ср' } },
-  { id: 4, title: { full: 'четверг', short: 'чт' } },
-  { id: 5, title: { full: 'пятница', short: 'пт' } },
-  { id: 6, title: { full: 'суббота', short: 'сб' } },
-  { id: 7, title: { full: 'воскресенье', short: 'вс' } }
+  { id: 1, title: { full: 'Понедельник', short: 'пн' } },
+  { id: 2, title: { full: 'Вторник', short: 'вт' } },
+  { id: 3, title: { full: 'Среда', short: 'ср' } },
+  { id: 4, title: { full: 'Четверг', short: 'чт' } },
+  { id: 5, title: { full: 'Пятница', short: 'пт' } },
+  { id: 6, title: { full: 'Суббота', short: 'сб' } },
+  { id: 7, title: { full: 'Воскресенье', short: 'вс' } }
 ]
 
 export const weekday = (id: number) => ({
@@ -30,16 +30,19 @@ export const combineNearDays = (weekdayIds: number[]) => {
 
   function reduceIds(acc: INearDayProp[], curr: number, index: number) {
     const obj: INearDayProp = { width: 1, startFromId: 1 }
-    if (nextValue == curr) {
+
+    if (nextValue === curr) {
       nextValue++
       acc[id].width++
     } else {
       id = index
       nextValue = curr + 1
       obj.startFromId = curr
-      acc.push(obj)
+      acc[id] = obj
     }
+
     return acc
   }
+
   return weekdayIds.reduce(reduceIds, [] as INearDayProp[])
 }

@@ -1,72 +1,111 @@
 import { ProgramsAPI } from '~/api/programs-api'
-import type { Program, ProgramForTable, ProgramSchedule, ProgramSchedulePropsItem } from '~/scheme/z_program'
+import type { Program, Schedule } from '~/scheme/z_program'
 import type { User } from '~/scheme/z_user'
 
 export const useProgramsStore = defineStore('programs', () => {
-  const { selectedWeekdayIds, scheduleInfoState } = useSchedule()
+  const { ids, scheduleList, isTimeEqual, toggleScheduleModalState } = useSchedule()
 
   const programState: Program = {
     id: '',
     title: '',
-    slug: '',
+    slug: 'asdfsffdfg',
     image: '',
     color: '#7e22ce',
     schedule: [],
-    hosts: []
+    hosts: [],
+    isPublished: false
   }
 
-  const scheduleState = reactive<ProgramSchedule>({
-    properties: [],
-    weekdayIds: []
-  })
+  const idx = ref()
   const hosts = ref<User[]>([])
-  const isAdded = ref(false) // helper
-  const [scheduleModalState, toggleScheduleModalState] = useToggle()
   const programFormData = ref<Program>({ ...programState })
-  const programs = ref<Program[]>()
+  const programs = ref<Program[]>([])
+  const tempSchedule = ref<Schedule>()
+  const findProgramById = (id: string) => {
+    const p = programs.value.find((programsItem) => programsItem.id === id)
+    if (!p) return console.warn('Cant find program')
+    programFormData.value = p
+  }
 
   async function getProgramList() {
     const { programs: programsData, hosts: hostsData } = await ProgramsAPI.list()
-    programs.value = programsData
+    programs.value = programsData.map((program) => {
+      const sch = program.schedule.map((s) => {
+        const sizes = combineNearDays(s.weekdayIds)
+        return { ...s, sizes }
+      })
+      return { ...program, schedule: sch }
+    })
     hosts.value = hostsData
   }
 
-  function addSchedule(properties: Record<string, ProgramSchedulePropsItem[]>) {
-    Object.entries(properties).forEach(([key, value]) => {
-      scheduleState.weekdayIds = parseInt(key) === 0 ? selectedWeekdayIds.value : [parseInt(key)]
-      scheduleState.properties = value
-      programFormData.value.schedule.push({ ...scheduleState })
-    })
-    toggleScheduleModalState()
-    selectedWeekdayIds.value = []
-    scheduleInfoState.value = {}
-    if (isAdded.value) return
-    programFormData.value.id = String((programs.value?.length || 0) + 1)
-    programs.value?.push(programFormData.value)
-    isAdded.value = true
-  }
-
-  function addProgram() {
-    programState.schedule = []
-    programFormData.value = { ...programState }
-    console.log(programFormData.value)
-    isAdded.value = false
-  }
-
-  function editProgram(p: ProgramForTable) {
-    selectedWeekdayIds.value = p.weekdayIds
-    scheduleInfoState.value[0] = p.properties
+  function editSchedule(index: number) {
+    idx.value = index
+    const s = JSON.parse(JSON.stringify(programFormData.value.schedule[index])) as Schedule
+    tempSchedule.value = s
+    ids.value = tempSchedule.value.weekdayIds
+    scheduleList.value.push(programFormData.value.schedule[index])
+    programFormData.value.schedule.splice(index, 1)
     toggleScheduleModalState()
   }
+
+  function addSchedule() {
+    toggleScheduleModalState()
+  }
+
+  function removeSchedule(index: number) {
+    programFormData.value.schedule.splice(index, 1)
+  }
+
+  function saveSchedule(index: number) {
+    if (typeof idx.value !== 'undefined' && typeof tempSchedule.value !== 'undefined')
+      programFormData.value.schedule.splice(idx.value, 0, scheduleList.value[0])
+    else programFormData.value.schedule.push(...toValue(scheduleList))
+    scheduleList.value = []
+    ids.value = []
+    idx.value = undefined
+    isTimeEqual.value = true
+    toggleScheduleModalState()
+  }
+
+  function cancelSaveSchedule() {
+    console.log(tempSchedule.value)
+
+    if (typeof idx.value !== 'undefined' && typeof tempSchedule.value !== 'undefined')
+      programFormData.value.schedule.splice(idx.value, 0, { ...tempSchedule.value })
+    tempSchedule.value = undefined
+    scheduleList.value = []
+    ids.value = []
+    idx.value = undefined
+    isTimeEqual.value = true
+    toggleScheduleModalState()
+  }
+
+  async function saveProgram(p: Program) {
+    const res = await ProgramsAPI.save(p)
+    console.log(res)
+  }
+
+  function editProgram(p: Program) {}
 
   function storeRefs() {
     return {
       hosts,
-      scheduleModalState,
       programs,
       programFormData
     }
   }
 
-  return { storeRefs, addProgram, editProgram, addSchedule, getProgramList, toggleScheduleModalState }
+  return {
+    storeRefs,
+    saveProgram,
+    editProgram,
+    addSchedule,
+    saveSchedule,
+    cancelSaveSchedule,
+    removeSchedule,
+    editSchedule,
+    getProgramList,
+    findProgramById
+  }
 })

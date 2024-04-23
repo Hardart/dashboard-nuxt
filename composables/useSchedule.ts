@@ -1,11 +1,14 @@
-import type { ProgramSchedulePropsItem } from '~/scheme/z_program'
+import { SCHEDULE_STATE } from '~/enums/scheduleEnum'
+import type { ScheduleProperty, Schedule } from '~/scheme/z_program'
 
 export const useSchedule = () => {
-  const isTimeEqual = ref(true)
-  const selectedWeekdayIds = useState<number[]>('weekday-ids', () => [])
-  const scheduleInfoState = useState<Record<string, ProgramSchedulePropsItem[]>>('schedule-info', () => ({}))
-  const setScheduleTimeString = (info: ProgramSchedulePropsItem) =>
-    `с ${info.start.hh}:${info.start.mm} до ${info.end.hh}:${info.end.mm}`
+  const isOpenScheduleModal = useState(SCHEDULE_STATE.MODAL, () => false)
+  const isTimeEqual = useState(SCHEDULE_STATE.TIME, () => true)
+  const ids = useState<number[]>(SCHEDULE_STATE.IDS, () => [])
+  const scheduleList = useState<Schedule[]>('schedule-list', () => [])
+
+  const addPropertyToSchedule = () => ({ start: { hh: '00', mm: '00' }, end: { hh: '01', mm: '00' }, isReplay: false })
+  const setScheduleTimeString = (info: ScheduleProperty) => `с ${info.start.hh}:${info.start.mm} до ${info.end.hh}:${info.end.mm}`
 
   const selectedIdsToWeekday = (array: number[]) => {
     switch (true) {
@@ -20,11 +23,16 @@ export const useSchedule = () => {
     }
   }
 
+  const toggleScheduleModalState = () => (isOpenScheduleModal.value = !isOpenScheduleModal.value)
+
   return {
-    scheduleInfoState,
-    selectedWeekdayIds,
+    isOpenScheduleModal,
+    ids,
+    scheduleList,
     isTimeEqual,
+    addPropertyToSchedule,
     selectedIdsToWeekday,
-    setScheduleTimeString
+    setScheduleTimeString,
+    toggleScheduleModalState
   }
 }

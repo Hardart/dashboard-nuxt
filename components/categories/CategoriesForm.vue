@@ -19,11 +19,16 @@ const { validate } = useFormValidation()
       <FormSlug v-model="state.slug" :input="state.title" />
       <!-- <USelectMenu v-model="tags" creatable multiple searchable :options="options" searchablePlaceholder="Поиск..." /> -->
       <div class="flex justify-end gap-3">
-        <FormSwitch label="Опубликовано" form-name="isPublished" class="flex items-center gap-x-5 flex-grow" v-model="state.isPublished" />
+        <FormSwitch
+          label="Опубликовано"
+          name="isPublished"
+          class="flex flex-grow items-center gap-x-5"
+          v-model="state.isPublished"
+        />
         <UButton label="Назад" color="gray" variant="ghost" @click="navigateTo('/categories')" />
         <UButton type="submit" label="Сохранить" color="black" />
       </div>
     </UForm>
-    <pre class="whitespace-pre-wrap col-span-4 text-xs">{{ state }}</pre>
+    <pre class="col-span-4 whitespace-pre-wrap text-xs">{{ state }}</pre>
   </div>
 </template>

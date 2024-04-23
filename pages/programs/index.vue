@@ -1,6 +1,4 @@
 <script setup lang="ts">
-const { programs } = useProgramsStore().storeRefs()
-
 const remove = (id: string) => console.log(id)
 </script>
 
@@ -14,7 +12,7 @@ const remove = (id: string) => console.log(id)
     }"
   />
   <div class="flex gap-4">
-    <ProgramsTable :programs="programs || []" :loading="false" :delete-handle="remove" />
+    <ProgramsTable :loading="false" :delete-handle="remove" />
     <!-- <ScheduleTable v-if="programs" :programs /> -->
   </div>
 </template>

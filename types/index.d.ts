@@ -47,3 +47,5 @@ export interface Range {
   start: Date
   end: Date
 }
+
+export type VoidFunc = () => void

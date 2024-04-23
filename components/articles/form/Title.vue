@@ -7,5 +7,3 @@ const title = defineModel({ required: true })
     <UInput v-model="title" />
   </UFormGroup>
 </template>
-
-<style></style>

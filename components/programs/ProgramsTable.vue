@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import type { Program } from '~/scheme/z_program'
 import { columns } from './table-config'
+import { PROGRAM_STATE } from '~/enums/programsEnum'
+import { tryInject } from '~/utils/helpers'
 
-// const sort = defineModel({ required: true })
+const programs = tryInject<Program[]>(PROGRAM_STATE.LIST)
 
-const { deleteHandle, programs } = defineProps<{
-  programs: Program[]
+defineProps<{
   loading: boolean
-  deleteHandle: (item: string) => void
 }>()
 
 const selected = ref<Program[]>([])
@@ -27,7 +27,7 @@ const editItems = (program: Program) => [
       label: 'Удалить',
       icon: 'i-heroicons-trash-20-solid',
       click: () => {
-        deleteHandle(program.id)
+        // deleteHandle(program.id)
       }
     }
   ]
