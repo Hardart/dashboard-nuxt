@@ -22,14 +22,9 @@ export default defineNuxtConfig({
     enabled: false
   },
   routeRules: {
-    '/uploads/**': {
-      proxy: process.env.FILES_URL
-    },
     '/v1/dashboard/**': {
       proxy: process.env.BASE_URL
     },
-    '/socket.io/**': {
-      proxy: 'http://localhost:3000'
-    }
+    
   }
 })
