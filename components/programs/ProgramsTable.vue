@@ -5,12 +5,13 @@ import { PROGRAM_STATE } from '~/enums/programsEnum'
 import { tryInject } from '~/utils/helpers'
 
 const programs = tryInject<Program[]>(PROGRAM_STATE.LIST)
+const selected = ref<Program[]>([])
 
 defineProps<{
   loading: boolean
 }>()
 
-const selected = ref<Program[]>([])
+const emit = defineEmits(['delete'])
 
 const editItems = (program: Program) => [
   [
@@ -27,7 +28,7 @@ const editItems = (program: Program) => [
       label: 'Удалить',
       icon: 'i-heroicons-trash-20-solid',
       click: () => {
-        // deleteHandle(program.id)
+        emit('delete', program.id)
       }
     }
   ]
@@ -54,7 +55,7 @@ const editItems = (program: Program) => [
 
     <template #image-data="{ row }">
       <div class="flex size-10 items-center gap-3 overflow-clip rounded">
-        <img :src="row.image" class="size-10 object-cover" alt="" />
+        <img :src="correctImageSrc(row.image)" class="size-10 object-cover" alt="" />
       </div>
     </template>
 

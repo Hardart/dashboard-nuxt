@@ -1,23 +1,16 @@
 <script setup lang="ts">
-import { Image } from '~/utils/tiptap/Image'
 import Underline from '@tiptap/extension-underline'
+
 const content = defineModel<string | undefined>({ required: true })
-
-const image = reactive({
-  src: '',
-  description: ''
-})
-
-watch(
-  () => image.src,
-  () => {
-    editor.value?.chain().focus().setImage({ src: image.src }).run()
-  }
-)
-
+defineProps<{
+  class?: string
+  label: string
+  name: string
+  required?: boolean
+}>()
 const editor = useEditor({
   content: content.value,
-  extensions: [TiptapStarterKit, Underline, Image],
+  extensions: [TiptapStarterKit, Underline],
   editorProps: {
     attributes: {
       class: 'prose max-w-none dark:prose-invert prose-sm sm:prose-base m-5 focus:outline-none'
@@ -33,21 +26,15 @@ provide('tiptap', editor)
 
 <template>
   <div v-if="editor" class="mb-5 flex gap-x-3">
-    <EditorHeading />
     <EditorBold />
-    <EditorUnderline />
     <EditorItalic />
-    <EditorBlockquote />
-    <EditorFloatLeft />
-    <EditorFloatRight />
-    <EditorResetFloat />
-    <EditorUploadImage v-model="image.src" />
-    <EditorSelectImage v-model="image.src" />
+    <EditorUnderline />
   </div>
-  <UFormGroup label="Текст новости" name="content" required>
+  <UFormGroup :label :name :required>
     <TiptapEditorContent
-      :editor="editor"
-      class="max-h-[450px] min-h-[450px] cursor-text overflow-y-auto rounded-lg border bg-white dark:border-zinc-700 dark:bg-zinc-800"
+      :editor
+      :class
+      class="max-h-[450px] cursor-text overflow-y-auto rounded-lg border bg-white dark:border-zinc-700 dark:bg-zinc-800"
       @click="editor?.commands.focus()"
     />
   </UFormGroup>
@@ -61,9 +48,5 @@ provide('tiptap', editor)
 
 .editor__button.active {
   @apply dark:bg-zinc-800 dark:active:bg-zinc-700;
-}
-
-img.ProseMirror-selectednode {
-  @apply outline outline-2 outline-offset-4 outline-zinc-300/70;
 }
 </style>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const remove = (id: string) => console.log(id)
+const { deleteProgram } = useProgramsStore()
 </script>
 
 <template>
@@ -12,7 +12,7 @@ const remove = (id: string) => console.log(id)
     }"
   />
   <div class="flex gap-4">
-    <ProgramsTable :loading="false" :delete-handle="remove" />
+    <ProgramsTable :loading="false" @delete="deleteProgram" />
     <!-- <ScheduleTable v-if="programs" :programs /> -->
   </div>
 </template>

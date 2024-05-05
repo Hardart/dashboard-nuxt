@@ -38,7 +38,7 @@ const LEFT = computed(() => 80 + (props.size?.startFromId - 1) * CELL_WIDTH)
       <UAvatar
         class="drop-shadow-md"
         :class="isOpenTitleInfo && 'outline outline-2'"
-        :src="program.image || '/logo.svg'"
+        :src="correctImageSrc(program.image)"
         size="xs"
         @mouseenter="toggleTitleInfo(true)"
         @mouseleave="toggleTitleInfo(false)"

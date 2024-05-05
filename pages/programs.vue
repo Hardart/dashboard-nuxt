@@ -10,6 +10,7 @@ const {
   cancelSaveSchedule,
   saveSchedule,
   removeSchedule,
+  deleteProgram,
   storeRefs
 } = useProgramsStore()
 await getProgramList()
@@ -18,6 +19,7 @@ const { programFormData, programs } = storeRefs()
 provide(PROGRAM_STATE.FORM_DATA, programFormData)
 provide(PROGRAM_STATE.EDIT, editProgram)
 provide(PROGRAM_STATE.SAVE, saveProgram)
+provide(PROGRAM_STATE.DELETE, deleteProgram)
 provide(PROGRAM_STATE.LIST, programs)
 provide(SCHEDULE_STATE.ADD, addSchedule)
 provide(SCHEDULE_STATE.EDIT, editSchedule)

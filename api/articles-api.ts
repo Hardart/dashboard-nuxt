@@ -35,7 +35,7 @@ export const articlesAPI = {
     const { data } = await useCustomFetch<ResponseApi.ArticleSingle>('/article-delete', { body })
     if (data.value)
       toast.add({ title: 'Новость успешно удалена', timeout: 3000, color: 'emerald', icon: 'i-heroicons-check-circle-16-solid' })
-    return data.value ? data.value.article : undefined
+    return data.value?.article
   },
 }
 

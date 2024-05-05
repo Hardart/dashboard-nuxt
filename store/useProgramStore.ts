@@ -10,7 +10,7 @@ export const useProgramsStore = defineStore('programs', () => {
     title: '',
     slug: 'asdfsffdfg',
     image: '',
-    color: '#7e22ce',
+    color: '#fff',
     schedule: [],
     hosts: [],
     isPublished: false
@@ -21,6 +21,8 @@ export const useProgramsStore = defineStore('programs', () => {
   const programFormData = ref<Program>({ ...programState })
   const programs = ref<Program[]>([])
   const tempSchedule = ref<Schedule>()
+  const loading = ref(false)
+
   const findProgramById = (id: string) => {
     const p = programs.value.find((programsItem) => programsItem.id === id)
     if (!p) return console.warn('Cant find program')
@@ -53,6 +55,14 @@ export const useProgramsStore = defineStore('programs', () => {
     toggleScheduleModalState()
   }
 
+  function resetProgram() {
+    programFormData.value = { ...programState }
+    scheduleList.value = []
+    ids.value = []
+    idx.value = undefined
+    isTimeEqual.value = true
+  }
+
   function removeSchedule(index: number) {
     programFormData.value.schedule.splice(index, 1)
   }
@@ -82,8 +92,20 @@ export const useProgramsStore = defineStore('programs', () => {
   }
 
   async function saveProgram(p: Program) {
-    const res = await ProgramsAPI.save(p)
-    console.log(res)
+    loading.value = true
+    const programData = await ProgramsAPI.save(p)
+    loading.value = false
+    if (!programData) return console.warn('Данные не получены')
+    programs.value.push(programData)
+    
+  }
+
+  async function deleteProgram(id: string) {
+    loading.value = true
+    const data = await ProgramsAPI.deleteOne({ id })
+    loading.value = false
+    if (!data) return console.warn('Данные не получены')
+    programs.value = programs.value.filter((item) => item.id !== id)
   }
 
   function editProgram(p: Program) {}
@@ -92,7 +114,8 @@ export const useProgramsStore = defineStore('programs', () => {
     return {
       hosts,
       programs,
-      programFormData
+      programFormData,
+      loading,
     }
   }
 
@@ -106,6 +129,8 @@ export const useProgramsStore = defineStore('programs', () => {
     removeSchedule,
     editSchedule,
     getProgramList,
-    findProgramById
+    findProgramById,
+    deleteProgram,
+    resetProgram
   }
 })
