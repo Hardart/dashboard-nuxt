@@ -1,8 +1,12 @@
 <script setup lang="ts">
+import type { ImageName } from '~/types'
+
 const imageUrl = defineModel({ required: true })
 const emit = defineEmits(['append-handler', 'close'])
 const { getFiles, files, isBasePath, isImage, setSource, goBack, correctSrc } = useFilesystem()
-getFiles()
+const name = tryInject<ImageName>('upload-image')
+getFiles(name)
+
 const onImage = (src: string) => {
   imageUrl.value = src.replace('_preview', '_orig')
   emit('append-handler')

@@ -5,17 +5,17 @@ const _useFilesystem = () => {
   const config = useRuntimeConfig()
   const files = ref<string[]>()
   const basePath = '/images'
-  const src = ref<string>(basePath)
+  const src = ref(basePath)
   const prevPath = ref(basePath)
   const isBasePath = ref(true)
+  const selected = ref(NaN)
 
-  const isImage = (path: string) => path.match(/\.(jpe?g|png|webp|avif)$/)
+  const isImage = (path: string) => path.toLowerCase().match(/\.(jpe?g|png|webp|avif)$/)
 
   const imageUrl = ref({
     preview: '',
     original: ''
   })
-  const selected = ref(NaN)
 
   const folder = ref({
     // maybe just ref(string)
@@ -29,8 +29,9 @@ const _useFilesystem = () => {
     src.value = path
   }
 
-  const getFiles = async () => {
-    const { data } = await useCustomFetch<ResponseApi.FileList>('/files', { body: { src: src.value } })
+  const getFiles = async (path?: MaybeRef<string>) => {
+    const bodySrc = toValue(path) ? `${src.value}/${toValue(path)}` : src.value
+    const { data } = await useCustomFetch<ResponseApi.FileList>('/files', { body: { src: bodySrc } })
     files.value = data.value?.files
   }
 
@@ -43,11 +44,9 @@ const _useFilesystem = () => {
 
   const onImage = (path: string, index: number) => {
     selected.value = index
-    imageUrl.value.preview = correctSrc(path)
+    imageUrl.value.preview = path
     imageUrl.value.original = correctSrc(path.replace('_preview', '_orig'))
   }
-
-  // const isMainFolder = (path: string) => Number.isNaN(+path.replace(/.+\//, ''))
 
   const onFolder = (path: string) => {
     if (isBasePath.value) return

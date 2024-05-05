@@ -36,6 +36,7 @@ const LEFT = computed(() => 80 + (props.size?.startFromId - 1) * CELL_WIDTH)
     <ScheduleTableCardHoverReplay :is-open="isReplay" :style="{ LEFT, TOP, WIDTH }" />
     <div class="group relative grid place-items-center">
       <UAvatar
+        v-if="program.image"
         class="drop-shadow-md"
         :class="isOpenTitleInfo && 'outline outline-2'"
         :src="correctImageSrc(program.image)"

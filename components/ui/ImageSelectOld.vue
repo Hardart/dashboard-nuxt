@@ -9,11 +9,9 @@ defineProps<{
 
 <template>
   <UPopover v-bind="{ ...container, ...$attrs }">
-    <UButton color="gray" v-bind="{ ...btn, ...$attrs }" />
+    <UButton v-bind="{ ...btn, ...$attrs }" />
     <template #panel="{ close }">
       <UiImagesPanel v-model="src" @close="close" />
     </template>
   </UPopover>
 </template>
-
-<style></style>

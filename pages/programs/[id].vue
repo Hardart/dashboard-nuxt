@@ -14,5 +14,3 @@ onUnmounted(resetProgram)
     <ScheduleTable />
   </UDashboardPanelContent>
 </template>
-
-<style></style>

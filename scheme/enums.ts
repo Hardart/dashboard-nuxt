@@ -7,3 +7,11 @@ export enum UploadURLS {
   delete_image = '/image-delete',
   delete_folder = '/folder-delete'
 }
+
+export enum UploadPath {
+  NEWS = 'news',
+  GALLERY = 'gallery',
+  PROGRAMS = 'programs',
+  CATEGORY = 'category',
+  AVATAR = 'avatar'
+}

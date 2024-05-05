@@ -23,15 +23,11 @@ function onFileClick() {
 
 async function onFileChange(e: Event) {
   const input = e.target as HTMLInputElement
-
   if (!input.files?.length) return
-
   const file = input.files[0]
   const body = new FormData()
   body.append(name, file, file.name)
-
-  const srcData = await filesAPI.single(UploadURLS[name], body)
-  src.value = process.dev ? config.public.BASE_URL + srcData : srcData
+  src.value = await filesAPI.single(UploadURLS[name], body)
   emit('append-handler', src.value)
 }
 </script>
@@ -40,10 +36,10 @@ async function onFileChange(e: Event) {
   <UFormGroup :name :label :class v-bind="{ ...form, ...$attrs }">
     <slot name="preview"></slot>
     <UButton v-bind="{ ...btn, ...$attrs }" @click="onFileClick" />
-    <UiImageSelect
+    <UiImageSelectOld
       v-if="showSelect"
       v-model="src"
-      :btn="{ label: 'Выбрать фото', block: true, size: '2xs' }"
+      :btn="{ label: 'Выбрать фото', block: true, size: '2xs', color: 'gray' }"
       :container="{ class: selectBtn?.class || 'w-full' }"
     />
     <UInput ref="fileRef" type="file" class="hidden" accept=".jpg, .jpeg, .png, .webp, .avif" @change="onFileChange" />

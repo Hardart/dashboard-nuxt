@@ -32,7 +32,7 @@ async function onSubmit(event: FormSubmitEvent<any>) {
 
 <template>
   <UDashboardPanelContent class="pb-24">
-    <UForm :state="userFormData" :schema="userFormDataSchema" :validate="validate" :validate-on="['submit']" @submit="onSubmit">
+    <UForm :state="userFormData" :schema="userFormDataSchema" :validate :validate-on="['submit']" @submit="onSubmit">
       <UDashboardSection title="Профиль" description="Изменение данных учётной записи">
         <template #links>
           <UButton type="submit" label="Сохранить данные" color="black" />
@@ -75,7 +75,7 @@ async function onSubmit(event: FormSubmitEvent<any>) {
           show-select
         >
           <template #preview>
-            <UAvatar icon="i-heroicons-photo" size="xl" :src="userFormData.avatar" imgClass="object-cover w-full h-full" />
+            <UAvatar icon="i-heroicons-photo" size="xl" :src="correctImageSrc(userFormData.avatar)" imgClass="object-cover w-full h-full" />
           </template>
         </UiUploadImage>
 
@@ -112,6 +112,5 @@ async function onSubmit(event: FormSubmitEvent<any>) {
 
     <UDivider class="mb-4" />
     <pre>{{ userFormData }}</pre>
-    <pre>{{ user }}</pre>
   </UDashboardPanelContent>
 </template>

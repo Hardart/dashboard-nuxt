@@ -33,6 +33,7 @@ const links = [
     }
   ]
 ]
+provide('upload-image', 'avatar')
 </script>
 
 <template>
