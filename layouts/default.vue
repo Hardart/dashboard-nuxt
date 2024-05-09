@@ -125,6 +125,16 @@ const linksBase = [
     }
   },
   {
+    id: 'gallary',
+    label: 'Галерея',
+    icon: 'heroicons:photo',
+    to: '/gallery',
+    tooltip: {
+      text: 'галерея',
+      shortcuts: ['G', 'I']
+    }
+  },
+  {
     id: 'files',
     label: 'Файлы',
     icon: 'i-heroicons-folder',

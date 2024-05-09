@@ -14,7 +14,7 @@ defineProps<{
 </script>
 
 <template>
-  <UFormGroup :label class="w-full" :required :name :description>
+  <UFormGroup :label :required :name :description>
     <UInput v-model="title" :autofocus :icon autocomplete="off" :size :type />
   </UFormGroup>
 </template>
