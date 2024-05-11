@@ -26,7 +26,6 @@ provide(SCHEDULE_STATE.EDIT, editSchedule)
 provide(SCHEDULE_STATE.SAVE, saveSchedule)
 provide(SCHEDULE_STATE.CANCEL, cancelSaveSchedule)
 provide(SCHEDULE_STATE.DELETE, removeSchedule)
-provide('upload-image', 'programs')
 </script>
 
 <template>

@@ -1,32 +1,19 @@
 <script setup lang="ts">
-interface ISome {
-  startFromId: number
-  width: number
-}
-let nextValue = 0
-let id = 0
-
-const combineNearDays = (weekdayIds: number[]) => {
-  return weekdayIds.reduce(reduceIds, [] as ISome[])
-}
-
-function reduceIds(acc: ISome[], curr: number, index: number) {
-  const obj: ISome = { width: 1, startFromId: 1 }
-  if (nextValue == curr) {
-    nextValue++
-    acc[id].width++
-  } else {
-    id = index
-    nextValue = curr + 1
-    obj.startFromId = curr
-    acc.push(obj)
-  }
-  return acc
-}
+const slides = ref([
+  { id: 1, title: 'dsnvsjnvdfjv' },
+  { id: 2, title: 'pjomen' },
+  { id: 3, title: 'vfjenfk' },
+  { id: 4, title: 'povnvrnvjkr' }
+])
 </script>
 
 <template>
-  {{ combineNearDays(ids) }}
+  <draggable v-model="slides">
+    <template #item="{ element: item }">
+      <div class="item">
+        <div class="title">{{ item.title }}</div>
+        <FormText label="Заголовок" name="title" v-model="item.title" />
+      </div>
+    </template>
+  </draggable>
 </template>
-
-<style></style>

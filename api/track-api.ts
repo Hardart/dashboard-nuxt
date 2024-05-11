@@ -1,4 +1,3 @@
-import { type User, type UserFormData } from '@/scheme/z_user'
 import type { ResponseApi } from '~/types/fetch'
 import type { ITunesResponse } from '~/types/itunes'
 

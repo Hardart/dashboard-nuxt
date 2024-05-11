@@ -1,6 +1,7 @@
 import type { Article } from '~/scheme/z_article'
 import type { Category } from '~/scheme/z_category'
 import type { Program } from '~/scheme/z_program'
+import type { Slide } from '~/scheme/z_slide'
 import type { Track } from '~/scheme/z_track'
 import type { User } from '~/scheme/z_user'
 
@@ -40,4 +41,5 @@ export declare module ResponseApi {
   type ProgramSngle = { program: Program }
   type UserList = { users: User[] }
   type TrackList = { tracks: Track[] }
+  type SlideList = { slides: Slide[] }
 }

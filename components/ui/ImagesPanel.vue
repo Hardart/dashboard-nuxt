@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { ImageName } from '~/types'
-
+const { name } = defineProps<{ name: ImageName }>()
 const imageUrl = defineModel({ required: true })
 const emit = defineEmits(['append-handler', 'close'])
 const { getFiles, files, isBasePath, isImage, setSource, goBack, correctSrc } = useFilesystem()
-const name = tryInject<ImageName>('upload-image')
+
 getFiles(name)
 
 const onImage = (src: string) => {

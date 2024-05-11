@@ -5,9 +5,9 @@ import type { ImageName } from '~/types'
 const fileRef = ref<{ input: HTMLInputElement }>()
 const src = defineModel({ required: true })
 const emit = defineEmits(['append-handler'])
-const name = tryInject<ImageName>('upload-image')
 
-defineProps<{
+const { name } = defineProps<{
+  name: ImageName
   formUI?: object
   label?: string
   class?: string
@@ -22,9 +22,9 @@ async function onFileChange(e: Event) {
   if (!input.files?.length) return
   const file = input.files[0]
   const body = new FormData()
-  body.append(name.value, file, file.name)
+  body.append(name, file, file.name)
 
-  src.value = await filesAPI.single(UploadURLS[name.value], body)
+  src.value = await filesAPI.single(UploadURLS[name], body)
   emit('append-handler', src.value)
 }
 </script>

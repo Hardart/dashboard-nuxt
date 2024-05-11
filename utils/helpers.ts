@@ -9,6 +9,7 @@ export function isUndefined<T>(input: Ref<T> | undefined): Ref<T> {
 export function tryInject<T>(key: string): Ref<T> {
   const data = inject<Ref<T>>(key)
   if (typeof data === 'undefined') throw createError(`Item with KEY: ${key} is not provided`)
+
   return data
 }
 
