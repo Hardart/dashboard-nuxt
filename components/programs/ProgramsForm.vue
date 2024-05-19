@@ -8,6 +8,7 @@ const { isOpenScheduleModal } = useSchedule()
 defineProps<{ hosts: User[]; loading: boolean; isEdit?: boolean }>()
 const programFormData = tryInject<Program>(PROGRAM_STATE.FORM_DATA)
 const saveProgram = tryInject<(p: Program) => void>(PROGRAM_STATE.SAVE)
+const editProgram = tryInject<(p: Program) => void>(PROGRAM_STATE.EDIT)
 const addSchedule = tryInject<VoidFunction>(SCHEDULE_STATE.ADD)
 defineEmits(['open-schedule-modal', 'on-add-program'])
 </script>
@@ -38,7 +39,7 @@ defineEmits(['open-schedule-modal', 'on-add-program'])
     </div>
     <div class="mt-6 flex justify-end gap-3 py-6">
       <UButton type="button" label="Назад" color="gray" variant="ghost" @click="navigateTo('/programs')" />
-      <UButton v-if="isEdit" label="Изменить" :loading />
+      <UButton v-if="isEdit" label="Изменить" :loading @click="editProgram(programFormData)" />
       <UButton v-else label="Сохранить" :loading @click="saveProgram(programFormData)" />
     </div>
 

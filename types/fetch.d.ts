@@ -42,4 +42,5 @@ export declare module ResponseApi {
   type UserList = { users: User[] }
   type TrackList = { tracks: Track[] }
   type SlideList = { slides: Slide[] }
+  type SlideSingle = { slide: Slide }
 }

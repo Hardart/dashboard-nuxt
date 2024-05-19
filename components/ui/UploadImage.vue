@@ -21,10 +21,9 @@ function onFileClick() {
   fileRef.value?.input.click()
 }
 
-async function onFileChange(e: Event) {
-  const input = e.target as HTMLInputElement
-  if (!input.files?.length) return
-  const file = input.files[0]
+async function onFileChange(files: FileList) {
+  if (!files.length) return
+  const file = files[0]
   const body = new FormData()
   body.append(name, file, file.name)
   src.value = await filesAPI.single(UploadURLS[name], body)

@@ -1,17 +1,20 @@
 <script setup lang="ts">
 import { galleryAPI } from '~/api/gallery-api'
 import type { Slide } from '~/scheme/z_slide'
-
+const [isOpen, toggleOpen] = useToggle()
 const galleryFormData = reactive<Slide>({
   title: undefined,
   subtitle: undefined,
   src: '',
-  id: ''
+  id: '',
+  priority: NaN
 })
 const galleryData = await galleryAPI.list()
+
 const gallery = ref(galleryData)
+
 const isEdit = ref(false)
-const [isOpen, toggleOpen] = useToggle()
+
 const onSave = () => {
   gallery.value.push({ ...galleryFormData })
   toggleOpen()
@@ -19,12 +22,13 @@ const onSave = () => {
 
 const onEdit = (slide: Slide) => {
   isEdit.value = true
-  const { src, subtitle, title, to, id } = slide
+  const { src, subtitle, title, to, id, priority } = slide
   galleryFormData.src = src
   galleryFormData.title = title
   galleryFormData.subtitle = subtitle
   galleryFormData.to = to
   galleryFormData.id = id
+  galleryFormData.priority = priority
   toggleOpen()
 }
 
@@ -33,7 +37,10 @@ const onUpdate = () => {
   gallery.value.splice(idx, 1, { ...galleryFormData })
   toggleOpen()
 }
-const onDelete = (id: string) => (gallery.value = gallery.value.filter((slide) => slide.id !== id))
+
+const onDelete = (id: string) => {
+  gallery.value = gallery.value.filter((slide) => slide.id !== id)
+}
 
 const onAdd = () => {
   isEdit.value = false
@@ -41,12 +48,23 @@ const onAdd = () => {
   galleryFormData.title = undefined
   galleryFormData.subtitle = undefined
   galleryFormData.to = undefined
-  galleryFormData.id = `${gallery.value.length + 1}`
+  galleryFormData.id = `${gallery.value.length}`
+  galleryFormData.priority = gallery.value.length
   toggleOpen()
 }
 
 const onCancel = () => {
   toggleOpen()
+}
+
+const onSaveChanges = async () => {
+  gallery.value = gallery.value.map((slide, i) => {
+    slide.priority = i
+    slide.src = slide.src.replace('orig', '1500')
+    return slide
+  })
+  const res = await galleryAPI.updateAll(gallery)
+  console.log(res)
 }
 </script>
 
@@ -95,6 +113,11 @@ const onCancel = () => {
             </div>
           </template>
         </draggable>
+        <UDashboardSection orientation="horizontal">
+          <template #links>
+            <UButton label="Сохранить изменения" color="black" @click="onSaveChanges" />
+          </template>
+        </UDashboardSection>
         <UModal v-model="isOpen">
           <UCard :ui="{ body: { base: 'space-y-2' } }">
             <UiImage v-model="galleryFormData.src" name="gallery" :ui="{ class: 'w-full h-36 mb-8' }" />

@@ -6,5 +6,6 @@ export const slideSchema = z.object({
   src: z.string(),
   title: z.string().optional(),
   subtitle: z.string().optional(),
-  to: z.string().optional()
+  to: z.string().optional(),
+  priority: z.number()
 })

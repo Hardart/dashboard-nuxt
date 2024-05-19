@@ -3,7 +3,7 @@ import { filesAPI } from '@/api/files-api'
 import { UploadURLS } from '@/scheme/enums'
 import type { ImageName } from '~/types'
 const fileRef = ref<{ input: HTMLInputElement }>()
-const src = defineModel({ required: true })
+const src = defineModel<string | undefined>({ required: true })
 const emit = defineEmits(['append-handler'])
 
 const { name } = defineProps<{
@@ -17,10 +17,9 @@ function onFileClick() {
   fileRef.value?.input.click()
 }
 
-async function onFileChange(e: Event) {
-  const input = e.target as HTMLInputElement
-  if (!input.files?.length) return
-  const file = input.files[0]
+async function onFileChange(files: FileList) {
+  if (!files.length) return console.warn('File list is empty')
+  const file = files[0]
   const body = new FormData()
   body.append(name, file, file.name)
 

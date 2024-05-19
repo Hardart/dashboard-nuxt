@@ -97,7 +97,6 @@ export const useProgramsStore = defineStore('programs', () => {
     loading.value = false
     if (!programData) return console.warn('Данные не получены')
     programs.value.push(programData)
-    
   }
 
   async function deleteProgram(id: string) {
@@ -108,21 +107,26 @@ export const useProgramsStore = defineStore('programs', () => {
     programs.value = programs.value.filter((item) => item.id !== id)
   }
 
-  function editProgram(p: Program) {}
+  async function updateProgram(p: Program) {
+    loading.value = true
+    const response = await ProgramsAPI.updateOne(p)
+    loading.value = false
+    console.log(response)
+  }
 
   function storeRefs() {
     return {
       hosts,
       programs,
       programFormData,
-      loading,
+      loading
     }
   }
 
   return {
     storeRefs,
     saveProgram,
-    editProgram,
+    updateProgram,
     addSchedule,
     saveSchedule,
     cancelSaveSchedule,

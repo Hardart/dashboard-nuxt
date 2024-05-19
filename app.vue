@@ -1,7 +1,6 @@
 <script setup lang="ts">
 const colorMode = useColorMode()
-const { storeRefs, tryRefreshToken } = useUserStore()
-// const { isLoggedIn } = storeRefs()
+const { tryRefreshToken } = useUserStore()
 await tryRefreshToken()
 const color = computed(() => (colorMode.value === 'dark' ? '#111827' : '#ffffff'))
 
@@ -18,29 +17,20 @@ useHead({
 })
 
 const title = 'Радио "Штаны" - Панель управления'
-const description =
-  'Nuxt UI Pro is a collection of premium Vue components built on top of Nuxt UI to create beautiful & responsive Nuxt applications in minutes.'
 
-useSeoMeta({
-  title,
-  description,
-  ogTitle: title,
-  ogDescription: description,
-  ogImage: 'https://dashboard-template.nuxt.dev/social-card.png',
-  twitterImage: 'https://dashboard-template.nuxt.dev/social-card.png',
-  twitterCard: 'summary_large_image'
-})
+useSeoMeta({ title })
+const { $ws } = useNuxtApp()
+const socket = $ws(3071, null)
+useState('socket', () => socket)
 </script>
 
 <template>
-  <div>
-    <NuxtLoadingIndicator />
+  <NuxtLoadingIndicator />
 
-    <NuxtLayout>
-      <NuxtPage />
-    </NuxtLayout>
+  <NuxtLayout>
+    <NuxtPage />
+  </NuxtLayout>
 
-    <UNotifications />
-    <UModals />
-  </div>
+  <UNotifications />
+  <UModals />
 </template>

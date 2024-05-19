@@ -19,8 +19,8 @@ const editItems = (article: Article) => [
       icon: 'i-heroicons-pencil-square-20-solid',
       click: () => {
         navigateTo(`/articles/${article.id}`)
-      },
-    },
+      }
+    }
   ],
   [
     {
@@ -28,9 +28,9 @@ const editItems = (article: Article) => [
       icon: 'i-heroicons-trash-20-solid',
       click: () => {
         deleteHandle(article.id)
-      },
-    },
-  ],
+      }
+    }
+  ]
 ]
 </script>
 
@@ -52,13 +52,13 @@ const editItems = (article: Article) => [
 
     <template #category-data="{ row }">
       <div class="flex items-center gap-3">
-        <span class="text-gray-900 dark:text-white font-medium">{{ row.category.title }}</span>
+        <span class="font-medium text-gray-900 dark:text-white">{{ row.category.title }}</span>
       </div>
     </template>
 
     <template #createdAt-data="{ row }">
       <div class="flex items-center gap-3">
-        <span class="text-gray-900 dark:text-white font-medium">{{ new Date(row.createdAt).toLocaleString() }}</span>
+        <span class="font-medium text-gray-900 dark:text-white">{{ new Date(row.createdAt).toLocaleString() }}</span>
       </div>
     </template>
 

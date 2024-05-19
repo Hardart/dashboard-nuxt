@@ -32,7 +32,7 @@ const LEFT = computed(() => 80 + (props.size?.startFromId - 1) * CELL_WIDTH)
       @on-enter="toggleIsReplay(true)"
       @on-leave="toggleIsReplay(false)"
     />
-    <ScheduleTableCardEditBtn :program />
+    <!-- <ScheduleTableCardEditBtn :program /> -->
     <ScheduleTableCardHoverReplay :is-open="isReplay" :style="{ LEFT, TOP, WIDTH }" />
     <div class="group relative grid place-items-center">
       <UAvatar

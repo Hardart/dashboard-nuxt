@@ -12,8 +12,8 @@ const editItems = (row: Category) => [
       icon: 'i-heroicons-pencil-square-20-solid',
       click: () => {
         navigateTo(`/categories/${row.id}`)
-      },
-    },
+      }
+    }
   ],
   [
     {
@@ -21,9 +21,9 @@ const editItems = (row: Category) => [
       icon: 'i-heroicons-trash-20-solid',
       click: () => {
         deleteCategory(row.id)
-      },
-    },
-  ],
+      }
+    }
+  ]
 ]
 </script>
 
@@ -36,6 +36,24 @@ const editItems = (row: Category) => [
     class="w-full"
     :ui="{ divide: 'divide-gray-200 dark:divide-gray-800' }"
   >
+    <template #title-data="{ row }">
+      <div class="flex items-center gap-3">
+        <span class="text-gray-900 dark:text-white">{{ row.title }}</span>
+      </div>
+    </template>
+
+    <template #createdAt-data="{ row }">
+      <div class="flex items-center gap-3">
+        <span class="font-medium text-gray-900 dark:text-white">{{ new Date(row.createdAt).toLocaleDateString() }}</span>
+      </div>
+    </template>
+
+    <template #updatedAt-data="{ row }">
+      <div class="flex items-center gap-3">
+        <span class="font-medium text-gray-900 dark:text-white">{{ new Date(row.updatedAt).toLocaleDateString() }}</span>
+      </div>
+    </template>
+
     <template #isPublished-data="{ row }">
       <UBadge
         :label="row.isPublished ? STATUSES.Publish : STATUSES.Not_Publish"
@@ -45,16 +63,6 @@ const editItems = (row: Category) => [
       />
     </template>
 
-    <template #createdAt-data="{ row }">
-      <div class="flex items-center gap-3">
-        <span class="text-gray-900 dark:text-white font-medium">{{ new Date(row.createdAt).toLocaleDateString() }}</span>
-      </div>
-    </template>
-    <template #updatedAt-data="{ row }">
-      <div class="flex items-center gap-3">
-        <span class="text-gray-900 dark:text-white font-medium">{{ new Date(row.updatedAt).toLocaleDateString() }}</span>
-      </div>
-    </template>
     <template #actions-data="{ row }">
       <UDropdown :items="editItems(row)">
         <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />

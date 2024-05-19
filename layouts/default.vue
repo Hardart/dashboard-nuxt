@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { Socket } from 'socket.io-client'
+
 const route = useRoute()
 const appConfig = useAppConfig()
 const { isHelpSlideoverOpen } = useDashboard()
@@ -234,12 +236,18 @@ const defaultColors = ref(
     click: () => (appConfig.ui.primary = color)
   }))
 )
+
 const colors = computed(() =>
   defaultColors.value.map((color) => ({
     ...color,
     active: appConfig.ui.primary === color.label
   }))
 )
+
+const setOnlineHost = () => {
+  const socket = useState<Socket>('socket')
+  socket.value?.emit('host:online', { hostId: user.value?.id, state: 'online' })
+}
 </script>
 
 <template>
@@ -266,6 +274,9 @@ const colors = computed(() =>
         /> -->
 
         <div class="flex-1" />
+        <div class="w-full">
+          <UButton label="OnAir" block @click="setOnlineHost" />
+        </div>
 
         <UDashboardSidebarLinks :links="footerLinks" />
 

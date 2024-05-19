@@ -3,7 +3,7 @@ import { PROGRAM_STATE } from '~/enums/programsEnum'
 import { SCHEDULE_STATE } from '~/enums/scheduleEnum'
 const {
   getProgramList,
-  editProgram,
+  updateProgram,
   saveProgram,
   addSchedule,
   editSchedule,
@@ -17,7 +17,7 @@ await getProgramList()
 const { programFormData, programs } = storeRefs()
 
 provide(PROGRAM_STATE.FORM_DATA, programFormData)
-provide(PROGRAM_STATE.EDIT, editProgram)
+provide(PROGRAM_STATE.EDIT, updateProgram)
 provide(PROGRAM_STATE.SAVE, saveProgram)
 provide(PROGRAM_STATE.DELETE, deleteProgram)
 provide(PROGRAM_STATE.LIST, programs)
