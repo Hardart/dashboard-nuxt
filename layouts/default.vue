@@ -127,7 +127,7 @@ const linksBase = [
     }
   },
   {
-    id: 'gallary',
+    id: 'gallery',
     label: 'Галерея',
     icon: 'heroicons:photo',
     to: '/gallery',
@@ -145,7 +145,7 @@ const linksBase = [
       text: 'список файлов',
       shortcuts: ['G', 'F']
     },
-    exeptRoles: ['editor', 'host']
+    exсeptRoles: ['editor', 'host']
   },
   {
     id: 'settings',
@@ -161,12 +161,12 @@ const linksBase = [
       {
         label: 'Администраторы',
         to: '/settings/members',
-        exeptRoles: ['editor', 'host']
+        exceptRoles: ['editor', 'host']
       },
       {
-        label: 'Уведомления',
-        to: '/settings/notifications',
-        exeptRoles: ['editor', 'host']
+        label: 'Футер',
+        to: '/settings/footer',
+        exceptRoles: ['editor', 'host']
       }
     ],
     tooltip: {
@@ -180,11 +180,11 @@ const links = computed(() =>
   linksBase.filter((link) => {
     if (link.children) {
       link.children = link.children.filter((childLink) => {
-        return !user.value?.roles.some((role) => childLink.exeptRoles?.includes(role))
+        return !user.value?.roles.some((role) => childLink.exceptRoles?.includes(role))
       })
     }
 
-    return !user.value?.roles.some((role) => link.exeptRoles?.includes(role))
+    return !user.value?.roles.some((role) => link.exсeptRoles?.includes(role))
   })
 )
 

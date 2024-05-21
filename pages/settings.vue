@@ -13,23 +13,9 @@ const links = [
       to: '/settings/members'
     },
     {
-      label: 'Уведомления',
-      icon: 'i-heroicons-bell',
-      to: '/settings/notifications'
-    }
-  ],
-  [
-    {
-      label: 'Documentation',
-      icon: 'i-heroicons-book-open',
-      to: 'https://ui.nuxt.com/pro',
-      target: '_blank'
-    },
-    {
-      label: 'Buy now',
-      icon: 'i-heroicons-credit-card',
-      to: 'https://ui.nuxt.com/pro/purchase',
-      target: '_blank'
+      label: 'Футер',
+      icon: 'i-heroicons-puzzle-piece',
+      to: '/settings/footer'
     }
   ]
 ]

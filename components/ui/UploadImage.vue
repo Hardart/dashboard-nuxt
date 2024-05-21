@@ -6,7 +6,7 @@ import type { ImageName } from '~/types'
 const fileRef = ref<{ input: HTMLInputElement }>()
 const src = defineModel({ required: true })
 const emit = defineEmits(['append-handler'])
-const config = useRuntimeConfig()
+
 const { name } = defineProps<{
   form?: object
   label?: string
@@ -37,6 +37,7 @@ async function onFileChange(files: FileList) {
     <UButton v-bind="{ ...btn, ...$attrs }" @click="onFileClick" />
     <UiImageSelectOld
       v-if="showSelect"
+      :name
       v-model="src"
       :btn="{ label: 'Выбрать фото', block: true, size: '2xs', color: 'gray' }"
       :container="{ class: selectBtn?.class || 'w-full' }"

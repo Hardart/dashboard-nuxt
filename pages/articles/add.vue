@@ -6,10 +6,7 @@ onUnmounted(resetArticle)
 </script>
 
 <template>
-  <DashboardNavbar
-    title="Добавить новостю"
-    :btn="{ label: 'Назад', icon: 'i-heroicons-arrow-long-left-16-solid' }"
-  />
+  <DashboardNavbar title="Добавить новостю" :btn="{ label: 'Назад', icon: 'i-heroicons-arrow-long-left-16-solid' }" />
   <UDashboardPanelContent>
     <ArticlesForm
       v-model="articleFormData"

@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import type { FormSubmitEvent } from '#ui/types'
-import { userAPI } from '~/api/user-api'
-import { authAPI } from '@/api/auth-api'
 import type { User } from '~/scheme/z_user'
+import { userAPI } from '~/api/user-api'
+import { authAPI } from '~/api/auth-api'
+definePageMeta({
+  middleware: ['is-admin']
+})
+
 const users = ref(await userAPI.list())
 
 const q = ref('')

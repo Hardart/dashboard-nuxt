@@ -75,7 +75,12 @@ async function onSubmit(event: FormSubmitEvent<any>) {
           show-select
         >
           <template #preview>
-            <UAvatar icon="i-heroicons-photo" size="xl" :src="correctImageSrc(userFormData.avatar)" imgClass="object-cover w-full h-full" />
+            <UAvatar
+              icon="i-heroicons-photo"
+              size="xl"
+              :src="correctImageSrc(userFormData.avatar)"
+              imgClass="object-cover w-full h-full"
+            />
           </template>
         </UiUploadImage>
 

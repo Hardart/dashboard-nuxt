@@ -5,6 +5,7 @@ const src = defineModel({ required: true })
 <template>
   <UTooltip text="Выбрать фото" :openDelay="0">
     <UiImageSelectOld
+      name="news"
       v-model="src"
       :btn="{
         square: true,

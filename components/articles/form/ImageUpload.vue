@@ -1,10 +1,6 @@
 <script setup lang="ts">
 import { type ArticleFormData } from '@/scheme/z_article'
 const articleFormData = defineModel<ArticleFormData>({ required: true })
-const config = useRuntimeConfig()
-const imageUrl = computed(() =>
-  process.dev ? config.public.BASE_URL + articleFormData.value.image : articleFormData.value.image
-)
 </script>
 
 <template>
@@ -20,7 +16,7 @@ const imageUrl = computed(() =>
       <UAvatar
         icon="i-heroicons-photo"
         size="3xl"
-        :src="imageUrl"
+        :src="correctImageSrc(articleFormData.image)"
         imgClass="object-cover object-top w-full h-full"
         class="mb-2 h-52 w-[347px] bg-white"
         :ui="{ rounded: 'rounded-lg' }"

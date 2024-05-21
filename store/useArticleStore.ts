@@ -14,7 +14,7 @@ export const useArticleStore = defineStore('article', () => {
     title: '',
     slug: '',
     tags: [],
-    image: '',
+    image: undefined,
     publishAt: new Date(),
     content: '',
     isPublished: false,
@@ -62,17 +62,7 @@ export const useArticleStore = defineStore('article', () => {
     })
   )
 
-  function transformArticleToFormData({
-    title,
-    image,
-    slug,
-    content,
-    isPublished,
-    tags,
-    category,
-    publishAt,
-    id
-  }: Article) {
+  function transformArticleToFormData({ title, image, slug, content, isPublished, tags, category, publishAt, id }: Article) {
     articleFormData.value = {
       title,
       image,
