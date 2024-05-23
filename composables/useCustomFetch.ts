@@ -3,15 +3,10 @@ import type { TokensResponse, CustomResponse } from '~/types/fetch'
 import type { FetchContext, FetchResponse } from 'ofetch'
 import defu from 'defu'
 
-type onResponseError = (
-  ctx: FetchContext & { response: FetchResponse<ResponseType> }
-) => void | Promise<void>
+type onResponseError = (ctx: FetchContext & { response: FetchResponse<ResponseType> }) => void | Promise<void>
 type onRequest = (ctx: FetchContext) => void | Promise<void>
 
-export const useCustomFetch = async <T>(
-  url: string,
-  options: NitroFetchOptions<NitroFetchRequest> = {}
-) => {
+export const useCustomFetch = async <T>(url: string, options: NitroFetchOptions<NitroFetchRequest> = {}) => {
   const toast = useToast()
   const { getAccessToken, setAccessToken, cleanAccessToken } = useTokens()
   const errorData = ref()
@@ -31,10 +26,7 @@ export const useCustomFetch = async <T>(
   const onDefaultResponseError: onResponseError = async ({ response }) => {
     switch (response.status) {
       case 401:
-        const res = await $fetch<CustomResponse<TokensResponse>>(
-          '/refresh',
-          refreshOptions
-        )
+        const res = await $fetch<CustomResponse<TokensResponse>>('/refresh', refreshOptions)
         if (res.status === 'success') setAccessToken(res.data.accessToken)
         break
 
@@ -79,7 +71,7 @@ export const useCustomFetch = async <T>(
 
   try {
     const response = await $fetch<CustomResponse<T>>(url, fetchParams)
-    if (response.status === 'success') return { data: toRef(response.data) }
+    if (response.status === 'success') return { data: toRef(response.data), status: response.status }
     else
       return {
         data: toRef(null),
