@@ -1,30 +1,24 @@
 <script setup lang="ts">
+import { BaseAPI } from '~/api/base-api'
 import type { Contact } from '~/types/contact'
 definePageMeta({
   middleware: ['is-admin']
 })
-const contacts = ref<Contact[]>([
-  { label: 'Телефон прямого эфира', phone: '+7 (495) 128 43 25', type: 'phone' },
-  { label: 'Единый номер WhatsApp и SMS (услуга платная*)', phone: '+7 (937) 434 3373', type: 'phone' },
-  { label: 'E-mail прямого эфира', mail: 'onair@radioshtani.ru', type: 'mail' },
-  { label: 'Телефон редакции', phone: '+7 (495) 128 43 94', type: 'phone' },
-  {
-    label: 'Адрес редакции',
-    text: 'Пензенская область, Бессоновский район, село Чемодановка, ул. Средняя, д. 12',
-    href: 'https://yandex.ru/maps/-/CCUV4-V91C',
-    type: 'link'
-  },
-  { label: 'Техническая поддержка сайта', mail: 'help@elarin.ru', type: 'mail' }
-])
+
+const { contacts } = await BaseAPI.list()
+const contactsFormData = ref(contacts)
+const onSaveChanges = async () => {
+  await BaseAPI.updateFooterContacts(contactsFormData)
+}
 </script>
 
 <template>
   <UDashboardPanelContent class="pb-24">
     <UDashboardSection title="Данные футера" description="Редактирование контента в нижней части сайта">
       <template #links>
-        <UButton type="submit" label="Сохранить изменения" color="black" />
+        <UButton type="submit" label="Сохранить изменения" color="black" @click="onSaveChanges" />
       </template>
-      <div v-for="contact in contacts">
+      <div v-for="contact in contactsFormData">
         <div v-if="contact.type === 'mail'" class="grid grid-cols-3 items-center gap-2">
           <h3>Почта</h3>
           <div class="col-span-2 flex gap-2">
