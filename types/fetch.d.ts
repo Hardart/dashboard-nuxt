@@ -4,6 +4,7 @@ import type { Program } from '~/scheme/z_program'
 import type { Slide } from '~/scheme/z_slide'
 import type { Track } from '~/scheme/z_track'
 import type { User } from '~/scheme/z_user'
+import type { Contact } from './contact'
 
 export interface CustomFetchOptions {
   url: string
@@ -43,4 +44,5 @@ export declare module ResponseApi {
   type TrackList = { tracks: Track[] }
   type SlideList = { slides: Slide[] }
   type SlideSingle = { slide: Slide }
+  type FooterData = { contacts: Contact[] }
 }
