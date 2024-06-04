@@ -6,11 +6,13 @@ export const useFormValidation = () => {
 
   function validate(schema: z.AnyZodObject) {
     return (state: z.AnyZodObject): FormError[] => {
+      errors.value = []
       const validation = schema.safeParse(state)
       if (!validation.success) {
-        const validationErrors = validation.error.errors.map(e => ({ path: e.path[0], message: e.message })) as any[]
+        const validationErrors = validation.error.errors.map((e) => ({ path: e.path[0], message: e.message })) as any[]
         errors.value.push(...validationErrors)
       }
+      console.log(errors.value)
       return errors.value
     }
   }

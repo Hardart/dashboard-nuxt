@@ -2,10 +2,15 @@
 const links = [
   [
     {
-      label: 'Аккаунт',
-      icon: 'i-heroicons-user-circle',
+      label: 'Основные',
+      icon: 'heroicons:wrench',
       to: '/settings',
       exact: true
+    },
+    {
+      label: 'Профиль',
+      icon: 'heroicons:user-circle',
+      to: '/settings/profile'
     },
     {
       label: 'Админы',
@@ -20,6 +25,7 @@ const links = [
   ]
 ]
 provide('upload-image', 'avatar')
+await useBaseStore().fetchBaseData()
 </script>
 
 <template>

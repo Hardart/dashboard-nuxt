@@ -3,10 +3,22 @@ import type { Contact } from '~/types/contact'
 import type { ResponseApi } from '~/types/fetch'
 
 export const BaseAPI = {
-  async list() {
-    const { data } = await useCustomFetch<ResponseApi.FooterData>('/base')
+  async footerData() {
+    const { data } = await useCustomFetch<ResponseApi.FooterData>('/base-footer')
     const contacts = data.value?.contacts || []
     return { contacts }
+  },
+  async baseData() {
+    const { data } = await useCustomFetch<ResponseApi.BaseData>('/base')
+    return data.value
+  },
+  async addPhone(number: string) {
+    const { data } = await useCustomFetch<ResponseApi.PhoneSingle>('/base/phone-add', { body: { number } })
+    return data.value
+  },
+  async addMail(title: string) {
+    const { data } = await useCustomFetch<ResponseApi.MailSingle>('/base/email-add', { body: { title } })
+    return data.value
   },
   async save(body: Program) {
     const toast = useToast()

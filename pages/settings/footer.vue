@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { BaseAPI } from '~/api/base-api'
-import type { Contact } from '~/types/contact'
+import { useBaseStore } from '~/store/useBaseStore'
+const { phones, emails } = useBaseStore().storeRefs()
 definePageMeta({
   middleware: ['is-admin']
 })
 
-const { contacts } = await BaseAPI.list()
+const { contacts } = await BaseAPI.footerData()
 const contactsFormData = ref(contacts)
 const onSaveChanges = async () => {
   await BaseAPI.updateFooterContacts(contactsFormData)
@@ -26,7 +27,7 @@ const onSaveChanges = async () => {
               <UInput v-model="contact.label" />
             </UFormGroup>
             <UFormGroup class="min-w-60">
-              <UInput v-model="contact.mail" />
+              <USelectMenu v-model="contact.mailId" :options="emails" value-attribute="id" option-attribute="title" />
             </UFormGroup>
           </div>
         </div>
@@ -37,7 +38,7 @@ const onSaveChanges = async () => {
               <UInput v-model="contact.label" />
             </UFormGroup>
             <UFormGroup class="min-w-60">
-              <UInput v-model="contact.phone" />
+              <USelectMenu v-model="contact.phoneId" :options="phones" value-attribute="id" option-attribute="number" />
             </UFormGroup>
           </div>
         </div>

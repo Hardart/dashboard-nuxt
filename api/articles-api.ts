@@ -15,28 +15,23 @@ export const articlesAPI = {
   },
 
   async updateOne(body: ArticleFormData) {
-    const toast = useToast()
     const { data } = await useCustomFetch<ResponseApi.ArticleSingle>('/article-update', { body })
-    if (data.value)
-      toast.add({ title: 'Новость успешно обновлена', timeout: 3000, color: 'emerald', icon: 'i-heroicons-check-circle-16-solid' })
+    if (data.value) useCustomToast('Новость успешно обновлена', 'success', 3000)
+
     return data.value ? addStatus(data.value.article) : undefined
   },
 
   async addOne(body: ArticleFormData) {
-    const toast = useToast()
     const { data } = await useCustomFetch<ResponseApi.ArticleSingle>('/article-add', { body })
-    if (data.value)
-      toast.add({ title: 'Новость успешно добавлена', timeout: 3000, color: 'emerald', icon: 'i-heroicons-check-circle-16-solid' })
+    if (data.value) useCustomToast('Новость успешно добавлена', 'success', 3000)
     return data.value ? addStatus(data.value.article) : undefined
   },
 
   async deleteOne(body: { id: string }) {
-    const toast = useToast()
     const { data } = await useCustomFetch<ResponseApi.ArticleSingle>('/article-delete', { body })
-    if (data.value)
-      toast.add({ title: 'Новость успешно удалена', timeout: 3000, color: 'emerald', icon: 'i-heroicons-check-circle-16-solid' })
+    if (data.value) useCustomToast('Новость успешно удалена', 'success', 3000)
     return data.value?.article
-  },
+  }
 }
 
 function addStatus(item: Article) {

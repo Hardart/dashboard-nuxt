@@ -3,11 +3,11 @@ export type Contact = {
 } & (
   | {
       type: 'phone'
-      phone: string
+      phoneId: string
     }
   | {
       type: 'mail'
-      mail: string
+      mailId: string
     }
   | {
       type: 'link'
@@ -15,3 +15,13 @@ export type Contact = {
       text: string
     }
 )
+
+export type Phone = {
+  number: string
+  id: string
+}
+
+export type Mail = {
+  title: string
+  id: string
+}

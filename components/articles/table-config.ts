@@ -2,22 +2,22 @@ export const columns = [
   {
     key: 'title',
     label: 'Название',
-    sortable: true,
+    sortable: true
   },
   {
     key: 'category',
-    label: 'Категория',
+    label: 'Категория'
   },
   {
     key: 'createdAt',
     label: 'Дата создания',
-    sortable: true,
+    sortable: true
   },
   {
     key: 'status',
-    label: 'Статус',
+    label: 'Статус'
   },
   {
-    key: 'actions',
-  },
+    key: 'actions'
+  }
 ]

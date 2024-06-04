@@ -7,19 +7,13 @@ type onResponseError = (ctx: FetchContext & { response: FetchResponse<ResponseTy
 type onRequest = (ctx: FetchContext) => void | Promise<void>
 
 export const useCustomFetch = async <T>(url: string, options: NitroFetchOptions<NitroFetchRequest> = {}) => {
-  const toast = useToast()
   const { getAccessToken, setAccessToken, cleanAccessToken } = useTokens()
   const errorData = ref()
 
   const onRefreshResponseError: onResponseError = async ({ response }) => {
     if (response.status !== 401) return
     cleanAccessToken()
-    toast.add({
-      title: 'Время сессии истекло, войдите в свою учетную запись снова',
-      timeout: 7000,
-      color: 'red',
-      icon: 'i-heroicons-x-circle-20-solid'
-    })
+    useCustomToast('Время сессии истекло, пожалуйста, введите снова данные от своей учетной записи', 'fail')
     await navigateTo('/login')
   }
 
@@ -34,12 +28,7 @@ export const useCustomFetch = async <T>(url: string, options: NitroFetchOptions<
         showError({ message: response.statusText, statusCode: 500 })
         break
       default:
-        toast.add({
-          title: response._data.message,
-          timeout: 8000,
-          color: 'red',
-          icon: 'i-heroicons-x-circle-20-solid'
-        })
+        useCustomToast(response._data.message, 'fail')
         errorData.value = response._data
     }
   }

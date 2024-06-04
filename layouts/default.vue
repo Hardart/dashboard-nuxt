@@ -156,10 +156,15 @@ const linksBase = [
       {
         label: 'Основные',
         to: '/settings',
-        exact: true
+        exact: true,
+        exceptRoles: ['editor', 'host']
       },
       {
-        label: 'Администраторы',
+        label: 'Профиль',
+        to: '/settings/profile'
+      },
+      {
+        label: 'Админы',
         to: '/settings/members',
         exceptRoles: ['editor', 'host']
       },

@@ -6,7 +6,7 @@ const articleFormData = defineModel<ArticleFormData>({ required: true })
 const tags = defineModel<string[]>('tags', { required: true })
 const categories = defineModel<Category[]>('categories', { required: true })
 const { errors, validate } = useFormValidation()
-
+// articleFormData.value.content = articleFormData.value.content.replace(/\/images/gm, 'http://localhost:3068/images')
 defineEmits(['onSubmit'])
 defineProps<{
   loading?: boolean
