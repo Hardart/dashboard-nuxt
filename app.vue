@@ -19,9 +19,9 @@ useHead({
 const title = 'Радио "Штаны" - Панель управления'
 
 useSeoMeta({ title })
-const { $ws } = useNuxtApp()
-const socket = $ws(3071, null)
-useState('socket', () => socket)
+// const { $ws } = useNuxtApp()
+// const socket = $ws(3071, null)
+// useState('socket', () => socket)
 </script>
 
 <template>
