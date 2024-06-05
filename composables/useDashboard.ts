@@ -14,7 +14,7 @@ const _useDashboard = () => {
     'g-f': () => router.push('/files'),
     'g-s': () => router.push('/settings'),
     '?': () => (isHelpSlideoverOpen.value = true),
-    n: () => (isNotificationsSlideoverOpen.value = true),
+    n: () => (isNotificationsSlideoverOpen.value = true)
   })
 
   watch(
@@ -27,7 +27,7 @@ const _useDashboard = () => {
 
   return {
     isHelpSlideoverOpen,
-    isNotificationsSlideoverOpen,
+    isNotificationsSlideoverOpen
   }
 }
 
