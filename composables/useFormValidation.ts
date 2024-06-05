@@ -12,7 +12,6 @@ export const useFormValidation = () => {
         const validationErrors = validation.error.errors.map((e) => ({ path: e.path[0], message: e.message })) as any[]
         errors.value.push(...validationErrors)
       }
-      console.log(errors.value)
       return errors.value
     }
   }

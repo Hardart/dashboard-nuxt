@@ -102,8 +102,6 @@ export const useArticleStore = defineStore('article', () => {
   }
 
   async function updateArticle(input: ArticleFormData) {
-    console.log(input)
-
     loading.value = true
     const articleData = await articlesAPI.updateOne(input)
     loading.value = false

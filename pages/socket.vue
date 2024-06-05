@@ -37,8 +37,7 @@ const onMouseMove = () => {
 
   height.value = value % 5 == 0 ? value : height.value
   // height.value = value
-  programs.value[programs.value.length - 1].style =
-    `top: ${deltaY.value}px; left: ${deltaX.value}px; height: ${height.value}px`
+  programs.value[programs.value.length - 1].style = `top: ${deltaY.value}px; left: ${deltaX.value}px; height: ${height.value}px`
 }
 
 const onMouseUp = () => {

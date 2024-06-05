@@ -63,8 +63,7 @@ const onSaveChanges = async () => {
     slide.src = slide.src.replace('orig', '1500')
     return slide
   })
-  const res = await galleryAPI.updateAll(gallery)
-  console.log(res)
+  await galleryAPI.updateAll(gallery)
 }
 </script>
 

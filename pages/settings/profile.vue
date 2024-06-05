@@ -16,7 +16,6 @@ function validate(state: UserFormData): FormError[] {
       message: item.message
     }))
     errors.push(...parsedErrors)
-    console.log(error)
   }
 
   return errors

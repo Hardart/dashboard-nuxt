@@ -79,8 +79,6 @@ export const useProgramsStore = defineStore('programs', () => {
   }
 
   function cancelSaveSchedule() {
-    console.log(tempSchedule.value)
-
     if (typeof idx.value !== 'undefined' && typeof tempSchedule.value !== 'undefined')
       programFormData.value.schedule.splice(idx.value, 0, { ...tempSchedule.value })
     tempSchedule.value = undefined
@@ -109,9 +107,8 @@ export const useProgramsStore = defineStore('programs', () => {
 
   async function updateProgram(p: Program) {
     loading.value = true
-    const response = await ProgramsAPI.updateOne(p)
+    await ProgramsAPI.updateOne(p)
     loading.value = false
-    console.log(response)
   }
 
   function storeRefs() {

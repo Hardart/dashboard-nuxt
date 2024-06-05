@@ -17,9 +17,7 @@ const editor = useEditor({
     }
   },
   onUpdate() {
-    console.log(content.value)
     content.value = editor.value?.getText().trim() ? editor.value?.getHTML() : editor.value?.getText().trim()
-    content.value = content.value?.replace(/\/images/gm, 'http://localhost:3068/images')
   }
 })
 
