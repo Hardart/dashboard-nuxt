@@ -28,7 +28,7 @@ function getItems(member: User) {
   <ul role="list" class="divide-y divide-gray-200 overflow-y-scroll dark:divide-gray-800">
     <li v-for="(user, index) in users" :key="index" class="flex items-center justify-between gap-3 px-4 py-3 sm:px-6">
       <div class="flex min-w-0 items-center gap-3">
-        <UAvatar :src="correctImageSrc(user.avatar)" :alt="user.fullName" class="uppercase" imgClass="object-cover" size="xl" />
+        <UAvatar :src="user.avatar" :alt="user.fullName" class="uppercase" imgClass="object-cover" size="xl" />
 
         <div class="min-w-0 text-sm">
           <p class="truncate font-medium text-gray-900 dark:text-white">

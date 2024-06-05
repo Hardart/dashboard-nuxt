@@ -9,14 +9,14 @@ const itemsTemplate = computed(() => [
     {
       slot: 'account',
       label: '',
-      disabled: true,
-    },
+      disabled: true
+    }
   ],
   [
     {
       label: 'Настройки',
       icon: 'i-heroicons-cog-8-tooth',
-      to: '/settings',
+      to: '/settings'
     },
     {
       label: 'Command menu',
@@ -24,42 +24,42 @@ const itemsTemplate = computed(() => [
       shortcuts: [metaSymbol.value, 'K'],
       click: () => {
         isDashboardSearchModalOpen.value = true
-      },
+      }
     },
     {
       label: 'Help & Support',
       icon: 'i-heroicons-question-mark-circle',
       shortcuts: ['?'],
-      click: () => (isHelpSlideoverOpen.value = true),
-    },
+      click: () => (isHelpSlideoverOpen.value = true)
+    }
   ],
   [
     {
       label: 'Documentation',
       icon: 'i-heroicons-book-open',
       to: 'https://ui.nuxt.com/pro/getting-started',
-      target: '_blank',
+      target: '_blank'
     },
     {
       label: 'GitHub repository',
       icon: 'i-simple-icons-github',
       to: 'https://github.com/nuxt-ui-pro/dashboard',
-      target: '_blank',
+      target: '_blank'
     },
     {
       label: 'Buy Nuxt UI Pro',
       icon: 'i-heroicons-credit-card',
       to: 'https://ui.nuxt.com/pro/purchase',
-      target: '_blank',
-    },
+      target: '_blank'
+    }
   ],
   [
     {
       label: 'Sign out',
       icon: 'i-heroicons-arrow-left-on-rectangle',
-      to: '/login',
-    },
-  ],
+      to: '/login'
+    }
+  ]
 ])
 
 const items = computed(() => [
@@ -67,14 +67,14 @@ const items = computed(() => [
     {
       slot: 'account',
       label: '',
-      disabled: true,
-    },
+      disabled: true
+    }
   ],
   [
     {
       label: 'Настройки',
       icon: 'i-heroicons-cog-8-tooth',
-      to: '/settings',
+      to: '/settings'
     },
     {
       label: 'Command menu',
@@ -82,39 +82,49 @@ const items = computed(() => [
       shortcuts: [metaSymbol.value, 'K'],
       click: () => {
         isDashboardSearchModalOpen.value = true
-      },
-    },
+      }
+    }
   ],
   [
     {
       label: 'Documentation',
       icon: 'i-heroicons-book-open',
       to: 'https://ui.nuxt.com/pro/getting-started',
-      target: '_blank',
-    },
+      target: '_blank'
+    }
   ],
   [
     {
       label: 'Выйти',
       icon: 'i-heroicons-arrow-left-on-rectangle',
-      click: logout,
-    },
-  ],
+      click: logout
+    }
+  ]
 ])
 </script>
 
 <template>
-  <UDropdown mode="hover" :items="items" :ui="{ width: 'w-full', item: { disabled: 'cursor-text select-text' } }"
-    :popper="{ strategy: 'absolute', placement: 'top' }" class="w-full">
+  <UDropdown
+    mode="hover"
+    :items="items"
+    :ui="{ width: 'w-full', item: { disabled: 'cursor-text select-text' } }"
+    :popper="{ strategy: 'absolute', placement: 'top' }"
+    class="w-full"
+  >
     <template #default="{ open }">
-      <UButton color="gray" variant="ghost" class="w-full" :label="user?.fullName"
-        :class="[open && 'bg-gray-50 dark:bg-gray-800']">
+      <UButton
+        color="gray"
+        variant="ghost"
+        class="w-full"
+        :label="user?.fullName"
+        :class="[open && 'bg-gray-50 dark:bg-gray-800']"
+      >
         <template #leading>
-          <UAvatar :src="correctImageSrc(user?.avatar)" imgClass="object-cover" :alt="user?.fullName" />
+          <UAvatar :src="user?.avatar" imgClass="object-cover" :alt="user?.fullName" />
         </template>
 
         <template #trailing>
-          <UIcon name="i-heroicons-ellipsis-vertical" class="w-5 h-5 ml-auto" />
+          <UIcon name="i-heroicons-ellipsis-vertical" class="ml-auto h-5 w-5" />
         </template>
       </UButton>
     </template>

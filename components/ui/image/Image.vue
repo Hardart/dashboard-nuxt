@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { correctImageSrc } from '@/utils/helpers'
 import type { ImageName } from '~/types'
 const src = defineModel<string | undefined>({ required: true })
 defineProps<{

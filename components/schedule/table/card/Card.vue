@@ -39,7 +39,7 @@ const LEFT = computed(() => 80 + (props.size?.startFromId - 1) * CELL_WIDTH)
         v-if="program.image"
         class="drop-shadow-md"
         :class="isOpenTitleInfo && 'outline outline-2'"
-        :src="correctImageSrc(program.image)"
+        :src="program.image"
         size="xs"
         @mouseenter="toggleTitleInfo(true)"
         @mouseleave="toggleTitleInfo(false)"

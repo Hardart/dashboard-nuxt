@@ -19,7 +19,7 @@ const selectedNames = computed(() =>
       multiple
     >
       <template #option="{ option: person }">
-        <UAvatar :src="correctImageSrc(person.avatar)" imgClass="object-cover size-6" :alt="person.fullName" />
+        <UAvatar :src="person.avatar" imgClass="object-cover size-6" :alt="person.fullName" />
         <span class="truncate">{{ person.fullName }}</span>
       </template>
       <template #label>

@@ -16,7 +16,7 @@ const articleFormData = defineModel<ArticleFormData>({ required: true })
       <UAvatar
         icon="i-heroicons-photo"
         size="3xl"
-        :src="correctImageSrc(articleFormData.image)"
+        :src="articleFormData.image"
         imgClass="object-cover object-top w-full h-full"
         class="mb-2 h-52 w-[347px] bg-white"
         :ui="{ rounded: 'rounded-lg' }"
