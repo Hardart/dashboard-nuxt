@@ -250,8 +250,8 @@ const colors = computed(() =>
 )
 
 const setOnlineHost = () => {
-  const socket = useState<Socket>('socket')
-  socket.value?.emit('host:online', { hostId: user.value?.id, state: 'online' })
+  // const socket = useState<Socket>('socket')
+  // socket.value?.emit('host:online', { hostId: user.value?.id, state: 'online' })
 }
 </script>
 
@@ -279,9 +279,9 @@ const setOnlineHost = () => {
         /> -->
 
         <div class="flex-1" />
-        <div class="w-full">
+        <!-- <div class="w-full">
           <UButton label="OnAir" block @click="setOnlineHost" />
-        </div>
+        </div> -->
 
         <UDashboardSidebarLinks :links="footerLinks" />
 
