@@ -104,7 +104,7 @@ const onSaveChanges = async () => {
                 </div>
               </div>
               <div class="h-36 w-1/3 min-w-[500px] overflow-hidden rounded-lg bg-zinc-700">
-                <img :src="correctImageSrc(item.src)" class="size-full object-cover" alt="" />
+                <img :src="item.src" class="size-full object-cover" alt="" />
               </div>
               <div class="w-2/5">
                 <h3 class="mb-4 text-3xl font-bold">{{ item.title }}</h3>

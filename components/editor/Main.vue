@@ -11,11 +11,7 @@ const image = reactive({
 watch(
   () => image.src,
   () => {
-    editor.value
-      ?.chain()
-      .focus()
-      .setImage({ src: 'http://localhost:3068' + image.src })
-      .run()
+    editor.value?.chain().focus().setImage({ src: image.src }).run()
   }
 )
 

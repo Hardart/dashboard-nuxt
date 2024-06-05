@@ -2,7 +2,6 @@ import { createSharedComposable } from '@vueuse/core'
 import type { ResponseApi } from '~/types/fetch'
 
 const _useFilesystem = () => {
-  const config = useRuntimeConfig()
   const files = ref<string[]>()
   const basePath = '/images'
   const src = ref(basePath)
@@ -45,15 +44,13 @@ const _useFilesystem = () => {
   const onImage = (path: string, index: number) => {
     selected.value = index
     imageUrl.value.preview = path
-    imageUrl.value.original = correctSrc(path.replace('_preview', '_orig'))
+    imageUrl.value.original = path.replace('_preview', '_orig')
   }
 
   const onFolder = (path: string) => {
     if (isBasePath.value) return
     folder.value.path = path
   }
-
-  const correctSrc = (src: string) => (process.dev ? config.public.BASE_URL + src : src)
 
   watch(src, async (curr) => {
     await getFiles()
@@ -63,17 +60,16 @@ const _useFilesystem = () => {
 
   return {
     files,
-    goBack,
     isBasePath,
     imageUrl,
     selected,
     folder,
+    goBack,
     isImage,
     getFiles,
     setSource,
     onImage,
-    onFolder,
-    correctSrc
+    onFolder
   }
 }
 
