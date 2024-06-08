@@ -22,7 +22,8 @@ export default defineNuxtConfig({
     enabled: true
   },
   devServer: {
-    port: 3001
+    port: 3001,
+    url: 'dashboard.hardart.site'
   },
   routeRules: {
     '/v1/dashboard/**': {
