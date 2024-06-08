@@ -19,15 +19,9 @@ export default defineNuxtConfig({
     prefix: 'Tiptap' //prefix for Tiptap imports, composables not included
   },
   devtools: {
-    enabled: true
+    enabled: false
   },
-  vite: {
-    server: {
-      hmr: {
-        port: 8001
-      }
-    }
-  },
+
   routeRules: {
     '/v1/dashboard/**': {
       proxy: process.env.BASE_URL
