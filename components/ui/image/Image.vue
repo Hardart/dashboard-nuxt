@@ -10,7 +10,7 @@ defineProps<{
 </script>
 <template>
   <div class="group relative aspect-photo size-32 overflow-clip rounded-lg" v-bind="{ ...ui }">
-    <img v-if="src" class="absolute aspect-photo h-full w-full object-cover" :src alt="" />
+    <img v-if="src" class="absolute aspect-photo h-full w-full object-cover" :src="correctImageSrc(src)" alt="" />
     <div v-else class="absolute inset-0 grid place-items-center bg-zinc-700">
       <UIcon name="i-heroicons-photo" class="size-10" />
     </div>

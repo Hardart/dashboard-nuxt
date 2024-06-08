@@ -9,7 +9,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      BASE_URL: 'http://localhost:3068'
+      IMAGE_HOST: 'http://localhost:3068/images/home'
     }
   },
   pinia: {
@@ -24,7 +24,6 @@ export default defineNuxtConfig({
   routeRules: {
     '/v1/dashboard/**': {
       proxy: process.env.BASE_URL
-    },
-    
+    }
   }
 })

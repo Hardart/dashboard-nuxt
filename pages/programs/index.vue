@@ -13,6 +13,5 @@ const { deleteProgram } = useProgramsStore()
   />
   <div class="flex gap-4">
     <ProgramsTable :loading="false" @delete="deleteProgram" />
-    <!-- <ScheduleTable v-if="programs" :programs /> -->
   </div>
 </template>

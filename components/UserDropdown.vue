@@ -120,7 +120,7 @@ const items = computed(() => [
         :class="[open && 'bg-gray-50 dark:bg-gray-800']"
       >
         <template #leading>
-          <UAvatar :src="user?.avatar" imgClass="object-cover" :alt="user?.fullName" />
+          <UAvatar :src="correctImageSrc(user?.avatar)" imgClass="object-cover" :alt="user?.fullName" />
         </template>
 
         <template #trailing>

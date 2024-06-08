@@ -17,7 +17,6 @@ export const articlesAPI = {
   async updateOne(body: ArticleFormData) {
     const { data } = await useCustomFetch<ResponseApi.ArticleSingle>('/article-update', { body })
     if (data.value) useCustomToast('Новость успешно обновлена', 'success', 3000)
-
     return data.value ? addStatus(data.value.article) : undefined
   },
 

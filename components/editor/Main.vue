@@ -11,12 +11,16 @@ const image = reactive({
 watch(
   () => image.src,
   () => {
-    editor.value?.chain().focus().setImage({ src: image.src }).run()
+    editor.value
+      ?.chain()
+      .focus()
+      .setImage({ src: correctImageSrc(image.src) })
+      .run()
   }
 )
 
 const editor = useEditor({
-  content: content.value,
+  content: parseHtml(content.value!),
   extensions: [TiptapStarterKit, Underline, Image],
   editorProps: {
     attributes: {

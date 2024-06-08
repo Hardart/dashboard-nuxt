@@ -1,4 +1,6 @@
 export const parseHtml = (input: string) => {
-  console.log(input)
+  input.match(/\/images[^"]*/g)?.forEach((string) => {
+    input = input.replace(string, correctImageSrc(string))
+  })
   return input
 }

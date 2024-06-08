@@ -55,7 +55,7 @@ const editItems = (program: Program) => [
 
     <template #image-data="{ row }">
       <div class="flex size-10 items-center gap-3 overflow-clip rounded">
-        <img v-if="row.image" :src="row.image" class="size-10 object-cover" alt="" />
+        <img v-if="row.image" :src="correctImageSrc(row.image)" class="size-10 object-cover" alt="" />
         <div v-else class="size-10 bg-zinc-500"></div>
       </div>
     </template>

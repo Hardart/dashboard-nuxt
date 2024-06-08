@@ -30,14 +30,14 @@ const removeFolder = async () => {
             <div class="flex flex-wrap gap-3">
               <FilesBack v-if="!isBasePath" @click="goBack" />
               <div v-for="(src, i) in files" class="size-40 rounded">
-                <FilesImage v-if="isImage(src)" @click="onImage(src, i)" :src :selected="selected == i" />
+                <FilesImage v-if="isImage(src)" @click="onImage(src, i)" :src="correctImageSrc(src)" :selected="selected == i" />
                 <FilesFolder v-else :src @dblclick="setSource(src)" @click="onFolder(src)" :path="folder.path" />
               </div>
             </div>
           </div>
           <div class="w-[450px] pl-3 max-2xl:mx-auto max-2xl:flex max-2xl:flex-col">
             <div v-if="imageUrl.original">
-              <img :src="imageUrl.original" class="" alt="" />
+              <img :src="correctImageSrc(imageUrl.original)" class="" alt="" />
               <p class="text-wrap break-words">{{ imageUrl }}</p>
               <UButton label="удалить" icon="i-heroicons-trash" variant="outline" color="red" @click="removeFile" />
             </div>
