@@ -9,7 +9,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      IMAGE_HOST: 'http://localhost:3068/images/home'
+      IMAGE_HOST: ''
     }
   },
   pinia: {
