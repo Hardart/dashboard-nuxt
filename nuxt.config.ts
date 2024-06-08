@@ -12,15 +12,10 @@ export default defineNuxtConfig({
       IMAGE_HOST: ''
     }
   },
-  pinia: {
-    storesDirs: ['./store/**']
-  },
-  tiptap: {
-    prefix: 'Tiptap' //prefix for Tiptap imports, composables not included
-  },
-  devtools: {
-    enabled: false
-  },
+  pinia: { storesDirs: ['./store/**'] },
+  tiptap: { prefix: 'Tiptap' },
+  tailwindcss: { viewer: false },
+  devtools: { enabled: false },
 
   routeRules: {
     '/v1/dashboard/**': {
