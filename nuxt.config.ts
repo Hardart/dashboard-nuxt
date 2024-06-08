@@ -19,7 +19,10 @@ export default defineNuxtConfig({
     prefix: 'Tiptap' //prefix for Tiptap imports, composables not included
   },
   devtools: {
-    enabled: false
+    enabled: true
+  },
+  devServer: {
+    port: 3001
   },
   routeRules: {
     '/v1/dashboard/**': {
