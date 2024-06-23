@@ -39,8 +39,8 @@ const editItems = (article: Article) => [
     v-model="selected"
     v-model:sort="sort"
     :rows="news"
-    :loading="loading"
-    :columns="columns"
+    :loading
+    :columns
     class="w-full"
     :ui="{ divide: 'divide-gray-200 dark:divide-gray-800', td: { padding: 'py-2' } }"
   >

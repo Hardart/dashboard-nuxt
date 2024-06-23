@@ -145,7 +145,7 @@ const linksBase = [
       text: 'список файлов',
       shortcuts: ['G', 'F']
     },
-    exсeptRoles: ['editor', 'host']
+    roles: ['editor', 'host']
   },
   {
     id: 'settings',
@@ -157,7 +157,7 @@ const linksBase = [
         label: 'Основные',
         to: '/settings',
         exact: true,
-        exceptRoles: ['editor', 'host']
+        roles: ['editor', 'host']
       },
       {
         label: 'Профиль',
@@ -166,12 +166,17 @@ const linksBase = [
       {
         label: 'Админы',
         to: '/settings/members',
-        exceptRoles: ['editor', 'host']
+        roles: ['editor', 'host']
+      },
+      {
+        label: 'Контакты',
+        to: '/settings/contacts',
+        roles: ['editor', 'host']
       },
       {
         label: 'Футер',
         to: '/settings/footer',
-        exceptRoles: ['editor', 'host']
+        roles: ['editor', 'host']
       }
     ],
     tooltip: {
@@ -185,11 +190,11 @@ const links = computed(() =>
   linksBase.filter((link) => {
     if (link.children) {
       link.children = link.children.filter((childLink) => {
-        return !user.value?.roles.some((role) => childLink.exceptRoles?.includes(role))
+        return !user.value?.roles.some((role) => childLink.roles?.includes(role))
       })
     }
 
-    return !user.value?.roles.some((role) => link.exсeptRoles?.includes(role))
+    return !user.value?.roles.some((role) => link.roles?.includes(role))
   })
 )
 

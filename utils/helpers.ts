@@ -18,3 +18,5 @@ export function correctImageSrc(src: string | undefined) {
   src = src.replace('assets', '')
   return config.public.IMAGE_HOST + src
 }
+
+export const delay = (ms: number = 0) => new Promise((res) => setTimeout(res, ms))

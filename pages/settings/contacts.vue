@@ -7,9 +7,9 @@ definePageMeta({
   middleware: ['is-admin']
 })
 
-const { contact } = await SettingsAPI.footer()
+const { contact } = await SettingsAPI.contacts()
 const onSaveChanges = async () => {
-  await SettingsAPI.updateFooter(contact)
+  await SettingsAPI.updateContacts(contact)
 }
 const onAddPhoneModel = () => contact.value.phones.push({ ...phoneModel })
 const onAddMailModel = () => contact.value.emails.push({ ...mailModel })
@@ -18,20 +18,18 @@ const onAddAddressModel = () => contact.value.addresses.push({ ...addressModel }
 
 <template>
   <UDashboardPanelContent class="pb-24">
-    <UDashboardSection title="Данные футера" description="Редактирование контента в нижней части сайта">
+    <UDashboardSection title="Данные страницы Контакты" description="данные отображаются в разделе 'Федеральная редакция'">
       <template #links>
         <UButton label="Добавить телефон" color="black" @click="onAddPhoneModel" />
         <UButton label="Добавить почту" color="black" @click="onAddMailModel" />
         <UButton label="Добавить адрес" color="black" @click="onAddAddressModel" />
         <UButton type="submit" label="Сохранить изменения" color="green" @click="onSaveChanges" />
       </template>
-
       <div class="divide-y">
         <div class="space-y-2 pb-4">
           <div class="grid grid-cols-3 items-center" v-for="phone in contact.phones">
             <div>
               <p class="text-sm">Номер телефна</p>
-              <p class="text-xs text-neutral-400">Отображается в нижней части экрана</p>
             </div>
             <div class="col-span-2 flex gap-3">
               <UFormGroup class="w-64">
@@ -40,7 +38,7 @@ const onAddAddressModel = () => contact.value.addresses.push({ ...addressModel }
               <UFormGroup class="flex-grow">
                 <UInput placeholder="Описание" v-model="phone.description" />
               </UFormGroup>
-              <UFormGroup class="w-48">
+              <UFormGroup class="basis-52">
                 <USelectMenu
                   placeholder="Выбрать телефон"
                   :options="phones"
@@ -52,11 +50,11 @@ const onAddAddressModel = () => contact.value.addresses.push({ ...addressModel }
             </div>
           </div>
         </div>
-        <div class="space-y-2 py-4">
+
+        <div class="space-y-2 py-4" v-if="contact.emails.length">
           <div class="grid grid-cols-3 items-center" v-for="mail in contact.emails">
             <div>
               <p class="text-sm">Почтовый ящик</p>
-              <p class="text-xs text-neutral-400">Отображается в нижней части экрана</p>
             </div>
             <div class="col-span-2 flex gap-3">
               <UFormGroup class="w-64">
@@ -65,7 +63,7 @@ const onAddAddressModel = () => contact.value.addresses.push({ ...addressModel }
               <UFormGroup class="flex-grow">
                 <UInput placeholder="Описание" v-model="mail.description" />
               </UFormGroup>
-              <UFormGroup class="w-48">
+              <UFormGroup class="basis-52">
                 <USelectMenu
                   placeholder="Выбрать адрес"
                   :options="emails"

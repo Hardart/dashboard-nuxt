@@ -18,6 +18,11 @@ const links = [
       to: '/settings/members'
     },
     {
+      label: 'Контакты',
+      icon: 'i-heroicons-user-group',
+      to: '/settings/contacts'
+    },
+    {
       label: 'Футер',
       icon: 'i-heroicons-puzzle-piece',
       to: '/settings/footer'

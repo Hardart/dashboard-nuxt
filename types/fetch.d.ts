@@ -4,7 +4,7 @@ import type { Program } from '~/scheme/z_program'
 import type { Slide } from '~/scheme/z_slide'
 import type { Track } from '~/scheme/z_track'
 import type { User } from '~/scheme/z_user'
-import type { Contact, Mail, Phone } from './contact'
+import type { Address, Contact, Mail, Phone } from './contact'
 
 export interface CustomFetchOptions {
   url: string
@@ -44,8 +44,13 @@ export declare module ResponseApi {
   type TrackList = { tracks: Track[] }
   type SlideList = { slides: Slide[] }
   type SlideSingle = { slide: Slide }
-  type FooterData = { contacts: Contact[] }
-  type BaseData = { phones: Phone[]; emails: Mail[] }
+  type BaseData = { phones: Phone[]; emails: Mail[]; addresses: Address[] }
   type PhoneSingle = { phone: Phone }
   type MailSingle = { email: Mail }
+  type AddressSingle = { address: Address }
+}
+
+export declare module SettingAPI {
+  type Footer = { contact: Contact }
+  type Contacts = { contact: Contact }
 }

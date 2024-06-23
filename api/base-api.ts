@@ -1,25 +1,20 @@
 import type { Program } from '~/scheme/z_program'
-import type { Contact } from '~/types/contact'
+import type { Contact, Mail, Phone } from '~/types/contact'
 import type { ResponseApi } from '~/types/fetch'
 
 export const BaseAPI = {
-  async footerData() {
-    const { data } = await useCustomFetch<ResponseApi.FooterData>('/base-footer')
-    const contacts = data.value?.contacts || []
-    return { contacts }
-  },
   async baseData() {
     const { data } = await useCustomFetch<ResponseApi.BaseData>('/base')
-    return data.value
+    const res = toValue(data)
+    if (!res) createError('Cant fetch base contacts data')
+    else
+      res.addresses = res.addresses.map((ad) => {
+        const { region, district, city, street, locality, houseNumber } = ad
+        return { ...ad, fullAddress: `${region}, ${district}, ${city || locality}, ${street}, ${houseNumber}` } // добавить виртуальное поле в модели Address на бэкенде
+      })
+    return res
   },
-  async addPhone(number: string) {
-    const { data } = await useCustomFetch<ResponseApi.PhoneSingle>('/base/phone-add', { body: { number } })
-    return data.value
-  },
-  async addMail(title: string) {
-    const { data } = await useCustomFetch<ResponseApi.MailSingle>('/base/email-add', { body: { title } })
-    return data.value
-  },
+
   async save(body: Program) {
     const toast = useToast()
     const { data } = await useCustomFetch<ResponseApi.ProgramSngle>('/program-add', { body })
@@ -43,18 +38,5 @@ export const BaseAPI = {
         icon: 'i-heroicons-check-circle-16-solid'
       })
     return data.value?.program
-  },
-  async updateFooterContacts(body: MaybeRef<Contact[]>) {
-    body = toValue(body)
-    const toast = useToast()
-    const { status } = await useCustomFetch('/base/footer-update', { body })
-
-    if (status)
-      toast.add({
-        title: 'Контакты успешно обновлены',
-        timeout: 2500,
-        color: 'emerald',
-        icon: 'i-heroicons-check-circle-16-solid'
-      })
   }
 }
