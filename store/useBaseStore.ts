@@ -5,11 +5,11 @@ import type { Address, AddressModel, Mail, MailModel, Phone, PhoneModel } from '
 export const useBaseStore = defineStore('base', () => {
   const phone = ref<Phone>({ number: '' })
   const mail = ref<Mail>({ address: '' })
-  const address = ref<Address>({ region: '', city: '', district: '', street: '', zip: '' })
+  const address = ref<Address>({ region: '', district: '', street: '', zip: '' })
 
   const phoneModel: PhoneModel = { id: '', label: '' }
   const mailModel: MailModel = { id: '', label: '' }
-  const addressModel: AddressModel = { id: '' }
+  const addressModel: AddressModel = { id: '', label: '' }
 
   const phones = ref<Phone[]>([])
   const emails = ref<Mail[]>([])
@@ -68,7 +68,7 @@ export const useBaseStore = defineStore('base', () => {
     await delay(150)
     phone.value = { number: '' }
     mail.value = { address: '' }
-    address.value = { region: '', city: '', district: '', street: '', zip: '' }
+    address.value = { region: '', district: '', street: '', zip: '' }
   }
 
   function storeRefs() {

@@ -1,4 +1,4 @@
-type BaseContact = {
+export type BaseContact = {
   id: string
   label: string
   description?: string
@@ -27,7 +27,7 @@ export type Address = {
 
 export type MailModel = BaseContact
 export type PhoneModel = BaseContact
-export type AddressModel = Omit<BaseContact, 'label'>
+export type AddressModel = BaseContact
 
 export type Contact = {
   emails: MailModel[]
