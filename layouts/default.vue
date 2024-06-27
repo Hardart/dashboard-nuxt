@@ -1,79 +1,8 @@
 <script setup lang="ts">
-import type { Socket } from 'socket.io-client'
-
 const route = useRoute()
 const appConfig = useAppConfig()
 const { isHelpSlideoverOpen } = useDashboard()
 const { user } = useUserStore().storeRefs()
-
-const linksTemplate = [
-  {
-    id: 'home',
-    label: 'Home',
-    icon: 'i-heroicons-home',
-    to: '/',
-    tooltip: {
-      text: 'Home',
-      shortcuts: ['G', 'H']
-    }
-  },
-  {
-    id: 'inbox',
-    label: 'Inbox',
-    icon: 'i-heroicons-inbox',
-    to: '/inbox',
-    badge: '4',
-    tooltip: {
-      text: 'Inbox',
-      shortcuts: ['G', 'I']
-    }
-  },
-  {
-    id: 'users',
-    label: 'Users',
-    icon: 'i-heroicons-user-group',
-    to: '/users',
-    tooltip: {
-      text: 'Users',
-      shortcuts: ['G', 'U']
-    }
-  },
-  {
-    id: 'users',
-    label: 'Users',
-    icon: 'i-heroicons-user-group',
-    to: '/users',
-    tooltip: {
-      text: 'Users',
-      shortcuts: ['G', 'U']
-    }
-  },
-  {
-    id: 'settings',
-    label: 'Settings',
-    to: '/settings',
-    icon: 'i-heroicons-cog-8-tooth',
-    children: [
-      {
-        label: 'General',
-        to: '/settings',
-        exact: true
-      },
-      {
-        label: 'Members',
-        to: '/settings/members'
-      },
-      {
-        label: 'Notifications',
-        to: '/settings/notifications'
-      }
-    ],
-    tooltip: {
-      text: 'Settings',
-      shortcuts: ['G', 'S']
-    }
-  }
-]
 
 const linksBase = [
   {
@@ -239,25 +168,25 @@ const groups = [
   }
 ]
 
-const defaultColors = ref(
-  ['green', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet'].map((color) => ({
-    label: color,
-    chip: color,
-    click: () => (appConfig.ui.primary = color)
-  }))
-)
+// const defaultColors = ref(
+//   ['green', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet'].map((color) => ({
+//     label: color,
+//     chip: color,
+//     click: () => (appConfig.ui.primary = color)
+//   }))
+// )
 
-const colors = computed(() =>
-  defaultColors.value.map((color) => ({
-    ...color,
-    active: appConfig.ui.primary === color.label
-  }))
-)
+// const colors = computed(() =>
+//   defaultColors.value.map((color) => ({
+//     ...color,
+//     active: appConfig.ui.primary === color.label
+//   }))
+// )
 
-const setOnlineHost = () => {
-  // const socket = useState<Socket>('socket')
-  // socket.value?.emit('host:online', { hostId: user.value?.id, state: 'online' })
-}
+// const setOnlineHost = () => {
+//   // const socket = useState<Socket>('socket')
+//   // socket.value?.emit('host:online', { hostId: user.value?.id, state: 'online' })
+// }
 </script>
 
 <template>
