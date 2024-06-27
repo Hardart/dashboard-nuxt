@@ -9,9 +9,9 @@ export const trackAPI = {
 
   async getITunesMetadata(term: string) {
     const response = await $fetch<ITunesResponse>('https://itunes.apple.com/search', {
-      query: { term, limit: '1', entity: 'song', media: 'music' },
+      query: { term, limit: '10', entity: 'song', media: 'music' },
       parseResponse: JSON.parse
     })
-    return response.resultCount === 1 ? response.results[0] : null
+    return response.results.length ? response.results : null
   }
 }
