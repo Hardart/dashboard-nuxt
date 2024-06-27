@@ -10,4 +10,5 @@ export interface ITunesTrack {
   artworkUrl100: string
   previewUrl: string
   trackId: number
+  trackName: string
 }

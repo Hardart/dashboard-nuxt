@@ -1,5 +1,6 @@
 import { trackAPI } from '~/api/track-api'
 import type { Track } from '~/scheme/z_track'
+import type { ITunesTrack } from '~/types/itunes'
 
 export const useTracksStore = defineStore('tracks', () => {
   const loading = ref(false)
@@ -15,13 +16,15 @@ export const useTracksStore = defineStore('tracks', () => {
   const filteredCount = ref(0)
 
   const filteredTracks = computed(() => {
+    if (!tracks.value.length) return []
     const filtered = tracks.value.filter(
       (track) =>
         track.artistName.toLowerCase().includes(artistFilter.value.toLowerCase()) ||
         track.trackTitle.toLowerCase().includes(artistFilter.value.toLowerCase())
     )
     filteredCount.value = filtered.length
-    page.value = 1
+
+    if (filteredCount.value !== tracksCount.value) page.value = 1
     return filtered
   })
 
@@ -29,8 +32,11 @@ export const useTracksStore = defineStore('tracks', () => {
 
   async function fetchTracks() {
     tracks.value = await trackAPI.list()
+
     tracksCount.value = tracks.value.length
   }
+
+  function setTrackMetaInfoFromITunes({ artistName, previewUrl, artworkUrl60, trackName }: ITunesTrack) {}
 
   function storeRefs() {
     return {

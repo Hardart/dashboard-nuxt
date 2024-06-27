@@ -6,5 +6,6 @@ export const trackSchema = z.object({
   artistName: z.string(),
   trackTitle: z.string(),
   cover: z.string(),
-  createdAt: z.string()
+  createdAt: z.string(),
+  preview: z.string()
 })
