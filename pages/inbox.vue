@@ -3,11 +3,11 @@ import type { Mail } from '~/types'
 
 const tabItems = [
   {
-    label: 'All',
+    label: 'All'
   },
   {
-    label: 'Unread',
-  },
+    label: 'Unread'
+  }
 ]
 const selectedTab = ref(0)
 
@@ -15,23 +15,23 @@ const dropdownItems = [
   [
     {
       label: 'Mark as unread',
-      icon: 'i-heroicons-check-circle',
+      icon: 'i-heroicons-check-circle'
     },
     {
       label: 'Mark as important',
-      icon: 'i-heroicons-exclamation-circle',
-    },
+      icon: 'i-heroicons-exclamation-circle'
+    }
   ],
   [
     {
       label: 'Star thread',
-      icon: 'i-heroicons-star',
+      icon: 'i-heroicons-star'
     },
     {
       label: 'Mute thread',
-      icon: 'i-heroicons-pause-circle',
-    },
-  ],
+      icon: 'i-heroicons-pause-circle'
+    }
+  ]
 ]
 
 // const { data: mails } = await useFetch<Mail[]>('/api/mails', { default: () => [] })
@@ -40,7 +40,7 @@ const mails = ref<Mail[]>([])
 // Filter mails based on the selected tab
 const filteredMails = computed(() => {
   if (selectedTab.value === 1) {
-    return mails.value.filter(mail => !!mail.unread)
+    return mails.value.filter((mail) => !!mail.unread)
   }
 
   return mails.value
@@ -56,12 +56,12 @@ const isMailPanelOpen = computed({
     if (!value) {
       selectedMail.value = null
     }
-  },
+  }
 })
 
 // Reset selected mail if it's not in the filtered mails
 watch(filteredMails, () => {
-  if (!filteredMails.value.find(mail => mail.id === selectedMail.value?.id)) {
+  if (!filteredMails.value.find((mail) => mail.id === selectedMail.value?.id)) {
     selectedMail.value = null
   }
 })
@@ -107,7 +107,12 @@ watch(filteredMails, () => {
             <UPopover :popper="{ placement: 'bottom-start' }">
               <template #default="{ open }">
                 <UTooltip text="Snooze" :prevent="open">
-                  <UButton icon="i-heroicons-clock" color="gray" variant="ghost" :class="[open && 'bg-gray-50 dark:bg-gray-800']" />
+                  <UButton
+                    icon="i-heroicons-clock"
+                    color="gray"
+                    variant="ghost"
+                    :class="[open && 'bg-gray-50 dark:bg-gray-800']"
+                  />
                 </UTooltip>
               </template>
 
@@ -137,8 +142,8 @@ watch(filteredMails, () => {
         <!-- ~/components/inbox/InboxMail.vue -->
         <InboxMail :mail="selectedMail" />
       </template>
-      <div v-else class="flex-1 hidden lg:flex items-center justify-center">
-        <UIcon name="i-heroicons-inbox" class="w-32 h-32 text-gray-400 dark:text-gray-500" />
+      <div v-else class="hidden flex-1 items-center justify-center lg:flex">
+        <UIcon name="i-heroicons-inbox" class="h-32 w-32 text-gray-400 dark:text-gray-500" />
       </div>
     </UDashboardPanel>
   </UDashboardPage>

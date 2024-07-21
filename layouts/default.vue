@@ -56,6 +56,16 @@ const linksBase = [
     }
   },
   {
+    id: 'programs-new',
+    label: 'Программы(new)',
+    icon: 'i-heroicons-radio',
+    to: '/programs-new',
+    tooltip: {
+      text: 'список программ',
+      shortcuts: ['G', 'P']
+    }
+  },
+  {
     id: 'gallery',
     label: 'Галерея',
     icon: 'heroicons:photo',

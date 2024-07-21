@@ -30,7 +30,7 @@ defineEmits(['open-schedule-modal', 'on-add-program'])
           <ProgramsFormScheduleItem v-for="(schedule, idx) in programFormData.schedule" :schedule :idx />
         </ul>
       </div>
-      <div class="">
+      <div>
         <UiImage v-model="programFormData.image" name="programs" />
       </div>
     </div>

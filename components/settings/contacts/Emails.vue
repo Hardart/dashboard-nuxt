@@ -16,5 +16,5 @@ defineProps<{
 }>()
 </script>
 <template>
-  <UTable :rows :columns class="max-w-52" />
+  <UTable :rows :columns class="max-w-60" />
 </template>

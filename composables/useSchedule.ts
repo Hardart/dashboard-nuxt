@@ -13,13 +13,19 @@ export const useSchedule = () => {
   const selectedIdsToWeekday = (array: number[]) => {
     switch (true) {
       case array.length == 7:
-        return 'Каждый день'
+        return 'Выходит каждый день'
       case array.length == 5 && array[0] === 1 && array[4] === 5:
-        return 'По будням'
+        return 'Выходит по будням'
       case array.length == 2 && array.includes(6) && array.includes(7):
-        return 'По выходным'
+        return 'Выходит по выходным'
       default:
-        return array.map((n) => weekdays.find((day) => day.id === n)?.title.full || '').join(', ')
+        return (
+          'Выходит в ' +
+          array
+            .map((n) => weekdays.find((day) => day.id === n)?.title.full || '')
+            .join(', ')
+            .toLowerCase()
+        )
     }
   }
 

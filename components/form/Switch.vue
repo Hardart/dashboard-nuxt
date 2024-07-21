@@ -1,14 +1,15 @@
 <script setup lang="ts">
-const isPublished = defineModel({ required: true, type: Boolean })
+const toggleValue = defineModel<boolean>({ required: true })
 defineProps<{
   label: string
   required?: boolean
-  name: string
+  name?: string
+  size?: 'lg' | 'xs' | 'xl'
 }>()
 </script>
 
 <template>
-  <UFormGroup :label="label" requried :name="name">
-    <UToggle v-model="isPublished" class="my-1" size="lg" />
+  <UFormGroup :label requried :name>
+    <UToggle v-model="toggleValue" class="my-1" :size />
   </UFormGroup>
 </template>

@@ -13,5 +13,5 @@ export const filesAPI = {
     if (data.value)
       toast.add({ title: 'Удаление прошло успешно', timeout: 2500, color: 'green', icon: 'i-heroicons-check-circle-16-solid' })
     return data.value?.file
-  },
+  }
 }
