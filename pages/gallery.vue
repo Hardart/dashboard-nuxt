@@ -81,7 +81,7 @@ const onSaveChanges = async () => {
             <div class="flex gap-2">
               <div class="space-y-2">
                 <div class="handle flex h-10 w-6 cursor-grab place-items-center rounded-lg bg-zinc-800">
-                  <UIcon name="heroicons:ellipsis-vertical-16-solid" class="mx-auto" />
+                  <UIcon name="heroicons:arrows-up-down" class="mx-auto" />
                 </div>
                 <div
                   class="group flex h-10 w-6 cursor-pointer place-items-center rounded-lg bg-zinc-800/50 hover:bg-zinc-800"

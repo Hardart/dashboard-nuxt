@@ -25,22 +25,20 @@ const options = [
   { value: 'editor', option: 'Редактор' },
   { value: 'host', option: 'Ведущий' }
 ]
+
+const findRole = (role: string) => options.find(opt => opt.value === role)?.option
 </script>
 
 <template>
-  <UForm
-    :validate
-    :validate-on="['submit']"
-    :state
-    class="space-y-4"
-    @submit="(event: FormSubmitEvent<any>) => $emit('on-submit', event)"
-  >
+  <UForm :validate :validate-on="['submit']" :state class="space-y-4"
+    @submit="(event: FormSubmitEvent<any>) => $emit('on-submit', event)">
     <UFormGroup label="Email" name="email">
-      <UInput v-model="state.email" placeholder="jonny" autofocus>
+      <UInput v-model="state.email" trailing placeholder="jonny" autofocus
+        :ui="{ trailing: { padding: { sm: 'pe-20' } } }">
         <template #trailing>
-          <span class="text-md border-l border-gray-600 pl-2 text-gray-600 dark:text-gray-200">@test.ru</span>
-        </template></UInput
-      >
+          <span class="text-sm border-l border-gray-600 pl-2 text-gray-600 dark:text-gray-200">@test.ru</span>
+        </template>
+      </UInput>
     </UFormGroup>
     <UFormGroup label="Пароль" name="password">
       <UInput v-model="state.password" />
@@ -55,20 +53,19 @@ const options = [
     </div>
 
     <UFormGroup label="Роли пользователя" name="roles">
-      <USelectMenu
-        v-model="state.roles"
-        multiple
-        :options
-        :ui-menu="{ select: 'capitalize', option: { base: 'capitalize' } }"
-        value-attribute="value"
-        option-attribute="option"
-      />
+      <USelectMenu v-model="state.roles" multiple :options :ui-menu="{ option: { base: 'capitalize' } }"
+        value-attribute="value" option-attribute="option">
+        <template #label>
+          <span v-if="state.roles.length" class="truncate"> {{ state.roles.map(findRole).join(', ') }}</span>
+          <span v-else>Выбрать роли</span>
+        </template>
+      </USelectMenu>
     </UFormGroup>
 
     <div class="flex justify-end gap-3">
       <UButton label="Отменить" color="gray" variant="ghost" @click="$emit('close')" />
       <UButton label="Сохранить" color="black" type="submit" />
     </div>
-    {{ state }}
+
   </UForm>
 </template>

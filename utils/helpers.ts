@@ -13,7 +13,11 @@ export function tryInject<T>(key: string): Ref<T> {
 }
 
 export function correctImageSrc(src: string | undefined) {
-  if (typeof src === 'undefined') throw createError('image src cannot be undefined')
+  if (typeof src === 'undefined') {
+    
+    return undefined
+    
+  }
   const config = useRuntimeConfig()
   return config.public.IMAGE_HOST + src
 }

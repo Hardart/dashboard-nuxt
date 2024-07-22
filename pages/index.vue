@@ -17,7 +17,7 @@ const items = [
     {
       label: 'New user',
       icon: 'i-heroicons-user-plus',
-      to: '/users'
+      to: '/settings/members'
     }
   ]
 ]
@@ -52,18 +52,18 @@ const cardsData = [
     to: '/gallery'
   }
 ]
-const src = ref('images/team/02.webp')
+const src = ref<string | undefined>('/images/team/02.webp')
 const avatarSrc = ref('')
 const form = ref<HTMLFormElement | null>(null)
-const onSubmit = async () => {}
+const onSubmit = async () => { }
 
 const onChange = async () => {
   console.log('onChange')
   const formToValue = toValue(form)
   if (!formToValue) return
   const body = new FormData(formToValue)
-  console.log(body)
   const avatar = await filesAPI.single(UploadURLS.avatar, body)
+  if (avatar) src.value = correctImageSrc(avatar)
 }
 </script>
 
@@ -79,22 +79,14 @@ const onChange = async () => {
       </UDashboardNavbar>
 
       <UDashboardPanelContent>
-        <!-- <div class="my-4 grid grid-cols-4 gap-4">
-          <ULandingCard
-            v-for="{ title, description, icon, to } in cardsData"
-            :title
-            :description
-            :icon
-            color="primary"
-            :to
-            :ui="{
+        <div class="my-4 grid grid-cols-4 gap-4">
+          <ULandingCard v-for="{ title, description, icon, to } in cardsData" :title :description :icon color="primary"
+            :to :ui="{
               background: 'dark:hover:bg-opacity-100',
               to: 'hover:ring-primary-500 dark:hover:ring-none dark:hover:bg-transparent transition-shadow duration-200'
-            }"
-          />
-        </div> -->
-        <form @submit.prevent="onSubmit" ref="form" v-if="!avatarSrc">
-          <!-- <input type="text" name="title" /> -->
+            }" />
+        </div>
+        <!-- <form @submit.prevent="onSubmit" ref="form" v-if="!avatarSrc">
           <div class="inline-block p-2">
             <label
               for="image"
@@ -104,12 +96,12 @@ const onChange = async () => {
               <input id="image" name="avatar" type="file" class="sr-only" @change="onChange" />
             </label>
           </div>
-        </form>
-        <div class="mx-auto h-32 w-32 overflow-hidden rounded-full border-4 border-rose-300" v-if="avatarSrc">
+        </form> -->
+        <!-- <div class="mx-auto h-32 w-32 overflow-hidden rounded-full border-4 border-rose-300" v-if="avatarSrc">
           <img :src="avatarSrc" class="w-full object-cover" alt="" />
           <div class="h-full w-full bg-rose-200"></div>
-        </div>
-        <HdrtDragImage v-if="src" :src />
+        </div> -->
+        <!-- <HdrtDragImage v-if="src" :src /> -->
       </UDashboardPanelContent>
     </UDashboardPanel>
   </UDashboardPage>
