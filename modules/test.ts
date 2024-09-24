@@ -10,11 +10,12 @@ export default defineNuxtModule({
   defaults: {},
 
   // Функция, которая будет выполнена при регистрации модуля
-  setup(options, nuxt) {
+  setup() {
     // Регистрируем компонент
     addComponent({
       name: 'HdrtTest',
-      filePath: resolve(__dirname, 'test/components/HdrtTest.vue')
+      filePath: resolve(__dirname, 'test/components/HdrtTest.vue'),
+      priority: undefined
     })
   }
 })

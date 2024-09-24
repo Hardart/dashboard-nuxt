@@ -13,8 +13,8 @@ defineEmits(['on-confirm'])
 <template>
   <div class="mx-auto h-96 w-1/3 bg-zinc-300">
     <div class="relative mx-auto grid h-96 w-full place-items-center overflow-hidden">
-      <img class="absolute select-none" @dragstart.prevent :src :style="imageStyle" />
-      <div ref="panElement" class="shadow-hdrt absolute cursor-default" :style="panStyle"></div>
+      <img class="absolute select-none" :src :style="imageStyle" @dragstart.prevent>
+      <div ref="panElement" class="shadow-hdrt absolute cursor-default" :style="panStyle" />
     </div>
     <div class="p-6 md:mx-10 lg:mx-14">
       <URange v-model="zoomValue" :min="0" :max="1000" />

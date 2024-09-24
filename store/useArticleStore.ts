@@ -33,6 +33,7 @@ export const useArticleStore = defineStore('article', () => {
   const selectedCategories = ref<string[]>([])
   const sort = ref<SortBy>({ column: 'createdAt', direction: 'desc' as const })
   const categoriesFilter = computed(() => articles.value.reduce(filterCategoriesBunlde, []))
+
   const statusesFilter = computed(() => articles.value.reduce(filterStatusesBunlde, []))
 
   const filterByTitle = computed(() =>
@@ -40,11 +41,13 @@ export const useArticleStore = defineStore('article', () => {
       query.value.trim() ? article.title.toLowerCase().includes(query.value.toLowerCase().trim()) : article
     )
   )
+
   const filterByStatus = computed(() =>
     selectedStatuses.value.length
       ? filterByTitle.value.filter((article) => selectedStatuses.value.includes(article.status.toLowerCase()))
       : filterByTitle.value
   )
+
   const filteredArticles = computed(() =>
     selectedCategories.value.length
       ? filterByStatus.value.filter((article) => selectedCategories.value.includes(article.category.id))
@@ -62,7 +65,17 @@ export const useArticleStore = defineStore('article', () => {
     })
   )
 
-  function transformArticleToFormData({ title, image, slug, content, isPublished, tags, category, publishAt, id }: Article) {
+  function transformArticleToFormData({
+    title,
+    image,
+    slug,
+    content,
+    isPublished,
+    tags,
+    category,
+    publishAt,
+    id
+  }: Article) {
     articleFormData.value = {
       title,
       image,

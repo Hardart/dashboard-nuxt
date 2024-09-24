@@ -11,9 +11,7 @@ useHead({
     { name: 'theme-color', content: color }
   ],
   link: [{ rel: 'icon', href: '/favicon.ico' }],
-  htmlAttrs: {
-    lang: 'ru'
-  }
+  htmlAttrs: { lang: 'ru' }
 })
 
 const title = 'Радио "Штаны" - Панель управления'

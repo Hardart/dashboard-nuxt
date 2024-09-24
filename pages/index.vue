@@ -86,6 +86,7 @@ const onChange = async () => {
               to: 'hover:ring-primary-500 dark:hover:ring-none dark:hover:bg-transparent transition-shadow duration-200'
             }" />
         </div>
+        <Atm />
         <!-- <form @submit.prevent="onSubmit" ref="form" v-if="!avatarSrc">
           <div class="inline-block p-2">
             <label
